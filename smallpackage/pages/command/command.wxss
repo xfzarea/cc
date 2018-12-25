@@ -1,0 +1,156 @@
+.top{
+  width: 750rpx;
+  height: 128rpx;
+  background-color: #D85940;
+  display: flex;
+}
+.write{
+  /* width: 670rpx; */
+  width: 480rpx;
+  height: 70rpx;
+  position: relative;
+  left: 40rpx;
+  top: 30rpx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8rpx;
+}
+.write image{
+  width: 30rpx;
+  height: 30rpx;
+}
+.write view{
+  color:#838383;
+  font-size: 28rpx;
+  margin-left: 16rpx;
+}
+.creator{
+  background-color: #FFE695;
+  width: 160rpx;
+  height: 70rpx;
+  border-radius: 8rpx;
+  color: #D85940;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 30rpx;
+  left: 70rpx;
+}
+.article{
+  width: 100%;
+  /* height: calc(100% - 128rpx); */
+  height: 100%;
+  display: flex;
+}
+.article_1{
+  height: calc(100% - 128rpx);
+}
+.orders{
+  width: 200rpx;
+  height: 100%;
+}
+.content{
+  width: 550rpx;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+.order{
+  width: 200rpx;
+  height: 98rpx;
+  text-align: center;
+  line-height: 98rpx;
+  font-size: 28rpx;
+  color:#838383;
+  font-weight: bold;
+}
+
+.order_1{
+  width: 200rpx;
+  height: 98rpx;
+  text-align: center;
+  line-height: 98rpx;
+  font-size: 28rpx;
+  color:#D85940;
+  font-weight: bold;
+  background-color:#FFE695;
+}
+.changeOrder{
+  background-color: #fff;
+  color: #D85940;
+  position: relative;
+}
+.changeOrder::before{
+  content:'';
+  position: absolute;
+  width: 8rpx;
+  height: 30rpx;
+  background-color: #D85940;
+  top: 34rpx;
+  left: 0;
+}
+.rigthCommands{
+  width: 100%;
+  /* height: calc(100% - 150rpx); */
+  height: 100%;
+}
+.rigthCommand{
+  width: 410rpx;
+  margin-left: 48rpx;
+  box-shadow: 2rpx 0 8rpx 0 rgba(230,230,230,0.50), 0 4rpx 8rpx 0 rgba(227,227,227,0.50);
+  margin-bottom: 40rpx;
+  border-radius: 8rpx;
+  color: #D85940;
+  display: flex;
+  padding: 15rpx 27rpx;
+}
+.point{
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 8rpx;
+  background-color: #D85940;
+  position: relative;
+  top: 10rpx;
+}
+.context_r{
+  margin-left: 10rpx;
+  width: 392rpx;
+}
+.createCommand{
+  width: 464rpx;
+  height: 86rpx;
+  border-radius: 86rpx;
+  background-color: #D85940;
+  color: #fff;
+  text-align: center;
+  line-height: 86rpx;
+  font-size: 28rpx;
+}
+.create_1{
+  height: 150rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.new_bottom{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40rpx;
+}
+.new_bottom view{
+  color:#5c73a6;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.new_bottom image{
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+}

@@ -1,0 +1,18 @@
+var filters = {
+  toFix: function (value) {
+    if(value == ''){
+      value = 0;
+    }
+    if(typeof(value) == 'number'){
+      return value.toFixed(2)//此处2为保留两位小数
+    }else{
+      return value
+    }
+    
+    
+    
+  }
+}
+module.exports = {
+  toFix: filters.toFix
+}

@@ -1,0 +1,98 @@
+.main{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top:0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .6);
+  z-index: 399;
+}
+.box{
+  width: 538rpx;
+  height: 653rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.bgPic{
+  width: 538rpx;
+  height: 653rpx;
+}
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top:114rpx;
+}
+.info > image{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+  border: 5rpx solid #fff;
+}
+.nickName{
+  width: 250rpx;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color:#fff;
+  text-align: center;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.intro{
+  width:370rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color:#fff;
+  margin-top:40rpx;
+  line-height: 50rpx;
+  font-weight: bold;
+}
+.btn{
+  width: 360rpx;
+  height: 72rpx;
+  background-color: #ffe33a;
+  margin-top: 90rpx;
+  border-radius: 72rpx;
+  color:#d85940;
+  font-size: 32rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 72rpx;
+}
+.bom{
+  color:#fff;
+  font-size: 24rpx;
+  margin-top: 44rpx;
+}
+.card{
+  width: 500rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+}
+.card_1{
+  width: 440rpx;
+  padding: 40rpx 30rpx;
+  font-size: 30rpx;
+  text-align: center;
+  border-bottom: 1rpx solid #F0F0F0;
+  color: #838383;
+  line-height: 50rpx;
+}
+.card> button{
+  height: 80rpx;
+  background-color: #fff;
+  color: #32CD32;
+  font-size: 32rpx;
+  font-weight: 500;
+
+}
+button::after{
+  border:none;
+}

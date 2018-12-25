@@ -1,0 +1,72 @@
+.main{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0;
+  background-color: #ff804e;
+}
+.bgPic{
+  width: 100%;
+  height: 2156rpx;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+.pic_1{
+  width: 690rpx;
+  position: absolute;
+  top:1090rpx;
+  left: 30rpx;
+}
+.pic_1>image{
+  width: 690rpx;
+  height: 464rpx;
+}
+.info{
+  width: 690rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+}
+.context{
+  display: flex;
+  margin-top: 124rpx;
+  align-items: center;
+  margin-left: 50rpx;
+}
+.context>view{
+  color:#ff804e;
+  font-size: 32rpx;
+  letter-spacing:3rpx;
+  font-weight: 500;
+}
+.input{
+  margin-left: 14rpx;
+  width: 448rpx;
+  height: 68rpx;
+  border-radius: 12rpx;
+  border:1rpx solid #ff804e;
+  text-align: right;
+}
+input{
+  margin-right: 40rpx;
+  font-size: 28rpx;
+  text-align: right;
+  height: 68rpx;
+  line-height: 68rpx;
+}
+.intro{
+  margin-left: 50rpx;
+  color:#ff804e;
+  font-size: 24rpx;
+  font-weight: 500;
+  margin-top: 40rpx;
+  letter-spacing:3rpx;
+}
+.submit{
+  width: 594rpx;
+  height: 146rpx;
+  margin-left: 48rpx;
+  margin-top: 20rpx;
+}

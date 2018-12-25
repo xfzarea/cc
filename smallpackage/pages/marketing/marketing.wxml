@@ -1,0 +1,26 @@
+<scroll-view class='main' scroll-y>
+  <view class='bgPic'>
+    <image class='bgPic' src='/images/51.jpg'></image>
+    <view class='pic_1'>
+      <image src='/images/49.png'></image>
+      <view class='info'>
+        <view class='context'>
+          <view>你的称呼</view>
+          <view class='input'>
+            <input placeholder='输入称呼' maxlength="5" bindinput="input" data-t='name' placeholder-style='color:rgba(255,128,78,.6);' cursor-spacing="40" value="{{name}}"></input>
+          </view>
+        </view>
+
+        <view class='context' style='margin-top:30rpx;'>
+          <view>联系手机</view>
+          <view class='input'>
+            <input placeholder='联系方式' type="number" maxlength="11" bindinput="input" data-t='tel' placeholder-style='color:rgba(255,128,78,.6);'cursor-spacing="40" value="{{tel}}"></input>
+          </view>
+        </view>
+
+        <view class='intro'>温馨提示：仅供商业合作，其他请联系客服</view>
+        <image class='submit' src='/images/50.png' catchtap='submit'></image>
+      </view>
+    </view>
+  </view>
+</scroll-view>

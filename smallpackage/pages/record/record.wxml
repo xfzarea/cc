@@ -1,0 +1,50 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
+<view class="main">
+  <view class='top'>
+    <view class='{{tabId == 1?"other":""}}' data-tabid='0' catchtap='changeTab'>我发的红包</view>
+    <view class='{{tabId == 0?"other":""}}' data-tabid='1' catchtap='changeTab'>我抢的红包</view>
+  </view>
+  <scroll-view class='article' scroll-y bindscrolltolower="freshJobs">
+    <view style='height:30rpx;'></view>
+    <view class='article_top'>
+      <view>红包金额</view>
+      <view>{{filters.toFix(totalAward)}} (元)</view>
+    </view>
+
+    <view class='article_top'>
+      <view>红包总数</view>
+      <view>{{totalCount}} (个)</view>
+    </view>
+
+    <view class='cut'>
+      <view class='cut_1'></view>
+      <view class='cut_2'></view>
+      <view class='cut_3'></view>
+    </view>
+
+    <view class='intro'>红包明细：</view>
+
+    <view class='content' wx:for="{{jobs}}" wx:for-item="job" catchtap="toPackage" data-id='{{job.id}}'>
+      <view style='display:flex;align-items:center;'>
+        <image src='{{job.headPic?job.headPic:job.avatarUrl}}'></image>
+        <view class='job_box'>
+          <view class='job_box_1'>{{job.context}}</view>
+          <view class='content_4'>{{job.createTime}}</view>
+        </view>
+        
+      </view>
+      <view class='content_1'>{{job.award==0?"":"￥"}}<text class='content_5'>{{job.award==0?"未完成":filters.toFix(job.award)}}</text></view>
+      <!-- <view class='content_2'>
+        <form report-submit='true' >
+          <button class='content_3' form-type='submit'>详情</button>
+        </form>
+        
+      </view> -->
+    </view>
+    <!-- <view wx:for="{{jobs}}" wx:for-item="job" data-id='{{job.id}}' class='article_top' catchtap='toPackage'>
+      <view>¥{{job.award}}</view>
+      <view>{{job.createTime}}</view>
+    </view>  -->
+  </scroll-view>
+ 
+</view>

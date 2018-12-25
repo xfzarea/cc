@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "红包",
+  "backgroundColor": "#f9f9f9",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": false,
+  "disableScroll": true,
+  "usingComponents": {
+    "warrant": "/components/warrant/warrant",
+    "warn": "/components/warn/warn"
+  }
+}

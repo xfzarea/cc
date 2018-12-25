@@ -1,0 +1,50 @@
+.bg{
+  background-color: #EEEEEE;
+}
+.list{
+  background-color: #fff;
+  margin-bottom: 20rpx;
+}
+.tab{
+  display: flex;
+  width: 690rpx;
+  height: 90rpx;
+  margin:0 30rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+.tab>view{
+  font-size: 28rpx;
+  color:#303030;
+  font-weight: bold;
+}
+.tab>image{
+  width: 26rpx;
+  height: 26rpx;
+}
+.context{
+  width: 690rpx;
+  margin:0 30rpx;
+  font-size: 28rpx;
+  color:#838383;
+  padding-bottom: 25rpx;
+}
+.list:first-child{
+  position:relative;
+  top:20rpx
+}
+.twoTab{
+  margin-top: 40rpx;
+}
+
+.contact-button{
+  width: 690rpx;
+  margin: 40rpx 0 0 30rpx;
+  height: 80rpx;
+  background-color: #2dbc27;
+  text-align:center;
+  line-height:80rpx;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  color: #fff;
+}

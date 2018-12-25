@@ -1,0 +1,13 @@
+<scroll-view class='container'>
+  <view class='bg'>
+    <view style='font-size:32rpx;color:#303030;font-weight:bold;margin-top:40rpx'>如何领取更多红包</view>
+    <view style='width:690rpx;margin-top:50rpx;'>
+      <!-- <view class='btn'>方法一</view>
+      <view class="content">微信搜索“包享说”公众号，进行关注</view>
+      <view class='btn' style='margin-top:40rpx;'>方法二</view> -->
+      <view class="content">点击下方按钮，然后发送“<text style="color:#D85940;font-weight:bold">红包</text>”二字，获取二维码</view>
+      <view class="content" style='margin-top:70rpx;'>每周不定期红包等你来抢。</view>
+    </view>
+    <button class='btn1'open-type="contact">点击进入</button>
+  </view>
+</scroll-view>

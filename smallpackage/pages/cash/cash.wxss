@@ -1,0 +1,78 @@
+.bg{
+  background-color: #F0EFF5;
+
+}
+.mainView{
+  width: 694rpx;
+  position: relative;
+  top:40rpx;
+  margin:0 28rpx 0;
+  border-radius: 4rpx;
+  padding-bottom:89rpx;
+  background-color: #ffffff;
+}
+.top{
+  display: flex;
+  margin-left: 60rpx;
+  align-items: center;
+  
+}
+.top image{
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 32rpx;
+}
+.top>view{
+  font-size: 28rpx;
+  color:#303030;
+}
+.article{
+  background-color: #ffffff;
+  padding-top: 34rpx;
+}
+.money{
+  width: 570rpx;
+  margin: 40rpx 0 0 60rpx;
+  padding-bottom: 40rpx;
+  border-bottom: 1rpx solid #EBEBEB;
+  display: flex;
+  align-items: center;
+}
+.money>image{
+  width: 46rpx;
+  height: 52rpx;
+}
+.money>input{
+  height: 80rpx;
+  width: 510rpx;
+  margin-left: 12rpx;
+  font-size: 80rpx;
+}
+.allCash{
+  display: flex;
+  margin:36rpx 0 0 65rpx;
+  align-items: center;
+}
+.botton{
+  width: 570rpx;
+  height: 96rpx;
+  margin:36rpx 60rpx 0;
+  background-color: #A4E0A4;
+  color:#ffffff;
+  font-size: 32rpx;
+  text-align: center;
+  line-height: 96rpx;
+  border-radius: 10rpx;
+}
+.intro{
+  display: flex;
+  width: 750rpx;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  bottom: 40rpx;
+  justify-content: center;
+}
+.commit{
+  background-color: #19AD19 !important;
+}

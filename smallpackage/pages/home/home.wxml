@@ -1,0 +1,53 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
+<warn wx:if="{{warn_show}}" getCode="0" show="{{show}}" bind:closeWarn="closeWarn"></warn>
+<view class='container' style='background-color:#fff;'>
+  <image src="/images/54.png" style='width:100%;height:260rpx;position:relative'></image>
+  <view class='box'>
+    <image src='{{userInfo.avatarUrl}}' class='avatarUrl'></image>
+    <view class='list' style='margin-top:114rpx' catchtap='toCommand'>
+      <view class='list_1'>设置口令：</view>
+      <view class='list_2'>
+        <view class='list_5'>{{context}}</view>
+        <image class='list_3' src='/images/1.png'></image>
+      </view>
+    </view>
+
+    <view class='tab' catchtap='toCommand'>
+      <view class="sayIntro">设置口令娱乐小伙伴，
+        <text style='color:#5c73a6;'>推荐口令></text>
+      </view>
+    </view>
+
+    <view class='list' style='margin-top:30rpx;'>
+      <view class='list_1'>{{job_type==0?"红包总额":"单个红包"}}：</view>
+      <view class="list_2">
+        <input type='digit' cursor-spacing="130" placeholder='0.00' bindinput="input" data-type='award' maxlength='6' value='{{job_type==0?award==""?"":award:one_award==""?"":one_award}}'></input>
+        <view style='margin-right:20rpx;'>元</view>
+      </view>
+    </view>
+
+    <view class="tab tab_1">
+      <view class="sayIntro">{{job_type==0?"当前为拼手气红包":"当前为普通红包"}}，
+        <text style='color:#5c73a6' catchtap='changeType'>{{job_type==0?"改为普通红包":"改为拼手气红包"}}</text>
+      </view>
+      <switch color="#d85940" bindchange="changeType" checked="{{job_type==1}}"></switch>
+    </view>
+
+    <view class='list' style='margin-top:40rpx'>
+      <view class='list_1'>红包个数：</view>
+      <view class='list_2'>
+        <input type='number' cursor-spacing="130" placeholder='0' bindinput='input' data-type='count' maxlength='6' value="{{count==''?'':count}}"></input>
+        <view style='margin-right:20rpx;'>个</view>
+      </view>
+    </view>
+    <view class='bottom'>需支付¥{{filters.toFix(charge)}}元服务费</view>
+    <image src='{{submit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{submit?"createJob":""}}'></image>
+  </view>
+  <view class='records'>
+    <button size='mini'  catchtap='toPlayRed'>玩转红包</button>
+    <!-- <button size='mini' catchtap='toMarketing'>营销服务</button> -->
+    <view style='margin:0 20rpx;color:#5c73a6;'>|</view>
+    <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
+  </view>
+
+</view>

@@ -1,0 +1,21 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
+<view class='bg'>
+  <view class='top' catchtap='toDetail'>零钱明细</view>
+  <image class='money' src='{{userInfo.avatarUrl}}'></image>
+  <view class="wallet" >我的零钱</view>
+  <view class='num'>
+    <image src='/images/21.png'></image>
+    <view>{{filters.toFix(money)}}</view>
+  </view>
+  
+  <view catchtap='toHome' class='button'>去发红包</view>
+  <view catchtap='toCash' class='button1'>提现</view>
+
+  <view class='intro'>
+    <!-- <view style='font-size:28rpx;color:#4F648F;'>注意问题</view>
+    <view style='font-size:28rpx;color:#838383;margin-top:5rpx;'>洒大地啊啥的撒爱上爱上爱上啊啥的</view> -->
+    <view style='font-size:28rpx;color:#4F648F;' catchtap='toMoreQuestion'>常见问题</view>
+  </view>
+  
+  
+</view>

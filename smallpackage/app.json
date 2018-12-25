@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/passwd/passwd",
+    "pages/marketing/marketing",
+    "pages/package/package",
+    "pages/searchBook/searchBook",
+    "pages/playRed/playRed",
+    "pages/timer/timer",
+    "pages/diploma/diploma",
+    "pages/complain/complain",
+    "pages/record/record",
+    "pages/customCommand/sustomCommand",
+    "pages/command/command",
+    "pages/admin/admin",
+    "pages/index/index",
+    "pages/wallet/wallet",
+    "pages/cash/cash",
+    "pages/moreQuestion/moreQuestion",
+    "pages/detail/detail",
+    "components/warrant/warrant",
+    "pages/tweet/tweet"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#D85940",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "#fff"
+  },
+  "tabBar": {
+    "color": "#838383",
+    "selectedColor": "#D85940",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "/images/home.png",
+        "selectedIconPath": "/images/homeAfter.png",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/timer/timer",
+        "iconPath": "/images/fuli.png",
+        "selectedIconPath": "/images/fuliAfter.png",
+        "text": "福利"
+      },
+      {
+        "pagePath": "pages/admin/admin",
+        "iconPath": "/images/admin.png",
+        "selectedIconPath": "/images/adminAfter.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wx39b34c08769e0328"
+  ]
+}

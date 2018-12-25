@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "钱包提现",
+  "backgroundColor": "#f9f9f9",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": false,
+  "disableScroll": true
+}

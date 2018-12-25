@@ -1,0 +1,16 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
+<scroll-view scroll-y class='container bg' bindscrolltolower="getBalanList">
+  <view class='list' wx:for="{{lists}}" wx:for-item="list" >
+    <view class="bill">
+      <view wx:if="{{list.state==0}}" style='font-size:28rpx;font-weight:bold;color:#303030;margin-left:40rpx;'>提现金额</view>
+      <view wx:elif="{{list.state==1}}" style='font-size:28rpx;font-weight:bold;color:#303030;margin-left:40rpx;'>红包退款</view>
+      <view wx:elif="{{list.state==3}}" style='font-size:28rpx;font-weight:bold;color:#303030;margin-left:40rpx;'>领取红包</view>
+
+      <view wx:if="{{list.state==0}}" style='font-size:32rpx;font-weight:bold;color:#2DBC27;margin-left:446rpx;'>{{filters.toFix(0-list.money)}}</view>
+      <view wx:elif="{{list.state==1}}" style='font-size:32rpx;font-weight:bold;color:#D85940;margin-left:446rpx;'>+{{filters.toFix(0-list.money)}}</view>
+      <view wx:elif="{{list.state==3}}" style='font-size:32rpx;font-weight:bold;color:#D85940;margin-left:446rpx;'>+{{filters.toFix(list.money)}}</view>
+    </view>
+    <view style='font-size:24rpx;color:#838383;margin-left:40rpx;'>{{list.insertTime}}</view>
+  </view>
+
+</scroll-view>

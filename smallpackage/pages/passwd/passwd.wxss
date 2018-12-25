@@ -1,0 +1,83 @@
+.top{
+  width: 750rpx;
+  height: 128rpx;
+  background-color: #D85940;
+  display: flex;
+}
+.write{
+  /* width: 670rpx; */
+  width: 480rpx;
+  height: 70rpx;
+  position: relative;
+  left: 40rpx;
+  top: 30rpx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8rpx;
+}
+.write image{
+  width: 30rpx;
+  height: 30rpx;
+}
+.write view{
+  color:#838383;
+  font-size: 28rpx;
+  margin-left: 16rpx;
+}
+.creator{
+  background-color: #FFE695;
+  width: 160rpx;
+  height: 70rpx;
+  border-radius: 8rpx;
+  color: #D85940;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 30rpx;
+  left: 70rpx;
+}
+
+.rigthCommand{
+  width: 610rpx;
+  margin-left: 48rpx;
+  box-shadow: 2rpx 0 8rpx 0 rgba(230,230,230,0.50), 0 4rpx 8rpx 0 rgba(227,227,227,0.50);
+  margin-bottom: 40rpx;
+  border-radius: 8rpx;
+  color: #D85940;
+  display: flex;
+  padding: 15rpx 30rpx;
+}
+.point{
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 8rpx;
+  background-color: #D85940;
+  position: relative;
+  top: 10rpx;
+}
+.context_r{
+  margin-left: 10rpx;
+  width: 592rpx;
+}
+.article{
+  height: calc(100% - 128rpx);
+}
+.new_bottom{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40rpx;
+}
+.new_bottom view{
+  color:#5c73a6;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.new_bottom image{
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+}

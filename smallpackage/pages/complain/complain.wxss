@@ -1,0 +1,75 @@
+.bar{
+  color: #303030;
+  font-size: 28rpx;
+  font-weight: bold;
+  background-color: #f3f3f3;
+  width: 100%;
+  height: 80rpx;
+  padding-left: 30rpx;
+  line-height: 80rpx;
+}
+.list{
+  width: 710rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1rpx solid #AFAFAF;
+  margin-left: 20rpx;
+  background-color:#FFFFFF;
+}
+.list_1{
+  color:#303030;
+  font-size: 28rpx;
+  margin-left: 10rpx;
+  
+}
+.list_2{
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 44rpx;
+  border:1rpx solid #AFAFAF;
+  margin-right: 10rpx;
+}
+.phone{
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+}
+.phone_1{
+  color:#303030;
+  font-size: 28rpx;
+  margin-left: 30rpx;
+}
+.phone_2{
+  margin-left: 20rpx;
+  color: #838383;
+  font-size: 28rpx;
+}
+.btn{
+  width: 690rpx;
+  height: 78rpx;
+  margin: 40rpx 0 0 30rpx;
+  background-color: #2DBC27;
+  border-radius: 8rpx;
+  text-align: center;
+  line-height: 78rpx;
+  color:#FFFFFF;
+}
+.btn_1{
+  /* background-color: opacity(0.5); */
+  background-color: rgba(45, 188, 39, 0.5);
+}
+.list_3{
+  border-top: 0rpx;
+}
+.list_4{
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 10rpx;
+}
+input{
+  width:550rpx;
+}

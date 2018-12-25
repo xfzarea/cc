@@ -1,0 +1,23 @@
+<view class='container' style='background-color:#fff'>
+  <view class='top'>
+    <view class='write'>
+      <!-- <image src='/images/58.png'></image>
+      <view>输入关键字搜索</view> -->
+      <input style='width:400rpx' value='{{text}}' placeholder='请输入搜索内容' bindinput='inputText' focus="true" confirm-type="search" bindconfirm="toSearchCommand" adjust-position="false"></input>
+    </view>
+
+    <view class='creator' catchtap='toSearchCommand'>搜索口令</view>
+  </view>
+  <scroll-view class='article' scroll-y>
+    <view style='height:40rpx;'></view>
+    <view wx:for="{{commands}}" wx:key="index" wx:for-item="item" class='rigthCommand' catchtap='toHome' data-context="{{item.context}}">
+      <view class='point'></view>
+      <view class='context_r'>{{item.context}}</view>
+    </view>
+    <view class='new_bottom' catchtap='toCustomCommand'>
+      <view>没有找到想要的？向我们推荐你的口令</view>
+
+    </view>
+    <view style='height:1rpx;'></view>
+  </scroll-view>
+</view>

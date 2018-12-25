@@ -1,0 +1,19 @@
+<view class='container' style='background-color:#F3F3F3;'>
+  <view class='bar'>请选择举报原因</view>
+
+  <view style='width:100%;background-color:#fff' wx:for="{{content}}" wx:for-item="item" wx:for-index="index">
+    <view class='list {{index==0?"list_3":""}}' >
+      <view class='list_1'>{{item.context}}</view>
+      <view class='list_2' wx:if="{{!item.check}}" data-index='{{index}}' catchtap='checkClick'></view>
+      <image src='/images/32.png' wx:if="{{item.check}}" data-index='{{index}}' catchtap='checkClick'class='list_4'></image>
+    </view>
+  </view>
+  
+  <view class='bar'>请填写您的联系方式，方便我们联系您</view>
+
+  <view class="phone">
+    <view class='phone_1'>手机号</view>
+    <input class='phone_2' value='{{phone}}' placeholder='填写' maxlength="11" bindinput="input" bindblur="checkSubmit" cursor-spacing="78" bindconfirm="checkSubmit" type='number'></input>
+  </view>
+  <view class='btn {{commit?"":"btn_1"}}' bindtap='{{commit?"toCommit":""}}'>确认提交</view>
+</view>

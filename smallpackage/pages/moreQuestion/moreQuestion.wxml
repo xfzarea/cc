@@ -1,0 +1,11 @@
+<scroll-view scroll-y class='container bg'>
+
+  <view class='list {{index==1?"twoTab":""}}' wx:for="{{questions}}" wx:for-item="question" wx:for-index="index"  catchtap='toShow' data-index='{{index}}'>
+    <view class='tab'>
+      <view>{{index+1}}.{{question.context}}</view>
+      <image src='{{question.isShow==1?"/images/27.png":"/images/26.png"}}' ></image>
+    </view>
+    <view wx:if="{{question.isShow==1}}" class='context'>{{question.answer}}</view>
+  </view>
+  <button open-type='contact' class='contact-button' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' wx:if="{{questions.length>0}}">联系在线客服</button>
+</scroll-view>

@@ -1,0 +1,11 @@
+.bg{
+  background-color: #fff;
+}
+.list{
+  padding: 40rpx 0;
+  border-bottom: 1rpx solid #D8D8D8;
+}
+.bill{
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,70 @@
+.bg{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.money{
+  width: 188rpx;
+  height: 188rpx;
+  border-radius: 188rpx;
+  margin-top: 170rpx;
+  border: 5rpx solid #838383;
+}
+.wallet{
+  font-size: 32rpx;
+  color:#303030;
+  margin:34rpx 0 14rpx;
+}
+.num{
+  height: 126rpx;
+  display: flex;
+  
+}
+.num image{
+  width: 42rpx;
+  height: 47rpx;
+  margin-top: 35rpx;
+}
+.num view{
+  font-size: 90rpx;
+  margin-left: 12rpx;
+  color:#303030;
+}
+.button{
+  width: 672rpx;
+  background-color: #19AD19;
+  color: #fff;
+  height: 94rpx;
+  font-size: 36rpx;
+  margin-top: 58rpx;
+  border-radius: 14rpx;
+  text-align: center;
+  line-height: 94rpx;
+}
+.button1{
+  width: 672rpx;
+  background-color: #e6e6e6;
+  color: #303030;
+  height: 94rpx;
+  font-size: 36rpx;
+  margin-top: 30rpx;
+  border-radius: 14rpx;
+  text-align: center;
+  line-height: 94rpx;
+}
+.intro{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  bottom: 40rpx;
+}
+.top{
+  font-size:28rpx;
+  color:#4F648F;
+  position: absolute;
+  top: 40rpx;
+  right: 39rpx;
+}

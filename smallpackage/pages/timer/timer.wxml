@@ -1,0 +1,31 @@
+<view class='container bg' wx:if="{{jobs&&jobs.length>0}}">
+  <scroll-view scroll-y class='main'>
+    <view style="height:40rpx;"></view>
+    <!-- <view class="top_box">
+      <image src='/images/56.png'></image>
+      <view>定时红包</view>
+    </view>
+    <view style='margin:20rpx 0 40rpx 0;font-size:24rpx;color:#838383;font-weight:bold;width:100%;text-align:center;'>（内有订阅，点击提醒）</view> -->
+    <view class='list' wx:for="{{jobs}}" wx:for-item="job" wx:key="index" data-id='{{job.id}}' catchtap='toPackage'>
+      <image src='{{job.headPic}}'></image>
+      <view class='box'>
+        <image class='box_1' src='/images/54_1.png'></image>
+        <view style='color:#fff;font-size:32rpx;position:absolute;top:30rpx;left:140rpx;'>{{job.title}}</view>
+        <view style='position:absolute;top:78rpx;left:140rpx;display:flex;align-items:center'>
+          <view style='color:#fff;font-size:24rpx;'>领取红包</view>
+          <image style='width:26rpx;height:26rpx;margin-left:8rpx;' src='/images/55.png'></image>
+        </view>
+        <!-- <view style='color:#838383;font-size:22rpx;position:absolute;top:140rpx;left:50rpx;'>{{job.userName}}的红包</view> -->
+        <view class="box_2">
+          <image src='/images/34.png'></image>
+          <view>已有{{job.markCount}}人订阅了{{job.userName}}的红包</view>
+        </view>
+      </view>
+    </view>
+
+    <image wx:for="{{apps}}" wx:for-item="app" wx:key="index" src='{{app.skipUrl}}' style='width:750rpx;height:230rpx;margin-bottom:30rpx;' data-skipappid='{{app.skipAppid}}' catchtap='openWx'>
+
+    </image>
+  </scroll-view>
+  
+</view>

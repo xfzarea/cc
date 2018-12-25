@@ -1,0 +1,23 @@
+<view class='main' catchtap='closeWarn'>
+  <view class='box' catchtap=''>
+    <image class='bgPic' src='/images/46.png'></image>
+    <view class='info'>
+      <image src='{{userInfo.avatarUrl}}'></image>
+      <view class='nickName'>{{userInfo.nickName}}</view>
+      <view  class="intro">你可以免费订阅红包提醒</view>
+      <!-- <view wx:elif="{{getCode==1}}" class="intro">红包已领完，您可以免费订阅红包提醒</view>
+      <view wx:elif="{{getCode==2}}" class="intro">红包已过期，您可以免费订阅红包提醒</view>
+      <view wx:elif="{{getCode==3}}" class="intro">红包您还未领取，您还可以免费订阅红包提醒</view>
+      <view wx:elif="{{getCode==4}}" class="intro">红包您已领过，您可以免费订阅红包提醒</view>
+      <view wx:elif="{{getCode==5}}" class="intro">您可以点击下方按钮免费订阅红包提醒</view> -->
+      <view class="btn" catchtap='_changeMsg'>+订阅红包提醒</view>
+      <view wx:if="{{getCode!=0}}" class="bom" catchtap='closeWarn'>查看领取情况></view>
+    </view>
+  </view>
+</view>
+<view class='main' style='z-index:400' wx:if="{{show}}" >
+  <view class='card'>
+    <view class='card_1'>进去客服消息后，<text style="color:#d85940;font-weight:bold">回复“{{mark}}”</text>订阅红包消息通知</view>
+    <button open-type='contact'>知道了</button>
+  </view>
+</view>

@@ -1,0 +1,4 @@
+<view class='bg'>
+  <image wx:if="{{highRate.book_url}}" src='{{highRate.book_url}}'></image>
+  <view wx:if="{{!highRate.book_url}}" class="tab_1">暂无证书</view>
+</view>
