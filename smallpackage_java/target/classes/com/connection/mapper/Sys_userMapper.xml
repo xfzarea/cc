@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.connection.dao.SysAdminDao">
+	<insert id="saveUser" parameterType="com.connection.entity.Admin" keyProperty="userId">
+    <selectKey keyProperty='userId' resultType='int' order='AFTER'>
+        select LAST_INSERT_ID();
+    </selectKey>
+     insert into sys_admin(userId,nickName,avatarUrl,openid,gender,province,city)
+        value(#{userId},#{nickName},#{avatarUrl},#{openid},#{gender},#{province},#{city})
+ 	</insert>
+ 	
+ 	<select id="findUserInfo" resultType="java.util.Map" parameterType="String">
+ 		SELECT userId,nickName,avatarUrl,gender,province,city,openid,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s") AS createTime,state FROM sys_admin
+ 		WHERE openid = #{openid}
+ 	</select>
+ 	
+ 	<update id="modifyUserBaseInfo" parameterType="com.connection.entity.Admin">
+ 		UPDATE sys_admin SET nickName = #{nickName},avatarUrl =#{avatarUrl},gender= #{gender},province =#{province},
+ 		city = #{city} WHERE openid =#{openid}
+ 	</update>
+ 	
+ 	
+ 	<select id="getUserById" resultType="java.util.Map" parameterType="int">
+ 		SELECT userId,nickName,avatarUrl FROM sys_admin WHERE userId = #{userId}
+ 	</select>
+ 	
+ 	
+<!--  	job表部分 -->
+	<insert id="createTimerJob" parameterType="java.util.Map" keyProperty="id">
+	<selectKey keyProperty='id' resultType='int' order='AFTER'>
+        select LAST_INSERT_ID();
+    </selectKey>
+		INSERT INTO job(userId,totalAward,award,totalCount,context,createTime,state,
+		transaction_id,title,userName,skipAppid,skipUrl,headPic,timeLimit,wxchat_mark,pre_image,tweet,tweet_title)
+		VALUES(#{userId},#{totalAward},#{award},#{totalCount},#{context},#{createTime},#{state},#{transaction_id},#{title},#{userName},
+		#{skipAppid},#{skipUrl},#{headPic},#{timeLimit},#{wxchat_mark},#{pre_image},#{tweet},#{tweet_title})
+	</insert>
+	<!-- 修改定时红包内容 -->
+	<update id="updataTimerJob" parameterType="java.util.Map">
+		UPDATE job SET totalAward = #{totalAward},award=#{award},totalCount=#{totalCount},context=#{context},createTime=#{createTime},
+		title=#{title},userName=#{userName},skipAppid=#{skipAppid},skipUrl=#{skipUrl},headPic=#{headPic},wxchat_mark = #{wxchat_mark},
+		pre_image=#{pre_image},tweet=#{tweet},tweet_title=#{tweet_title},
+		shareUrl = NULL WHERE id = #{id} AND transaction_id = "bxszc"
+	</update>
+<!--  	红包列表 -->
+ 	<select id="getJobs" resultType="java.util.Map">
+ 		SELECT id,userId,award,award,totalCount,context,state,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS createTime FROM job 
+ 		WHERE transaction_id = "bxszc" AND state IN(1,2,4)ORDER BY id DESC
+ 	</select>
+ 	
+ 	<delete id="deleteJob" parameterType="int">
+ 		DELETE FROM job WHERE id = #{id} AND transaction_id = "bxszc"
+ 	</delete>
+ 	
+ 	<select id="getTimerJobById" resultType="java.util.Map" parameterType="int">
+ 		SELECT id,userId,award,totalCount,context,DATE_FORMAT(createTime,"%Y-%m-%d")AS timerDay,
+ 		DATE_FORMAT(createTime,"%H:%i")AS timerHour,pre_image,tweet,tweet_title,
+ 		headPic,title,userName,skipAppid,skipUrl,wxchat_mark FROM job WHERE id = #{id} AND state = 4 AND transaction_id = "bxszc"
+ 	</select>
+ 	
+ 	<select id="getUserJobById" parameterType="int" resultType="java.util.Map">
+ 		SELECT a.id,a.userId,a.award,a.totalCount,a.context,a.skipAppid,a.skipUrl,a.wxchat_mark,a.pre_image,a.tweet,a.tweet_title,
+ 			b.nickName,b.avatarUrl FROM job a
+			INNER JOIN admin b ON a.userId = b.userId WHERE a.id = #{id} AND a.state IN(1,2) AND a.transaction_id = "bxszc"
+ 	</select>
+ 	
+ 	<select id="getUserIdById" parameterType="int" resultType="java.util.Map">
+ 		SELECT userId FROM job WHERE id = #{id} AND state = 1 AND transaction_id = "bxszc"
+ 	</select>
+ 	
+ 	<update id="updateAdmin" parameterType="com.connection.entity.Admin">
+ 		UPDATE admin SET nickName = #{nickName},avatarUrl = #{avatarUrl} WHERE userId = #{userId}  AND openid = "bxszc"
+ 	</update>
+</mapper>

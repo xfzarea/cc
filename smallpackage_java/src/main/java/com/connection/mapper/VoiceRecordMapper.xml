@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.connection.dao.VoiceRecordDao">
+	<insert id="saveVoice" parameterType="java.util.Map" keyProperty="id">
+		<selectKey keyProperty='id' resultType='int' order='AFTER'>
+        	select LAST_INSERT_ID();
+    	</selectKey>
+		INSERT INTO voice_record(userId,jobId,voice_path,award,rate,state,second)VALUE
+			(#{userId},#{jobId},#{voice_path},#{award},#{rate},#{state},#{second})	
+	</insert>
+	
+	<select id="findOne" resultType="java.util.Map" parameterType="int">
+		SELECT a.id,a.userId,a.jobId,a.voice_path,award,DATE_FORMAT(a.createTime,"%m-%d %H:%i")AS createTime,a.rate,a.state,a.second,
+			b.avatarUrl,b.nickName,0 AS play,a.book_url FROM voice_record a
+			LEFT JOIN admin b ON a.userId = b.userId
+			WHERE id = #{id}
+	</select>
+	
+	<select id="checkVoice" resultType="java.util.Map">
+		SELECT a.id,a.userId,a.jobId,a.voice_path,award,DATE_FORMAT(a.createTime,"%m-%d %H:%i")AS createTime,a.rate,a.state,a.second,
+			b.avatarUrl,b.nickName,0 AS play,a.book_url FROM voice_record a
+			LEFT JOIN admin b ON a.userId = b.userId
+			WHERE a.jobId =#{jobId}  AND a.userId =#{userId} AND  state = 0 LIMIT 1
+	</select>
+	
+<!-- 	获得自己的语音 -->
+	<select id="getMineVoice" resultType="java.util.Map">
+		SELECT a.* FROM(SELECT a.id,a.userId,a.jobId,a.voice_path,award,DATE_FORMAT(a.createTime,"%m-%d %H:%i")AS createTime,a.rate,a.state,a.second,
+			b.avatarUrl,b.nickName,0 AS play,a.book_url FROM voice_record a
+			LEFT JOIN admin b ON a.userId = b.userId
+			WHERE a.userId =#{userId} AND jobId = #{jobId} ORDER BY id DESC)a GROUP BY userId
+	</select>
+	
+	<select id="findAllVoice" resultType="java.util.Map">
+		SELECT a.* FROM(SELECT a.id,a.userId,a.jobId,a.voice_path,award,DATE_FORMAT(a.createTime,"%m-%d %H:%i")AS createTime,a.rate,a.state,a.second,
+			b.avatarUrl,b.nickName,0 AS play,a.book_url FROM voice_record a
+			LEFT JOIN admin b ON a.userId = b.userId
+			WHERE a.userId !=#{userId} AND jobId = #{jobId} ORDER BY id DESC)a WHERE 1 = 1 
+			<if test="id != 0">
+				AND a.id &lt; #{id} 
+			</if>
+			GROUP BY userId ORDER BY id DESC LIMIT 10
+	</select>
+	
+	
+	<select id="getCount" resultType="java.util.Map" parameterType="int">
+		SELECT IF(a.totalAward IS NULL,0.00,a.totalAward) AS totalAward,IF(c.totalCount IS NULL,0,c.totalCount) AS totalCount FROM
+		(SELECT SUM(award)AS totalAward FROM voice_record WHERE userId = #{userId} AND state = 0)a,
+		(SELECT COUNT(1) AS totalCount FROM(SELECT COUNT(1)  FROM voice_record WHERE userId = #{userId} GROUP BY jobId)b)c
+	</select>
+	
+	<select id="getMyJoin" resultType="java.util.Map">
+		SELECT a.id key1, a.jobId id, a.userId,a.award,b.alreadyAward,b.totalCount,b.alreadyCount,b.context,b.`headPic`,
+			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.state,c.nickName,c.avatarUrl FROM 
+		(SELECT m.* FROM(SELECT id,userId,jobId,createTime,award FROM voice_record WHERE userId = #{userId}  ORDER BY createTime DESC)m GROUP BY jobId ORDER BY createTime DESC)a 
+		LEFT JOIN job b ON a.jobId = b.id
+		LEFT JOIN admin c ON b.userId = c.userId
+		WHERE b.state!=0
+		<if test="id!=0">
+			AND a.id &lt; #{id}
+		</if>
+		LIMIT 10
+	</select>
+	
+	<update id="saveBook">
+		UPDATE voice_record SET book_url =#{book_Url}  WHERE id =#{id} 
+	</update>
+	
+	<select id="getDetail" resultType="java.util.Map">
+		SELECT userId,money,DATE_FORMAT(insertTime,"%Y-%m-%d %H:%i:%s")AS insertTime,state FROM cash WHERE userId = #{userId}
+			UNION ALL
+		SELECT userId,award,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS insertTime,3 AS state FROM voice_record
+			WHERE state = 0 AND userId = #{userId}
+		ORDER BY insertTime DESC LIMIT #{startId},10
+	</select>
+	
+	<select id="getHighRate" resultType="java.util.Map" parameterType="int">
+		SELECT book_url,rate FROM voice_record WHERE userId = #{userId} AND state = 0 AND book_url IS NOT NULL ORDER BY rate DESC LIMIT 1
+	</select>
+</mapper>

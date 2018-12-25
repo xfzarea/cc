@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.connection.dao.AdminDao">
+	<insert id="saveUser" parameterType="com.connection.entity.Admin">
+     insert into admin(userId,nickName,avatarUrl,openid,gender,province,city)
+        value(#{userId},#{nickName},#{avatarUrl},#{openid},#{gender},#{province},#{city})
+ 	</insert>
+ 	
+ 	<select id="findUserInfo" resultType="com.connection.entity.Admin" parameterType="String">
+ 		SELECT userId,nickName,avatarUrl,gender,province,city,openid,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s") AS createTime FROM admin
+ 		WHERE openid = #{openid} LIMIT 1
+ 	</select>
+ 	
+ 	<select id="sysFindUser" resultType="java.util.Map" parameterType="com.connection.entity.Admin">
+ 		SELECT userId FROM admin
+ 		WHERE openid = #{openid} AND avatarUrl = #{avatarUrl} AND nickName = #{nickName} LIMIT 1
+ 	</select>
+ 	
+ 	<update id="modifyUserBaseInfo" parameterType="com.connection.entity.Admin">
+ 		UPDATE admin SET nickName = #{nickName},avatarUrl =#{avatarUrl},gender= #{gender},province =#{province},
+ 		city = #{city} WHERE openid =#{openid}
+ 	</update>
+ 	
+ 	<update id="modifyMoney">
+ 		UPDATE admin SET money = money + #{award} WHERE userId = #{userId}
+ 	</update>
+ 	
+ 	<update id="modifyMoney1">
+ 		UPDATE admin SET money = money + #{award} WHERE userId = #{userId} 
+ 	</update>
+ 	
+ 	<select id="getUserById" resultType="java.util.Map" parameterType="int">
+ 		SELECT userId,nickName,avatarUrl,money,money_version FROM admin WHERE userId = #{userId}
+ 	</select>
+ 	
+ 	<update id="checkVersion">
+ 		UPDATE admin SET money_version = money_version + 1 WHERE userId = #{userId} AND money_version = #{money_version}
+ 	</update>
+</mapper>

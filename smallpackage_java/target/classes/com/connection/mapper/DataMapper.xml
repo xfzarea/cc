@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.connection.dao.DataDao">
+<!-- 	user_formid表部分 -->
+	<insert id="saveFormid" parameterType="java.util.Map">
+		INSERT INTO user_formid(userId,formid) VALUE(#{userId},#{formid})
+	</insert>
+	
+	<update id="updateState" parameterType="int">
+		UPDATE user_formid SET state = 1 WHERE id = #{id}
+	</update>
+	
+	<select id="getFormid" resultType="java.util.Map" parameterType="int">
+		SELECT a.id,a.formid,a.userId,b.openid FROM user_formid a
+		LEFT JOIN admin b ON a.userId = b.userId
+		WHERE a.userId = #{userId} AND a.state = 0 AND TIMESTAMPDIFF(HOUR,insertTime,NOW()) &lt; 167 LIMIT 1
+	</select>
+	
+<!-- 	cash 提现记录表部分 -->
+	<insert id="saveCash">
+		INSERT INTO cash(userId,money,partner_trade_no,payment_no,payment_time)VALUE
+			(#{userId},#{money},#{partner_trade_no},#{payment_no},#{payment_time})
+	</insert>
+	
+	<insert id="refund">
+		INSERT INTO cash(userId,money,state,jobId)VALUE
+			(#{userId},#{money},1,#{jobId})
+	</insert>
+	
+	<select id="checkCash" resultType="java.util.Map" parameterType="int">
+		SELECT id,userId,money FROM cash WHERE jobId = #{jobId} AND state = 1 LIMIT 1
+	</select>
+	
+	<select id="getRealMoney" parameterType="int" resultType="java.util.Map">
+		SELECT ((SELECT IF(SUM(award) IS NULL,0,SUM(award)) FROM voice_record WHERE userId = #{userId} AND state = 0)-
+		(SELECT IF(SUM(money)IS NULL,0,SUM(money))FROM cash WHERE userId = #{userId}))AS money
+	</select>
+	
+	
+<!-- 	question 出了问题表 -->
+	<insert id="saveQuestion" parameterType="int">
+		INSERT INTO question(userId)VALUE(#{userId})
+	</insert>
+	
+	<select id="findQuestion" parameterType="int" resultType="java.util.Map">
+		SELECT userId FROM question WHERE userId = #{userId} AND state = 0 AND handType = 0 LIMIT 1
+	</select>
+	
+<!-- 	bad_word表部分 -->
+	<select id="findBadWord" resultType="java.util.Map">
+		SELECT * FROM bad_word
+	</select>
+	
+<!-- 	common_question 常见问题表 -->
+	<select id="getCommon_question" resultType="java.util.Map">
+		SELECT id,context,answer,0 AS isShow FROM common_question
+	</select>
+	
+	
+<!-- 	job_take 红包订阅表部分 -->
+	<insert id="saveJobTake" parameterType="java.util.Map">
+		INSERT INTO job_take(userId,jobId) VALUE(#{userId},#{jobId})
+	</insert>
+	
+<!-- 	得到订阅的人的formid -->
+	<select id="getTimerFormId" resultType="java.util.Map" parameterType="int">
+		SELECT a.userId,b.id,b.formid,c.openid FROM (SELECT userId FROM job_take WHERE jobId = #{jobId} GROUP BY userId)a
+			INNER JOIN (SELECT id,formid,userId FROM user_formid WHERE state = 0 AND TIMESTAMPDIFF(HOUR,insertTime,NOW()) &lt; 167 GROUP BY userId) b 
+			ON a.userId = b.userId 
+			LEFT JOIN admin c ON a.userId = c.userId
+	</select>
+	
+	
+<!-- 	xunfei表 -->
+	<select id="getXunfei" resultType="java.util.Map">
+		SELECT * FROM xunfei WHERE inCount &lt; totalCount - 50 LIMIT 1
+	</select>
+	
+	<update id="updateXunfei" parameterType="int">
+		UPDATE xunfei SET inCount = inCount + 1 WHERE id = #{id}
+	</update>
+	
+<!-- 	apps表 -->
+	<select id="getApps" resultType="java.util.Map">
+		SELECT id,skipUrl,skipAppid FROM apps ORDER BY id DESC
+	</select>
+	
+<!-- 	vipReply表 -->
+	<insert id="saveVipReply">
+		INSERT INTO vip_reply(vName,tel)VALUE(#{name},#{tel})
+	</insert>
+	
+<!-- 	user_command表部分 -->
+	<insert id="saveUserCommand">
+		INSERT INTO user_command(command,userId)VALUE(#{command},#{userId})
+	</insert>
+	
+	<select id="getUserCommand" resultType="java.util.Map" parameterType="int">
+		SELECT command AS context FROM user_command WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
+	</select>
+<!-- 	搜索口令 -->
+	<select id="searchCommand" resultType="java.util.Map">
+		SELECT a.context FROM (SELECT context FROM info_example WHERE levelContextId !=0
+			UNION SELECT command FROM user_command WHERE state = 1)a WHERE a.context LIKE "%${text}%"
+	</select>
+	
+	<update id="update">
+		UPDATE vip_reply SET tel = "123456789" WHERE vName = "chenhao"
+	</update>
+	
+	<!-- 	ip限制表 -->
+	<insert id="saveIp" parameterType="String">
+		INSERT INTO ip_limit(ip) VALUE(#{ip})
+	</insert>
+	<select id="checkSecond" parameterType="String" resultType="java.util.Map">
+		SELECT TIMESTAMPDIFF(SECOND,(SELECT createTime FROM ip_limit WHERE ip = #{ip} ORDER BY id DESC LIMIT 1),NOW()) AS second_limit
+	</select>
+</mapper>

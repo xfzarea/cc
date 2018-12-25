@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"  
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+	<!-- 读取DB.properties 文件 -->
+	<util:properties id="db" location="classpath:db.properties"></util:properties>
+	<util:properties id="wx" location="classpath:wx.properties"></util:properties>
+	<util:properties id="ali" location="classpath:aliOss.properties"></util:properties>
+	<util:properties id="redis" location="classpath:redis.properties"></util:properties>
+	<!-- 配置DataSource  -->
+	<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="#{db.driver}"></property>
+		<property name="url" value="#{db.url}"></property>
+		<property name="username" value="#{db.user}"></property>
+		<property name="password" value="#{db.pwd}"></property>
+		<!-- 配置初始化连接大小  最大  最大空闲 最小空闲 最大延迟-->
+		<property name="initialSize" value="#{db.initialSize}"></property>
+        <property name="maxActive" value="#{db.maxActive}"></property>
+        <property name="maxIdle" value="#{db.maxIdle}"></property>
+        <property name="minIdle" value="#{db.minIdle}"></property>
+        <property name="maxWait" value="#{db.maxWait}"></property>
+		<property name="removeAbandoned" value="#{db.removeAbandoned}"></property>
+        <property name="removeAbandonedTimeout" value="#{db.removeAbandonedTimeout}"></property>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="#{db.timeBetweenEvictionRunsMillis}" />
+        <property name="numTestsPerEvictionRun" value="#{db.numTestsPerEvictionRun}"></property>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="#{db.minEvictableIdleTimeMillis}"/>
+		<property name="validationQuery" value="SELECT 1"></property>
+		
+	</bean>
+	
+	<!-- 配置SqlsessionFactoryBean
+		 mybatis配置文件不再需要，原配置文件中的两项信息（
+		 连接池，映射文件位置）由bean来提供 -->
+  		<bean id="ssfb"
+		      class="org.mybatis.spring.SqlSessionFactoryBean">
+			<!-- 指定连接配置 -->
+		   	<property name="dataSource" ref="ds"></property>
+		   	<property name="configLocation" value="classpath:mybatis-configuration.xml"/>
+		    <!-- 指定映射文件位置 -->
+			<property name="mapperLocations"
+		    	value="classpath:com/connection/mapper/*.xml">
+			</property>
+	    </bean>
+	    
+	    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<property name="basePackage" value="com.connection.dao" />
+        	<property name="sqlSessionFactoryBeanName" value="ssfb"/>
+    	</bean>
+    
+		<!-- 配置SqlSessionTemplate -->
+		<bean id="sst" 
+	 		class="org.mybatis.spring.SqlSessionTemplate">
+			<constructor-arg index="0" ref="ssfb"/>
+		</bean>
+		
+		<!-- spring加载配置文件 -->
+		<bean id="propertyConfigurer"  
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+  		<property name="locations" >  
+  			<list> 
+           		<value>classpath:log4j.properties</value>
+        	</list>
+   	 </property>  
+    	<property name="fileEncoding">
+        	<value>UTF-8</value>
+    	</property>
+	</bean>
+	
+	<!-- 配置组件扫描 -->
+	<context:component-scan base-package="com.connection"/>
+	<!-- 配置映射器和适配器 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 配置Spring的事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ds" />
+    </bean>
+    <!-- 注解事务 -->
+   	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    
+	<!-- 上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<property name="resolveLazily" value="true" />
+    	<property name="maxUploadSize" value="999999999999999" />
+    	<property name="defaultEncoding" value="utf-8" />
+    </bean>
+    
+    <!--      spring拦截器 -->
+    <mvc:interceptors>
+	     <mvc:interceptor>
+	     	<mvc:mapping path="/cashHand"/>
+	       	<bean class="com.connection.interceptor.CheckUserInterceptor"></bean>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+    
+    <!-- 允许访问静态资源 -->
+    <mvc:default-servlet-handler/>
+    <!-- 设置定时任务 -->
+    <task:annotation-driven/>
+	
+	<!-- redis config start -->
+    <!-- 配置JedisPoolConfig实例 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="#{redis.maxIdle}" />
+        <property name="maxTotal" value="#{redis.maxActive}" />
+        <property name="maxWaitMillis" value="#{redis.maxWait}" />
+        <property name="testOnBorrow" value="#{redis.testOnBorrow}" />
+        <property name="timeBetweenEvictionRunsMillis" value="#{redis.timeBetweenEvictionRunsMillis}"></property>
+        <property name="minEvictableIdleTimeMillis" value="#{redis.minEvictableIdleTimeMillis}"></property>
+        <property name="numTestsPerEvictionRun" value="#{redis.numTestsPerEvictionRun}"></property>
+        <property name="testWhileIdle" value="#{redis.testWhileIdle}"></property>
+    </bean>
+
+    <!-- 配置JedisConnectionFactory -->
+    <bean id="jedisConnectionFactory"
+        class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="#{redis.host}" />
+        <property name="port" value="#{redis.port}" />
+        <!-- <property name="password" value="${redis.pass}" /> -->
+        <property name="database" value="#{redis.dbIndex}" />
+        <property name="poolConfig" ref="poolConfig" />
+    </bean>
+
+    <!-- 配置RedisTemplate -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+    </bean>
+
+    <!-- 配置RedisCacheManager -->
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg name="redisOperations" ref="redisTemplate" />
+        <property name="defaultExpiration" value="#{redis.expiration}" />
+    </bean>
+
+    <!-- 配置RedisCacheConfig -->
+    <bean id="redisCacheConfig" class="com.connection.tool.RedisCacheConfig">
+        <constructor-arg ref="jedisConnectionFactory" />
+        <constructor-arg ref="redisTemplate" />
+        <constructor-arg ref="redisCacheManager" />
+    </bean>
+    
+    <!-- redis config end -->
+	
+	<bean id="sqlJob" class="com.connection.interceptor.SqlJob"></bean> 
+	<!-- jobDetail配置 -->
+	<bean id="testJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="sqlJob"/> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+<!--         是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程   -->
+ 	</bean>
+<!-- 	Tigger配置 -->
+	<bean id="testTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+       <property name="jobDetail" ref="testJobDetail"/>  
+       <property name="cronExpression" value="0 */1 * * * ?"/> <!-- 每隔1秒钟触发一次 -->
+	</bean> 
+<!-- 	Schedule配置 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+       <property name="triggers">  
+           <list>
+              <ref bean="testTrigger"/>
+           </list>
+       </property>
+       <property name="autoStartup" value="true"/>
+	</bean>
+</beans>
