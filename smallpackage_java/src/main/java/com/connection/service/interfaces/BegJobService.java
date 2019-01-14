@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface JobService {
+public interface BegJobService {
 	//增加job数据
 	public int addJob(Map<String,String>param);
 	public void payOver(String transaction_id,String out_trade_no,int id);

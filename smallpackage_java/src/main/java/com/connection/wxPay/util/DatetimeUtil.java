@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+//这个类主要设置时间的格式
 public class DatetimeUtil {
 
 	public final static String DATETIME_PATTERN = "yyyyMMddHHmmss";

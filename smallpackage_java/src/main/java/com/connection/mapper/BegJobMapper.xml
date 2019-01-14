@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
-<mapper namespace="com.connection.dao.JobDao">
+<mapper namespace="com.connection.dao.BegJobDao">
 	<insert id="addJob" parameterType="java.util.Map" keyProperty="id">
 		<selectKey keyProperty='id' resultType='int' order='AFTER'>
         	select LAST_INSERT_ID();
     	</selectKey>
-		INSERT INTO job(userId,totalAward,award,totalCount,context,job_type,one_award)VALUE(#{userId},#{totalAward},
+		INSERT INTO beg_job(userId,totalAward,award,totalCount,context,job_type,one_award)VALUE(#{userId},#{totalAward},
 		#{award},#{totalCount},#{context},#{job_type},#{one_award})
 	</insert>
 	
 	<update id="payOver">
-		UPDATE job SET transaction_id = #{transaction_id},out_trade_no=#{out_trade_no},version = version+1,state = 1 WHERE id = #{id} AND version = 0
+		UPDATE beg_job SET transaction_id = #{transaction_id},out_trade_no=#{out_trade_no},version = version+1,state = 1 WHERE id = #{id} AND version = 0
 	</update>
 <!-- 	获得我发布得红包 -->
 	<select id="getMyPush" resultType="java.util.Map">
 		SELECT a.id,a.userId,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
-			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,a.state,b.nickName,b.avatarUrl FROM job a
+			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,a.state,b.nickName,b.avatarUrl FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId 
 			WHERE a.userId = #{userId} AND a.state IN(1,2,3)
 			<if test="id!=0">
@@ -30,14 +30,14 @@
 		SELECT a.id,a.userId,a.totalAward,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.state,a.headPic,
 			a.title,a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.`version`,a.wxchat_mark,a.pre_image,a.tweet,a.tweet_title,
-			a.job_type,a.one_award,b.nickName,b.avatarUrl FROM job a
+			a.job_type,a.one_award,b.nickName,b.avatarUrl FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId WHERE id = #{id} AND state != 0 AND a.totalAward &gt; a.award
 	</select>
 <!-- 	支付回调 判断 -->
 	<select id="getJobById1" resultType="java.util.Map" parameterType="int">
 		SELECT a.id,a.userId,a.totalAward,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.state,a.headPic,
-			a.title,a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.transaction_id FROM job a
+			a.title,a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.transaction_id FROM beg_job a
 		 WHERE id = #{id} AND state = 0 AND version = 0
 	</select>
 <!-- 	判断语音是否可讲 -->
@@ -65,45 +65,45 @@
 		  a.shareUrl,
 		  a.transaction_id 
 		FROM
-		  job a 
+		  beg_job a 
 		WHERE id = #{id} AND state IN (1,4) AND a.totalAward &gt; a.award
 	</select>
 	
 	<update id="modifyCount">
-		UPDATE job SET alreadyAward = alreadyAward + #{award},alreadyCount = alreadyCount +1,VERSION = VERSION + 1
+		UPDATE beg_job SET alreadyAward = alreadyAward + #{award},alreadyCount = alreadyCount +1,VERSION = VERSION + 1
 		WHERE id = #{id} AND state != 0 AND VERSION = #{version} AND totalCount &gt; alreadyCount
 	</update>
 	
 	<select id="getCount" resultType="java.util.Map" parameterType = "int">
 		SELECT IF(a.totalCount IS NULL,0,a.totalCount) AS totalCount,IF(b.totalAward IS NULL,0,b.totalAward) AS totalAward FROM
 		<!-- count(1)和count(*)基本没有差别！这sql是统计符合userId和state的数据条数  别名是 totalCount  -->
-		(SELECT COUNT(1) AS totalCount FROM job WHERE userId = #{userId} AND state!=0) a,
+		(SELECT COUNT(1) AS totalCount FROM beg_job WHERE userId = #{userId} AND state!=0) a,
 		<!-- 这sql是统计符合userId和state的award的总和 别名是 totalAward  -->
-		(SELECT SUM(award) AS totalAward FROM job WHERE userId = #{userId} AND state !=0) b
+		(SELECT SUM(award) AS totalAward FROM beg_job WHERE userId = #{userId} AND state !=0) b
 	</select>
 	
 	<select id="getOverdue" resultType="java.util.Map">
 		SELECT id,userId,totalAward,award,alreadyAward,totalCount,alreadyCount,context,timeLimit,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS createTime,
-		state,transaction_id FROM job WHERE timeLimit*24*60-1-TIMESTAMPDIFF(MINUTE,createTime,NOW()) &lt; 0 AND state = 1 AND timeLimit != 0
+		state,transaction_id FROM beg_job WHERE timeLimit*24*60-1-TIMESTAMPDIFF(MINUTE,createTime,NOW()) &lt; 0 AND state = 1 AND timeLimit != 0
 	</select>
 	
 	<select id="pushTimeDue" resultType="java.util.Map">
 		SELECT id,userId,totalAward,award,alreadyAward,totalCount,alreadyCount,context,timeLimit,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS createTime,state
-			FROM job WHERE TIMESTAMPDIFF(MINUTE,NOW(),createTime) &lt;6 AND state = 4 AND takePush = 0
+			FROM beg_job WHERE TIMESTAMPDIFF(MINUTE,NOW(),createTime) &lt;6 AND state = 4 AND takePush = 0
 	</select>
 	
 	<update id="updateTakePush" parameterType="int">
-		UPDATE job SET takePush =  1 WHERE id = #{id} 
+		UPDATE beg_job SET takePush =  1 WHERE id = #{id} 
 	</update>
 	
 	<update id="updateState">
-		UPDATE job SET state =  #{state} WHERE id = #{id}
+		UPDATE beg_job SET state =  #{state} WHERE id = #{id}
 	</update>
 	
 	<select id="getTimerJob" resultType="java.util.Map" parameterType="int">
 		SELECT a.id,a.userId,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,a.state,a.headPic,
-			a.title,a.userName,b.nickName,b.avatarUrl,IF(c.markCount IS NULL,0,c.markCount)AS markCount FROM job a
+			a.title,a.userName,b.nickName,b.avatarUrl,IF(c.markCount IS NULL,0,c.markCount)AS markCount FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId
 		LEFT JOIN (SELECT COUNT(1)+903 AS markCount,jobId FROM (SELECT DISTINCT(userId),jobId FROM job_take)a GROUP BY jobId)c ON a.id = c.jobId
 			WHERE a.state = 4
@@ -114,6 +114,6 @@
 	</select>
 <!-- 	保存分享图 -->
 	<update id="updateSharePic">
-		UPDATE job SET shareUrl =#{shareUrl}  WHERE id =#{id}
+		UPDATE beg_job SET shareUrl =#{shareUrl}  WHERE id =#{id}
 	</update>
 </mapper>

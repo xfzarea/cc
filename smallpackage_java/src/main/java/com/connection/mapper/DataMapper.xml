@@ -34,6 +34,7 @@
 	</select>
 	
 	<select id="getRealMoney" parameterType="int" resultType="java.util.Map">
+<!-- 	查询（用户在语音记录表中的奖励金和），减去，（现金表中的提现记录和） -->
 		SELECT ((SELECT IF(SUM(award) IS NULL,0,SUM(award)) FROM voice_record WHERE userId = #{userId} AND state = 0)-
 		(SELECT IF(SUM(money)IS NULL,0,SUM(money))FROM cash WHERE userId = #{userId}))AS money
 	</select>
@@ -60,7 +61,9 @@
 	
 	
 <!-- 	job_take 红包订阅表部分 -->
+
 	<insert id="saveJobTake" parameterType="java.util.Map">
+	<!-- 保存用户id和jobid（红包id） -->
 		INSERT INTO job_take(userId,jobId) VALUE(#{userId},#{jobId})
 	</insert>
 	
@@ -94,14 +97,17 @@
 	
 <!-- 	user_command表部分 -->
 	<insert id="saveUserCommand">
+	<!-- 保存用户口令 -->
 		INSERT INTO user_command(command,userId)VALUE(#{command},#{userId})
 	</insert>
 	
 	<select id="getUserCommand" resultType="java.util.Map" parameterType="int">
+<!-- 	根据用户id降序和state=1，查找user_command 的口令（单用户自己的） -->
 		SELECT command AS context FROM user_command WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
 	</select>
 <!-- 	搜索口令 -->
 	<select id="searchCommand" resultType="java.util.Map">
+	<!-- 查询infoexample表所有，除了顶级父id的（ levelContextId类似以前的父id），并上，user_command中所与状态为1的口令，之后查找当中类似关键字的 -->
 		SELECT a.context FROM (SELECT context FROM info_example WHERE levelContextId !=0
 			UNION SELECT command FROM user_command WHERE state = 1)a WHERE a.context LIKE "%${text}%"
 	</select>
@@ -117,4 +123,12 @@
 	<select id="checkSecond" parameterType="String" resultType="java.util.Map">
 		SELECT TIMESTAMPDIFF(SECOND,(SELECT createTime FROM ip_limit WHERE ip = #{ip} ORDER BY id DESC LIMIT 1),NOW()) AS second_limit
 	</select>
+	<!-- 这里还没号 -->
+		<select id="CommandImage" resultType="java.util.Map" parameterType="int">
+		SELECT * FROM info_example WHERE levelContextId = #{id}
+	</select>
+		<select id="getCommand" resultType="java.util.Map" parameterType="int">
+		SELECT * FROM info_example WHERE levelContextId = #{id}
+	</select>
+	
 </mapper>

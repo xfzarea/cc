@@ -37,6 +37,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 		String ip = Util.getIpAddress(request);
 		boolean flag = false;
 		HashMap<String,Object>secondLimit = dataDao.checkSecond(ip);
+		System.out.println(secondLimit);
 		if(secondLimit == null||secondLimit.get("second_limit")==null){
 			flag = true;
 		}else{

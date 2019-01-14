@@ -56,6 +56,7 @@ public class SystemController {
 			admin.setCity(params.get("city"));
 			admin.setNickName(params.get("nickName"));
 			admin.setAvatarUrl(params.get("avatarUrl"));
+			//保存用户信息，并得到更完整信息
 			admin = systemHandler.saveAdmin(admin);
 			resInfo = new HashMap<String,Object>();
 			resInfo.put("admin", admin);
@@ -78,8 +79,10 @@ public class SystemController {
 		int id = 0;
 		try {
 			result = Result.successResult();
+			//创建定时红包api
 			id = systemHandler.createTimerJob(params);
 			resInfo = new HashMap<String,Object>();
+			//返回定时红包的id
 			resInfo.put("id", id);
 			result.setObj(resInfo);
 		} catch (Exception e) {
@@ -90,6 +93,7 @@ public class SystemController {
 	
 	/**
 	 * 管理员发布用户自定义红包
+	 * 
 	 * @return
 	 */
 	@ResponseBody
@@ -123,6 +127,7 @@ public class SystemController {
 			result = Result.successResult();
 			jobs =  sysAdminDao.getJobs();
 			resInfo = new HashMap<String,Object>();
+			//返回的的是list集合
 			resInfo.put("jobs", jobs);
 			result.setObj(resInfo);
 		} catch (Exception e) {
@@ -140,6 +145,7 @@ public class SystemController {
 	 */
 	@ResponseBody
 	@RequestMapping("/delateJob")
+	//这里的id是红包id，openId是界面带过来的，因为是后台系统，所以放着也没事
 	public Result delateJob(@RequestParam("openid")String openid,@RequestParam("id")int id){
 		Result result = null;
 		List<HashMap<String,Object>>jobs = null;
@@ -172,8 +178,10 @@ public class SystemController {
 		try {
 			result = Result.successResult();
 			if(state == 1 || state == 2){
+				//返回待支付或已支付的红包
 				job=sysAdminDao.getUserJobById(id);
 			}else if(state == 4){
+				//返回定时红包
 				job = sysAdminDao.getTimerJobById(id);
 			}
 			resInfo = new HashMap<String,Object>();

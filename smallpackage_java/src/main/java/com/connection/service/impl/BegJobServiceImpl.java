@@ -22,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.connection.controller.JobController;
 import com.connection.dao.AdminDao;
+import com.connection.dao.BegJobDao;
 import com.connection.dao.DataDao;
 import com.connection.dao.JobDao;
 import com.connection.dao.VoiceRecordDao;
+import com.connection.service.interfaces.BegJobService;
 import com.connection.service.interfaces.JobService;
 import com.connection.service.interfaces.RedisService;
 import com.connection.service.interfaces.UserService;
@@ -37,10 +39,10 @@ import com.connection.xunfei.yuyintingxie.HttpUtil;
 import com.connection.xunfei.yuyintingxie.TestWebIat;
 
 @Service
-public class JobServiceImpl implements JobService {
-	public static Logger log = Logger.getLogger(JobServiceImpl.class);
+public class BegJobServiceImpl implements BegJobService {
+	public static Logger log = Logger.getLogger(BegJobServiceImpl.class);
 	@Autowired
-	private JobDao jobDao;
+	private BegJobDao jobDao;
 	@Autowired
 	private VoiceRecordDao voiceRecordDao;
 	@Autowired

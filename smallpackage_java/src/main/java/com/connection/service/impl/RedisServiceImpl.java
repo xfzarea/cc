@@ -13,6 +13,8 @@ import com.alibaba.fastjson.JSON;
 import com.connection.dao.JobDao;
 import com.connection.dao.VoiceRecordDao;
 import com.connection.service.interfaces.RedisService;
+
+//这种使用redis方法漂亮，有缓存不执行方法，没缓存执行查询
 @Service
 public class RedisServiceImpl implements RedisService {
 	@Autowired
@@ -24,10 +26,12 @@ public class RedisServiceImpl implements RedisService {
 	 * 获得单一得job
 	 * @param id
 	 * @return
+	 * 
+	 * unless:当方法返回空值时，就不会被缓存起来,决定是否要否定方法缓存，可以用来做条件判断
 	 */
 	@Cacheable(value="job",key="'job'+#id",unless = "#result == null")
 	public HashMap<String,Object>getJobById(int id){
-		return jobDao.getJobById(id);
+		return jobDao.getJobById(id);//注意看，这是拿数据库
 	}
 	/**
 	 * 获得自己得语音
@@ -69,6 +73,7 @@ public class RedisServiceImpl implements RedisService {
 	}
 	/**
 	 * 清除福利界面得红包缓存
+	 * @CacheEvict清除缓存的标注
 	 */
 	@CacheEvict(value="timer",key="'timerJob'")
 	public void deleteTimerCash(){

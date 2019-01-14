@@ -21,15 +21,19 @@ public class SystemHandlerImpl implements SystemHandler {
 	@Autowired
 	private RedisService redis;
 	/**
-	 * 保存用户信息
+	 * 保存用户信息，并得到更完整信息
 	 * @return
 	 */
 	public synchronized Admin saveAdmin(Admin admin){
+		//先根据openId查询用户是否存在
 		Map<String,Object>userInfo = sysAdminDao.findUserInfo(admin.getOpenid());
 		if(userInfo == null){
+			//不存在，保存系统用户
 			sysAdminDao.saveUser(admin);
 		}else{
+			//存在，先跟新下系统管理员的其他信息（nickName,avatarUrl ,gender,province ，city）
 			sysAdminDao.modifyUserBaseInfo(admin);
+			//从userInfo中拿到userId，添加到admin中（前端来的时候没有的）
 			int userId = (Integer) userInfo.get("userId");
 			admin.setUserId(userId);
 		}
@@ -40,21 +44,28 @@ public class SystemHandlerImpl implements SystemHandler {
 	 */
 	@Transactional
 	public int createTimerJob(Map<String,String>param){
+		//删除redis中的福利界面得红包缓存
 		redis.deleteTimerCash();
 		Map<String,Object>realParam = null;
 		int id = 0;
+		//先查询下管理员是否存在，且有效
 		Map<String,Object>admin = sysAdminDao.findUserInfo(param.get("openid"));
 		if(admin!=null&&(Integer)admin.get("state")==1){
 			realParam = new HashMap<String,Object>();
 			double award = Double.parseDouble(param.get("award"));
-			realParam.put("id", 0);
+			realParam.put("id", 0);//字段先设置一下，默认0是需要生成
 			realParam.put("headPic",param.get("headPic"));
 			realParam.put("userId", 0);
+			//String.format("%.2f", award * 1.02)格式化字符串，%f浮点类型，%.2f小数点后两位（这里是包括服务费总金额）
 			realParam.put("totalAward", Double.parseDouble(String.format("%.2f", award * 1.02)));
+			//这里是直接的红包金额
 			realParam.put("award", award);
 			realParam.put("totalCount", Integer.parseInt(param.get("totalCount")));
+			//口令内容
 			realParam.put("context", param.get("context"));
+			//创建时间
 			realParam.put("createTime", param.get("createTime"));
+			//状态码
 			realParam.put("state", 4);
 			realParam.put("transaction_id", "bxszc");
 			realParam.put("title", param.get("title"));
@@ -76,7 +87,7 @@ public class SystemHandlerImpl implements SystemHandler {
 			if(!"null".equals((String)param.get("tweet_title"))){
 				realParam.put("tweet_title", param.get("tweet_title"));
 			}
-			if(Integer.parseInt(param.get("id"))==0){//代表需要生成红包
+			if(Integer.parseInt(param.get("id"))==0){//代表需要生成红包（这里的id应该代表红包编号吧）
 				sysAdminDao.createTimerJob(realParam);
 				id = (Integer)realParam.get("id");
 			}else{//代表修改紅包
@@ -98,6 +109,7 @@ public class SystemHandlerImpl implements SystemHandler {
 		Map<String,Object>realParam = null;
 		Admin admin = null;
 		int id = 0;
+		//先根据openId查询管理员是否存在，且有效
 		Map<String,Object>a = sysAdminDao.findUserInfo(param.get("openid"));
 		if(a!=null&&(Integer)a.get("state")==1){
 			id = Integer.parseInt(param.get("id"));
@@ -106,12 +118,18 @@ public class SystemHandlerImpl implements SystemHandler {
 			admin.setNickName(param.get("nickName"));
 			admin.setAvatarUrl(param.get("avatarUrl"));
 			admin.setOpenid("bxszc");
-			if(id==0){
+			//除了这里有区别，基本和上面一样
+			if(id==0){//（这里的id应该代表红包编号吧），
+				//如果没有发过红包，保存下普通用户
 				adminDao.saveUser(admin);
+				//得到普通用户的userid
 				userId = adminDao.sysFindUser(admin).get("userId");
 			}else{
+				//如果不是0，从job表获得userId（。。。这命名）
 				userId = sysAdminDao.getUserIdById(id).get("userId");
+				//设置userId
 				admin.setUserId(userId);
+				//更新admin表中的用户信息，不是sys表的（前面吓死我了）
 				sysAdminDao.updateAdmin(admin);
 			}
 			realParam = new HashMap<String,Object>();
@@ -141,7 +159,7 @@ public class SystemHandlerImpl implements SystemHandler {
 			if(!"null".equals((String)param.get("tweet_title"))){
 				realParam.put("tweet_title", param.get("tweet_title"));
 			}
-			if(id==0){
+			if(id==0){//（这里的id应该代表红包编号吧）
 				sysAdminDao.createTimerJob(realParam);
 				id = (Integer)realParam.get("id");
 			}else{
@@ -156,8 +174,10 @@ public class SystemHandlerImpl implements SystemHandler {
 	 * 管理员删除红包
 	 */
 	public void deleteJob(String openid,int id){
+		//先验证管理员身份信息
 		if(checkInfo(openid)){
 			sysAdminDao.deleteJob(id);
+			//这里是不是应该加一个redis删除操作
 		}
 	}
 	/**

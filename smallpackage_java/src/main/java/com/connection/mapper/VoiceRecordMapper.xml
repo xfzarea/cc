@@ -22,6 +22,7 @@
 		SELECT a.id,a.userId,a.jobId,a.voice_path,award,DATE_FORMAT(a.createTime,"%m-%d %H:%i")AS createTime,a.rate,a.state,a.second,
 			b.avatarUrl,b.nickName,0 AS play,a.book_url FROM voice_record a
 			LEFT JOIN admin b ON a.userId = b.userId
+			<!-- state = 0应该是抢红包成功的记录 -->
 			WHERE a.jobId =#{jobId}  AND a.userId =#{userId} AND  state = 0 LIMIT 1
 	</select>
 	
@@ -39,6 +40,7 @@
 			LEFT JOIN admin b ON a.userId = b.userId
 			WHERE a.userId !=#{userId} AND jobId = #{jobId} ORDER BY id DESC)a WHERE 1 = 1 
 			<if test="id != 0">
+			<!-- 这里是考虑下拉刷新 -->
 				AND a.id &lt; #{id} 
 			</if>
 			GROUP BY userId ORDER BY id DESC LIMIT 10
@@ -47,11 +49,14 @@
 	
 	<select id="getCount" resultType="java.util.Map" parameterType="int">
 		SELECT IF(a.totalAward IS NULL,0.00,a.totalAward) AS totalAward,IF(c.totalCount IS NULL,0,c.totalCount) AS totalCount FROM
+		<!-- 这sql是统计符合userId和state的award的总和 别名是 totalAward  -->
 		(SELECT SUM(award)AS totalAward FROM voice_record WHERE userId = #{userId} AND state = 0)a,
+		<!-- count(1)和count(*)基本没有差别！这sql是统计符合userId和state的数据条数  别名是 totalCount，注意这里的（分组查询到一个红包抢了几次） 之后得到红包的总数（测试抢了6次，但红包个数为5次） -->
 		(SELECT COUNT(1) AS totalCount FROM(SELECT COUNT(1)  FROM voice_record WHERE userId = #{userId} GROUP BY jobId)b)c
 	</select>
 	
 	<select id="getMyJoin" resultType="java.util.Map">
+<!-- 	中间一层分组是为了去掉无效数据，两条数据虽然不重复，但同一个红包只出现一条记录 -->
 		SELECT a.id key1, a.jobId id, a.userId,a.award,b.alreadyAward,b.totalCount,b.alreadyCount,b.context,b.`headPic`,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.state,c.nickName,c.avatarUrl FROM 
 		(SELECT m.* FROM(SELECT id,userId,jobId,createTime,award FROM voice_record WHERE userId = #{userId}  ORDER BY createTime DESC)m GROUP BY jobId ORDER BY createTime DESC)a 
@@ -69,6 +74,9 @@
 	</update>
 	
 	<select id="getDetail" resultType="java.util.Map">
+	<!-- 这里的0_现金提额，1_红包退款，3_红包领取 的记录-->
+<!-- 	Union all实现把前后两个select集合的数据联合起来，组成一个结果集查询输出。这就要求联合前后的结果集，需要分别有相同的输出字段的数目，并且对应的字段类型要相同。 -->
+
 		SELECT userId,money,DATE_FORMAT(insertTime,"%Y-%m-%d %H:%i:%s")AS insertTime,state FROM cash WHERE userId = #{userId}
 			UNION ALL
 		SELECT userId,award,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS insertTime,3 AS state FROM voice_record
@@ -77,6 +85,7 @@
 	</select>
 	
 	<select id="getHighRate" resultType="java.util.Map" parameterType="int">
+<!-- 	根据用户id和状态=0（voice_record 中状态0是抢红包成功的，1是不成功的）和book——url不为空查询速率最高的1条，获得book_url,rate（速率） -->
 		SELECT book_url,rate FROM voice_record WHERE userId = #{userId} AND state = 0 AND book_url IS NOT NULL ORDER BY rate DESC LIMIT 1
 	</select>
 </mapper>

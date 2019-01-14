@@ -18,7 +18,7 @@ public class WeixinMoney {
         this.allMoney = allMoney;
     }
     public static double getMoney(WeixinMoney wmoney){
-         if (wmoney.getPeoples()==1) {
+         if (wmoney.getPeoples()==1) {//如果剩下人数为1，返回所有剩下的钱
              wmoney.setPeoples(0);
              return wmoney.getAllMoney();
          }

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-
+//这个主要生成随机字符串，按照一定要求，订单号，开始时间结束时间等
 /**
  * nonce_str随即字符串
  * @author iYjrg_xiebin
@@ -39,7 +39,7 @@ public class RandCharsUtils {
 	}
 
 	/*
-	 * 订单开始交易的时间
+	 * 订单结束交易的时间
 	 */
 	public static String timeExpire(){
 		Calendar now=Calendar.getInstance();

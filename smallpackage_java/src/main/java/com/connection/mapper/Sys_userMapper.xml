@@ -4,7 +4,14 @@
 
 <mapper namespace="com.connection.dao.SysAdminDao">
 	<insert id="saveUser" parameterType="com.connection.entity.Admin" keyProperty="userId">
+	<!-- SELECT LAST_INSERT_ID()：得到刚 insert 进去记录的主键值，只适用与自增主键
+		keyProperty：将查询到主键值设置到 parameterType 指定的对象的那个属性
+		order：SELECT LAST_INSERT_ID() 执行顺序，相对于 insert 语句来说它的执行顺序
+		resultType：指定 SELECTLAST_INSERT_ID() 的结果类型 
+		之后在admin.getId就有id值了
+		-->
     <selectKey keyProperty='userId' resultType='int' order='AFTER'>
+    
         select LAST_INSERT_ID();
     </selectKey>
      insert into sys_admin(userId,nickName,avatarUrl,openid,gender,province,city)
@@ -46,6 +53,7 @@
 	</update>
 <!--  	红包列表 -->
  	<select id="getJobs" resultType="java.util.Map">
+ 	<!-- transaction_id = "bxszc" 的红包应该都是在管理员平台发的 -->
  		SELECT id,userId,award,award,totalCount,context,state,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS createTime FROM job 
  		WHERE transaction_id = "bxszc" AND state IN(1,2,4)ORDER BY id DESC
  	</select>

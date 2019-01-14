@@ -35,10 +35,10 @@ public class CompanyPay {
 			String mch_id = config.mch_id;// 商户号
 			String nonce_str = RandCharsUtils.getRandomString(32);// 随机字符串，不长于32位，推荐随机数生成法
 			String partner_trade_no = RandCharsUtils.getRandomStringOrderNum();//商户订单号
-			String check_name = "NO_CHECK";
+			String check_name = "NO_CHECK";//检查真实姓名不？这里写入不核查，NO_CHECK：不校验真实姓名 、FORCE_CHECK：强校验真实姓名
 			int amount = (int)(Double.parseDouble(money*100+""));//单位为分 收取2%的手续费
-			String desc = "包享说提现";
-			String spbill_create_ip = "192.168.0.1";
+			String desc = "包享说提现";//描述
+			String spbill_create_ip = "192.168.0.1";//用户ip
 			/**
 			 * 封装参数，参数签名
 			 */
@@ -46,8 +46,8 @@ public class CompanyPay {
 			parameters.put("mch_appid", appid);
 			parameters.put("mchid", mch_id);
 			parameters.put("nonce_str", nonce_str);
-			parameters.put("partner_trade_no", partner_trade_no);
-			parameters.put("openid", openid);
+			parameters.put("partner_trade_no", partner_trade_no);;//商户订单号
+			parameters.put("openid", openid);//用户得openId
 			parameters.put("check_name",check_name);
 			parameters.put("amount", amount);
 			parameters.put("desc", desc);//utf8字符集
@@ -55,24 +55,30 @@ public class CompanyPay {
 			
 			// 得到生成的签名
 			String sign = WXSignUtils.createSign("UTF-8", parameters);
-			// 生成签名结束
+			// 生成签名结束,放到map里
 			parameters.put("sign", sign);
 			
 			// 构造xml参数
 			String xmlInfo = HttpXmlUtils.createPayXml(parameters);
+			//微信请求地址
 			String wxUrl = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
-
+					//这里去请求，并返回字符串
 			String weixinPost = HttpXmlUtils.refundHand(wxUrl, xmlInfo).toString();
 			
 			Map mapreturn = ParseXMLUtils.jdomParseXml(weixinPost);
+			//返回参数return_codeSUCCESS/FAIL此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
+			//return_msg这里没获取，返回信息，如非空，为错误原因 、签名失败 、参数格式校验错误
 			String return_code = mapreturn.get("return_code").toString();
+			//SUCCESS/FAIL，注意：当状态为FAIL时，存在业务结果未明确的情况。如果如果状态为FAIL，请务必关注错误代码（err_code字段），通过查询查询接口确认此次付款的结果。
 			String result_code = mapreturn.get("result_code").toString();
 			if("SUCCESS".equals(return_code)&&"SUCCESS".equals(result_code)){
 				//退款申请成功 任务过期
 //				jobDao.updateState(4,jobId);//修改任务状态为退款中
-				partner_trade_no = mapreturn.get("partner_trade_no").toString();
-				String payment_no = mapreturn.get("payment_no").toString();
-				String payment_time = mapreturn.get("payment_time").toString();
+				
+				//以下三个字段都是在return_code 和result_code都为SUCCESS的时候有返回 
+				partner_trade_no = mapreturn.get("partner_trade_no").toString();//商户订单号
+				String payment_no = mapreturn.get("payment_no").toString();//微信付款单号
+				String payment_time = mapreturn.get("payment_time").toString();//付款成功时间
 //				进行提现操作
 				adminDao.modifyMoney1(0.00-money, userId);
 				dataDao.saveCash(userId, money,partner_trade_no,payment_no,payment_time);

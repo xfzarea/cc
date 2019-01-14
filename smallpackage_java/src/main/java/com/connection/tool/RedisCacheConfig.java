@@ -16,8 +16,8 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author Administrator
  *
  */
-@Configuration
-@EnableCaching
+@Configuration  
+@EnableCaching 
 public class RedisCacheConfig extends CachingConfigurerSupport {
     private volatile JedisConnectionFactory jedisConnectionFactory;
     private volatile RedisTemplate<String, String> redisTemplate;

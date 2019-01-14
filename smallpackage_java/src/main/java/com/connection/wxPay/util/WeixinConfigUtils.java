@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+//这个类主要作用就是初始化，appid，mch_id，notify_url三个参数，并将sys.properties中的参数给到参数
 /**
  * 微信的配置参数
  * @author iYjrg_xiebin

@@ -76,8 +76,9 @@
 	
 	<select id="getCount" resultType="java.util.Map" parameterType = "int">
 		SELECT IF(a.totalCount IS NULL,0,a.totalCount) AS totalCount,IF(b.totalAward IS NULL,0,b.totalAward) AS totalAward FROM
-
+		<!-- count(1)和count(*)基本没有差别！这sql是统计符合userId和state的数据条数  别名是 totalCount  -->
 		(SELECT COUNT(1) AS totalCount FROM job WHERE userId = #{userId} AND state!=0) a,
+		<!-- 这sql是统计符合userId和state的award的总和 别名是 totalAward  -->
 		(SELECT SUM(award) AS totalAward FROM job WHERE userId = #{userId} AND state !=0) b
 	</select>
 	

@@ -39,7 +39,7 @@ public class JobController {
 	private RedisService redis;
 
 	/**
-	 * 获得我自己发布得红包
+	 * 获得我自己发布得红包（record）
 	 * 
 	 * @param id
 	 * @param request
@@ -55,8 +55,10 @@ public class JobController {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
 			if (tabId == 0) {
+				//我发的
 				resInfo.put("jobs", jobDao.getMyPush(userId, id));
 			} else {
+				//我抢的
 				resInfo.put("jobs", voiceRecordDao.getMyJoin(userId, id));
 			}
 
@@ -70,8 +72,8 @@ public class JobController {
 	}
 
 	/**
-	 * 获得具体得红包信息
-	 * 
+	 * 获得具体得红包信息（先从缓存，没有从数据库拿）
+	 * 我想是不是可以利用数据库的selectKey做文章，但是这个好像只能插入主键
 	 * @param id
 	 * @param request
 	 * @return
@@ -104,6 +106,7 @@ public class JobController {
 	 */
 	@ResponseBody
 	@RequestMapping("/upload")
+	//second代表时长（秒）
 	public Result doVedioLoad(@RequestParam("userId") int userId, @RequestParam("jobId") int id,
 			@RequestParam("second") int second, HttpServletRequest request) {
 		Result result = null;
@@ -113,8 +116,9 @@ public class JobController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
-
+			//<!-- 	判断语音是否可讲 -->，返回map集合
 			Map<String, Object> job = jobDao.getJobById2(id);
+			//transaction_id没有这个说明没付款成功
 			if (job != null && job.get("transaction_id") != null) {
 				if ((Integer) job.get("state") == 4 && (Long) job.get("timeLimit") < 0) {
 					
@@ -147,6 +151,8 @@ public class JobController {
 		return result;
 	}
 
+	
+	
 	/**
 	 * 获得该任务下面得所有语音
 	 * 
@@ -166,12 +172,14 @@ public class JobController {
 			result = Result.successResult();
 			voices = new ArrayList<HashMap<String,Object>>();
 			resInfo = new HashMap<String, Object>();
+			//这里的id是前端传过来的count
 			if(id == 0){
-				mineVoice = redis.getMineVoice(userId, jobId);//从缓存中获得语音
+				mineVoice = redis.getMineVoice(userId, jobId);//从缓存中获得语音（自己的）
 				if(mineVoice != null){
 					voices.add(mineVoice);
 				}
 			}
+			//除自己以外的（<!-- 这里是考虑下拉刷新 -->）
 			voices.addAll(voiceRecordDao.findAllVoice(jobId, id, userId));
 			resInfo.put("voices", voices);
 			result.setObj(resInfo);

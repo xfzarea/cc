@@ -8,10 +8,12 @@
 	</insert>
 	
 	<select id="findNewAccToken" resultType="java.util.Map">
+<!-- 	查找新的acctoken（id降序）只取一条 -->
 		SELECT * FROM acc_token ORDER BY id DESC LIMIT 1
 	</select>
 	
 	<select id="findLimit" parameterType="int" resultType="java.util.Map">
+	<!-- unix_timestamp() 得到当前时间戳  ，unix_timestamp(date) 得到当前参数时间戳 ，都是自1970年0时0分0秒以来UTC标准时间的秒数。 -->
 		SELECT (UNIX_TIMESTAMP()-UNIX_TIMESTAMP((SELECT createTime FROM acc_token WHERE id = #{id}))) AS timeLimit
 	</select>
 </mapper>

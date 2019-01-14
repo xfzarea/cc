@@ -1,8 +1,17 @@
 package com.connection.tool;
 import java.io.Serializable;
-
+//相应结果集和相应结果编码都在这，我之前是分开写的，此类ok
 /**
  * Ajax请求Json响应结果模型.
+ *
+ */
+/**
+ * 
+ * 
+ * @SuppressWarnings("serial")这个标注是代替实现Serializable后要加
+ * 的类似private static final long serialVersionUID = 5952689219411916553L;
+ * 不加这原本会出现黄色警告，但加了这个标注就不会出现警告，不过理论上还是加那个一长串的比较好
+ * @author 86136
  *
  */
 @SuppressWarnings("serial")

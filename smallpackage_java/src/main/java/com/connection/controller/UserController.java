@@ -63,6 +63,7 @@ public class UserController {
 	private VoiceRecordDao voiceRecordDao;
 	@Autowired
 	private InfoExampleDao infoExampleDao;
+	
 	@ResponseBody
 	@RequestMapping("/checkSession")
 	public Result checkSession(HttpServletRequest request){
@@ -90,10 +91,13 @@ public class UserController {
 		Admin admin = null;
 		Map<String,Object>resInfo = null;
 		try {
+			//默认操作成功
 			result = Result.successResult();
+			//获得openid
 			String resultStr = userService.sendData(params.get("code"), appId, secret);
 			JSONObject json = JSON.parseObject(resultStr);
 			String openid = json.getString("openid");
+			//设置admin信息（信息从前台接受的）
 			admin = new Admin();
 			admin.setOpenid(openid);
 			request.getSession().setAttribute("admin", admin);
@@ -102,13 +106,15 @@ public class UserController {
 			admin.setCity(params.get("city"));
 			admin.setNickName(params.get("nickName"));
 			admin.setAvatarUrl(params.get("avatarUrl"));
+			//调用保存用户方法
 			admin = userService.saveAdmin(admin);
+			//把返回admin和sessionId
 			resInfo = new HashMap<String,Object>();
 			resInfo.put("admin", admin);
 			resInfo.put("sessionId", request.getSession().getId());
 			result.setObj(resInfo);
 		} catch (Exception e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -126,6 +132,8 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String,Object>();
+			//查询口令，存到map，再存到result
+			//这里的id是数据库的levelContextId类似父类id，就是查父类的所有子类
 			resInfo.put("command", infoExampleDao.getCommand(id));
 			result.setObj(resInfo);
 		} catch (Exception e) {
@@ -145,6 +153,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String,Object>();
+			//根据用户id查询userId,nickName,avatarUrl,money,money_version 
 			response.put("userInfo", adminDao.getUserById(userId));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -160,17 +169,20 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/cashHand")
+	//参数都在前端获取，怎么获取的呢？是使用全局的wwx.getStorageSync("userInfo")。。。
 	public Result cashHand(@RequestParam("userId")int userId,@RequestParam("money")double money,String openid){
 		Result result = null;
 		Map<String,Object>response = null;
 		try {
 			result = Result.successResult();
 			response = new HashMap<String,Object>();
+			//这里的response是个map。。。，调用提现方法存入状态码
+			//0=提现申请成功， 1=账号异常，请联系平台核实，2=提现金额有误，冻结提现功能，请联系平台核实，3=提现出现问题，请稍后再试
 			response.put("state",userService.cash(userId, money,openid));
 			result.setObj(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}finally{
 			
 		}
@@ -201,12 +213,13 @@ public class UserController {
 	}
 	
 	/**
-	 * record页获得数量
+	 * record页、获得数量
 	 * @param id
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/getTotal")
+	//total总数（这里根据 handType区分是我发的红包，还是我抢的红包总数，和总金额）
 	public Result getTotal(@RequestParam("userId")int userId,@RequestParam("handType")String handType){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -228,7 +241,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 保存formId
+	 * 保存formId//功能关了
 	 */
 	@ResponseBody
 	@RequestMapping("/saveFormid")
@@ -248,7 +261,8 @@ public class UserController {
 	}
 	
 	/**
-	 * 交易记录
+	 * 交易记录，在页面是零钱明细，	<!-- 这里的state，0_现金提额，1_红包退款，3_红包领取 -->
+	 * 参数page是sql语句分页的参数
 	 */
 	@ResponseBody
 	@RequestMapping("/getDetail")
@@ -280,9 +294,12 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String,Object>();
+			//注意这里比较有一个"！"在开发者工具中测试，所以得到的formId值为the formId is a mock one。在真机中我们可以得到一个具体的值
 			if(!"the formId is a mock one".equals(param.get("formid"))){
+				//保存formid
 				userService.saveFormid(param);
 			}
+//			/<!-- 保存用户id和jobid（红包id） -->，清除福利界面得红包缓存
 			userService.saveJobTake(param);
 			result.setObj(response);
 		} catch (Exception e) {
@@ -305,6 +322,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String,Object>();
+			//检测敏感词
 			response.put("flag", HttpUtils.checkWord(content));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -326,6 +344,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String,Object>();
+			//<!-- 	根据用户id和状态=0（voice_record 中状态0是抢红包成功的，1是不成功的）和book——url不为空查询速率最高的1条，获得book_url和rate（速率） -->
 			response.put("highRate", voiceRecordDao.getHighRate(userId));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -347,12 +366,18 @@ public class UserController {
 		Map<String,String>response = null;
 		try {
 			result = Result.successResult();
+			//封装请求信息到map
 			responseParams = new HashMap<String,Object>();
+			//就是一字符串（可以写页面参数），前端页面会根据id生产页面
 			responseParams.put("scene", jobId);
+			//必须是已经发布的小程序存在的页面（否则报错），例如 "pages/index/index" ,根路径前不要填加'/',不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面
 			responseParams.put("page", "pages/package/package");
+			//是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码	
 			responseParams.put("is_hyaline", true);
+			//转成json
 			String json = JSON.toJSONString(responseParams);
 			response = new HashMap<String,String>();
+			//userService.getCode(json)获得二维码主要api（二维码存到了阿里云，用的阿里oss服务）
 			response.put("codeUrl", userService.getCode(json));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -363,7 +388,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 小程序获取单一证书（我得页面）
+	 * 保存vip，首页点击营销推广，提交合作按钮
 	 */
 	@ResponseBody
 	@RequestMapping("vipReply")
@@ -371,6 +396,7 @@ public class UserController {
 		Result result = null;
 		Map<String,Object>response = null;
 		try {
+			//把想要推广合作的人保存到数据库
 			dataDao.saveVipReply(name, tel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -391,9 +417,14 @@ public class UserController {
 	public void doFileLoad(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("text/html;charset=utf8");
 		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		//获取前端的值
 		MultipartFile file = multiRequest.getFile("image");
+		//获取上传文件的原名，并且利用replaceAll去空格
 		String name = file.getOriginalFilename().replaceAll(" ", "");
 		long currentTime = System.currentTimeMillis();
+		/*name.substring(name.lastIndexOf("."), name.length())这条代码最后的结果就是去的此文件名的扩展名如xxx.exe返回的就是.exe（包括点） ，
+		 * 去的filename的子串，第一个参数是起始index，第二个参数是最后的index，只是着个index对应的字符不包含在最后的结果中
+		 */
 		String imagePath = "static/head/" + currentTime + name.substring(name.lastIndexOf("."), name.length());
 		String dbPath = "https://static.yaohoudy.com/static/head/" +currentTime+name.substring(name.lastIndexOf("."), name.length());
 		PrintWriter out = null;
@@ -402,7 +433,9 @@ public class UserController {
 			out = response.getWriter();
 			request.setCharacterEncoding("utf-8");
 			input = file.getInputStream();
+			//存到阿里云
 			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, imagePath, input);
+			//输出地址dbPath
 			out.print(dbPath);
 		} catch (Exception e) {
 			log.error("/infoPicLoad:"+dbPath);
@@ -427,6 +460,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String, Object>();
+			//<!-- 	根据用户id降序和state=1，查找user_command 的口令（单用户自己的） -->
 			response.put("commands", dataDao.getUserCommand(userId));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -438,8 +472,9 @@ public class UserController {
 	}
 	
 	/**
-	 * 小程序获得用户自定义口令
+	 * 小程序获得用户自定义和公共口令
 	 */
+	
 	@ResponseBody
 	@GetMapping("userSearchCommand")
 	public Result userSearchCommand(@RequestParam("text")String text){
@@ -448,6 +483,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String, Object>();
+			//dataDao.searchCommand(text)查找客户的口令（关键字搜索）
 			response.put("commands", dataDao.searchCommand(text));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -459,7 +495,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 小程序获取单一证书（我得页面）
+	 * 保存用户口令，普通方法
 	 */
 	@ResponseBody
 	@RequestMapping("saveUserCommand")
@@ -485,4 +521,52 @@ public class UserController {
 		System.out.println(id);
 		return Result.successResult();
 	}
+	
+	
+	
+	
+	/**
+	 * 获得图片口令例子
+	 * @param id 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getCommandImage")
+	public Result getCommandImage(@RequestParam("id") int id,HttpServletRequest request){
+		Result result = null;
+		Map<String,Object>resInfo = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String,Object>();
+			resInfo.put("commandImage", dataDao.getCommandImage(id));
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	/**
+	 * 获得语音口令例子
+	 * @param id 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getVoiceCommand")
+	public Result getVoiceCommand(@RequestParam("id") int id,HttpServletRequest request){
+		Result result = null;
+		Map<String,Object>resInfo = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String,Object>();
+			resInfo.put("voiceCommand", dataDao.getVoiceCommand(id));
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 }

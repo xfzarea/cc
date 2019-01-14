@@ -1,14 +1,15 @@
 package com.connection.entity;
-
+//此类ok，数据库实体字段类
+//另外这里其实还少了menoy和menoy_version
 public class Admin {
 	private int userId;
 	private String nickName;
-	private String avatarUrl;
-	private int gender;
-	private String province;
-	private String city;
-	private String openid;
-	private String createTime;
+	private String avatarUrl;//头像地址
+	private int gender;//性别，0 未知 ，1男，2女
+	private String province;//用户所在省份
+	private String city;//城市
+	private String openid;//用户唯一标识
+	private String createTime;//创建时间
 	public int getUserId() {
 		return userId;
 	}

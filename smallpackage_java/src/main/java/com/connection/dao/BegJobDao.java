@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
-public interface JobDao {
+public interface BegJobDao {
 	//增加job数据
 	void addJob(Map<String,Object>param);
 	void payOver(@Param("transaction_id")String transaction_id,

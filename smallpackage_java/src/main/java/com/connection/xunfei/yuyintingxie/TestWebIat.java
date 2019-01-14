@@ -66,6 +66,7 @@ import sun.nio.cs.UnicodeEncoder;
 		String result = HttpUtil.doPost(WEBIAT_URL, header, bodyParam);
 		Map<String, Object>r = JSON.parseObject(result);
 		String data = (String)r.get("data");
+		//获取汉字串拼音，英文字符不变  
 		String data1 = PinYinUtil.getFullSpell(data);
 		return data1;
 	}
