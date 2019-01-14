@@ -432,10 +432,10 @@ public class WeiXinPayController {
 				packageParams.put("transaction_id", transaction_id);
 				String endsign = WXSignUtils.createSign("UTF-8", packageParams);
 				if (endsign.equals(sign)) {
-					response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
 					Map<String, Object> job = jobDao.getJobById1(Integer.parseInt(attach));
 					if ((double) job.get("totalAward") > (double) job.get("award")) {// 在做一波处理
 						jobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach));
+						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
 					}
 					job = null;
 				}

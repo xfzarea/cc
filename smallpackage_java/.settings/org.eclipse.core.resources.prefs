@@ -1,5 +1,16 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
+encoding//src/main/java/com/connection=GBK
 encoding//src/main/java/com/connection/controller/JobController.java=GBK
+encoding//src/main/java/com/connection/controller/SystemController.java=GBK
+encoding//src/main/java/com/connection/controller/UserController.java=GBK
+encoding//src/main/java/com/connection/dao=GBK
+encoding//src/main/java/com/connection/dao/AccTokenDao.java=GBK
+encoding//src/main/java/com/connection/dao/AdminDao.java=GBK
+encoding//src/main/java/com/connection/dao/BegJobDao.java=GBK
+encoding//src/main/java/com/connection/entity=GBK
+encoding//src/main/java/com/connection/wxPay/action=GBK
+encoding//src/main/java/com/connection/wxPay/entity=GBK
+encoding//src/main/java/com/connection/wxPay/util=GBK
 encoding//src/main/java/com/connection/xunfei/util/EncryptUtil.java=UTF-8
 encoding//src/test/java=UTF-8
