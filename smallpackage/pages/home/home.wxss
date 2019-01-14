@@ -1,5 +1,5 @@
 .avatarUrl{
-  width: 120rpx;
+  width:120rpx;
   height: 120rpx;
   border-radius: 120rpx;
   border: 6rpx solid #fff;
@@ -17,6 +17,7 @@
   justify-content: space-between;
 }
 .list_1{
+  font-family: PingFangSC-Medium;
   color: #303030;
   font-weight: bold;
   /* width: 160rpx; */
@@ -24,7 +25,7 @@
 }
 .list_2{
   width: 410rpx;
-  height: 70rpx;
+  height: 78rpx;
   border: 1rpx solid #d5d5d5;
   display: flex;
   justify-content: space-between;
@@ -71,10 +72,11 @@
   margin-left: 20rpx;
 }
 .submit{
+
   width:382rpx;
   height:172rpx;
   position: absolute;
-  bottom: -85rpx;
+  bottom: -105rpx;
 }
 .changeColor{
   background-color: #D85940;
@@ -82,7 +84,8 @@
 .bottom{
   width: 100%;
   text-align: center;
-  margin-top:86rpx;
+  margin-top:
+  rpx;
   font-size: 24rpx;
   color: #838383;
   
@@ -128,15 +131,16 @@ button::after{
 
 .box{
   width: 650rpx;
+  height:705rpx;
   background-color: #fff;
   margin-left: 50rpx;
-  border-radius: 16rpx;
+  border-radius: 12rpx;
   position: relative;
-  bottom: 150rpx;
+  bottom: 160rpx;
   box-shadow: 0rpx 4rpx 40rpx #b9b9b9;
   /* box-shadow: 0rpx 4rpx 20rpx #D85940; */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 110rpx;
+  /* padding-bottom: 110rpx; */
 }

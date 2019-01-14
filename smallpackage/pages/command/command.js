@@ -11,7 +11,8 @@ Page({
     rightInfos: [],
     changeId: 1,
     userInfo: wx.getStorageSync("userInfo"),
-    myCommand: []
+    myCommand: [],
+    textCommand:false,
   },
 
   /**
@@ -21,6 +22,7 @@ Page({
     const that = this;
     that.setData({
       userInfo: wx.getStorageSync("userInfo"),
+      textCommand: wx.getStorageSync("textCommand")
     })
     setTimeout(function(){
       that.setData({
@@ -117,10 +119,22 @@ Page({
   },
   toHome: function(e) {
     const that = this;
+    console.log(that.data.textCommand)
+    
+    if(that.data.textCommand){
+      wx.setStorageSync("textCommand",false);
+      const that = this;
+      app.globalData.context = e.currentTarget.dataset.context;
+      wx.reLaunch({
+        url: '/pages/beg/beg',
+      })
+    }else{
+    const that = this;
     app.globalData.context = e.currentTarget.dataset.context;
     wx.reLaunch({
       url: '/pages/home/home',
     })
+    }
   },
   /**
    * 跳口令库

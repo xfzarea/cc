@@ -77,9 +77,9 @@
   text-align: center;
   line-height: 98rpx;
   font-size: 28rpx;
-  color:#D85940;
+  color:#838383;
   font-weight: bold;
-  background-color:#FFE695;
+
 }
 .changeOrder{
   background-color: #fff;

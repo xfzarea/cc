@@ -114,6 +114,7 @@ Page({
           success: res => {
             if (res.confirm) {
               if (that.data.ifCommit) {
+             
                 wx.request({
                   url: urls.profit + '/cashHand',
                   data: {
@@ -121,7 +122,9 @@ Page({
                     money: that.data.inputMoney,
                     openid: wx.getStorageSync("userInfo").openid,
                   },
+                  
                   success: res => {
+                    
                     that.getUserById();
                     that.setData({
                       inputMoney: '',

@@ -3,6 +3,7 @@ const urls = require("../../utils/urls.js");
 Page({
 
   /**
+   * 
    * 页面的初始数据
    */
   data: {
@@ -10,7 +11,7 @@ Page({
     jobs:[],
     id:0,
     fresh:true,
-    tabId:0,
+    tabId: 0,//用来区分是我发的还是我强的
     totalAward:0.00,
     totalCount:0
   },
@@ -23,8 +24,8 @@ Page({
     that.setData({
       userInfo: wx.getStorageSync("userInfo")
     })
-    that.getData(that.data.tabId);
-    that.getTotal(that.data.tabId);
+    that.getData(that.data.tabId);//函数是自己的在下面,得到数据
+    that.getTotal(that.data.tabId);//得到总数
   },
   /**
    * 保存formid

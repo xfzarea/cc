@@ -4,9 +4,10 @@
   align-items: center;
 }
 .top{
-  height: 270rpx;
+  height: 240rpx;
   width: 100%;
   position: relative;
+
 }
 .userInfo{
   width: 100%;
@@ -14,11 +15,11 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 175rpx;
+  top: 130rpx;
 }
 .userInfo image{
-  width: 100rpx;
-  height: 100rpx;
+  width: 120rpx;
+  height: 120rpx;
   border-radius: 100rpx;
   border: 4rpx solid #E1E1E1;
 }
@@ -26,7 +27,7 @@
   font-size: 30rpx;
   color: #303030;
   font-weight: bold;
-  margin-top: 16rpx;
+  margin-top:30rpx;
 }
 .lists{
   width: 100%;
@@ -56,10 +57,10 @@ button::after{
   width: 100%;
   text-align: center;
   font-size: 24rpx;
-  color:#5c73a6;
+  color:#516A9D;
   font-weight: bold;
   position: absolute;
-  bottom: 50rpx;
+  bottom: 40rpx;
 }
 .bot{
   display: flex;
@@ -69,8 +70,8 @@ button::after{
 .bot button{
   margin: 0;
   padding: 0;
-  border: 0rpx solid #F1F1F1;
-  background-color: #F1F1F1;
+  border: 0rpx solid white;
+  background-color:white;
   font-size: 24rpx;
   color:#5c73a6;
 }

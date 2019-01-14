@@ -19,6 +19,7 @@
       </view>
       <view wx:if="{{show}}" style="color:red;font-size:28rpx;margin-left:65rpx;margin-top:36rpx">输入金额超过零钱余额</view>
       <view wx:if="{{!show}}" class='allCash'>
+      <!-- filters.toFix保留两位小数 -->
         <view style='color:#838383;font-size:28rpx;'>零钱余额¥{{filters.toFix(money)}}</view>
         <view style='color:#4F648F;font-size:28rpx;margin-left:10rpx;' data-type='1' catchtap='inputOver'>全部提现</view>
       </view>

@@ -1,5 +1,5 @@
-<view class="container">
-  <image src='/images/11.png' class='top'></image>
+<view class="container" style='background: white'>
+  <image src='/images/54.png' class='top'></image>
   <view class='userInfo'>
     <image src='{{userInfo.avatarUrl}}'></image>
     <view>{{userInfo.nickName}}</view>
@@ -13,7 +13,12 @@
 
     <view class='list' catchtap='toRecord'>
       <image src='/images/5.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
-      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>我的记录</view>
+      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>发的红包</view>
+      <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
+    </view>
+     <view class='list' catchtap='toRecord'>
+      <image src='/images/5.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
+      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>讨的红包</view>
       <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
     </view>
 
@@ -35,11 +40,11 @@
       <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
     </button> -->
 
-    <button class='list btn' catchtap='toMarketing'>
+    <!-- <button class='list btn' catchtap='toMarketing'>
       <image src='/images/37.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
       <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>营销服务</view>
       <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
-    </button>
+    </button> -->
     <view class="bot bottom">
       <view  catchtap='toComplain'>投诉</view>
       <view style='padding:0 10rpx;'>/</view>

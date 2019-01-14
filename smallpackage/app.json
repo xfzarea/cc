@@ -6,7 +6,6 @@
     "pages/package/package",
     "pages/searchBook/searchBook",
     "pages/playRed/playRed",
-    "pages/timer/timer",
     "pages/diploma/diploma",
     "pages/complain/complain",
     "pages/record/record",
@@ -19,7 +18,10 @@
     "pages/moreQuestion/moreQuestion",
     "pages/detail/detail",
     "components/warrant/warrant",
-    "pages/tweet/tweet"
+    "pages/tweet/tweet",
+    "pages/changes/changes",
+    "pages/beg/beg",
+    "pages/begPackage/begPackage"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -37,19 +39,19 @@
         "pagePath": "pages/home/home",
         "iconPath": "/images/home.png",
         "selectedIconPath": "/images/homeAfter.png",
-        "text": "主页"
+        "text": "发个红包"
       },
       {
-        "pagePath": "pages/timer/timer",
+        "pagePath": "pages/beg/beg",
         "iconPath": "/images/fuli.png",
         "selectedIconPath": "/images/fuliAfter.png",
-        "text": "福利"
+        "text": "讨个红包"
       },
       {
         "pagePath": "pages/admin/admin",
         "iconPath": "/images/admin.png",
         "selectedIconPath": "/images/adminAfter.png",
-        "text": "我的"
+        "text": "个人中心"
       }
     ]
   },

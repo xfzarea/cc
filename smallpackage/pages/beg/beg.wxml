@@ -1,0 +1,108 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
+<warn wx:if="{{warn_show}}" getCode="0" show="{{show}}" bind:closeWarn="closeWarn"></warn>
+<view class='container' style='background-color:#fff;'>
+  <image src="/images/54.png" style='width:100%;height:260rpx;position:relative'></image>
+  <view class='box'>
+    <image src='{{userInfo.avatarUrl}}' class='avatarUrl'></image>
+    <view class='list' style='margin-top:100rpx' catchtap='toChanges'>
+      <view class='list_1'>讨个红包：</view>
+      <image  class='list_7' src='/images/Triangle.png' style='width:15rpx;height:20rpx'></image>
+      
+    </view>
+    <view class='list' style='margin-top:20rpx' catchtap='toChanges'>
+    <view class='list_6'>
+               <view class='list_5'style='height:140rpx;width:570rpx'>{{context}}</view>
+      </view>
+      </view>
+
+    <view class='tab' catchtap='toChanges' style='margin-top:20rpx'>
+      <view class="sayIntro">设置有关内容向好友讨要红包
+       <image src='/images/Group3.png' style='width:22rpx;height:25rpx' ></image>
+      </view>
+    </view>
+
+    <view class='list' style='margin-top:40rpx;'>
+     <view class='list_1'>讨要金额：</view>
+      <image  class='list_7' src='/images/Triangle.png' style='width:15rpx;height:20rpx'></image>
+  
+    </view>
+   <view class='list' style='margin-top:20rpx;'>
+        <view class="list_9">
+        <!-- <input type='digit' cursor-spacing="130" placeholder='0.00' bindinput="input" catchtap="submit_b"  data-type='award' maxlength='6' value='{{award}}' style='height:78rpx;width:570rpx'></input> -->
+        <view  class='list_5' style='height:78rpx;width:570rpx;margin-top:36rpx'  catchtap="submit_b">{{award==0?"设置讨要金额":award}}</view>
+       
+
+   
+
+        
+      </view>
+    </view>
+
+
+    <image src='{{submit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{submit?"createJob":""}}'></image>
+  </view>
+  <view class='records'>
+      <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
+   
+    <!-- <button size='mini' catchtap='toMarketing'>营销服务</button> -->
+    <view style='margin:0 20rpx;color:#5c73a6;'>|</view>
+ 
+ <button size='mini'  catchtap='toPlayRed'>红包记录</button>
+
+
+
+  </view>
+  <!--开始-->
+
+<view class="mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modalDlg" wx:if="{{showModal}}" >
+ 
+    
+    <view class='list_10'  >
+      <view  class='tan'>推荐金额：</view>
+      <image   src='/images/Group2.png' style='width:40rpx;height:40rpx; position:relative;right:57rpx'catchtap='go1'></image>
+    
+    
+ 
+     
+    </view>
+    <view class='list' style='width:570rpx'>
+<view class='{{num==1?"list_18":"list_17"}}' data-num='1' catchtap='changeOil'>5.20</view>
+  <view class='{{num==2?"list_18":"list_17"}}' data-num='2' catchtap='changeOil'>66.66</view>
+  <view class='{{num==3?"list_18":"list_17"}}' data-num='3' catchtap='changeOil'>8.88</view>  
+  <view class='{{num==4?"list_18":"list_17"}}' data-num='4' catchtap='changeOil'>99.99</view>  
+   
+        </view>  
+    <view class='list_10'  >
+      <view  class='tan'>其他金额(不超过200)：</view>
+     
+      
+    </view>
+     <view  class='{{num==5?"list_21":"list_12"}}' data-num='5' catchtap='changeOil' style=' margin-top:30rpx'>
+        <input  data-num='5' type='digit' cursor-spacing="130" placeholder='自定义输入金额' bindinput="input"  data-type='award' maxlength='6' style=' width: 670rpx;height: 78rpx;' value='{{num<5?"":award==0?"":award}}'></input>
+        <view style='margin-right:20rpx;'>元</view>
+      </view>
+      <view class='list_13'style='background:{{award==0?"#F2AFA2":"#D85940"}}' catchtap='go'> 确认金额 </view>
+
+</view>
+<!--卡片1-->
+<view wx:if="{{handType==1}}" class='card' >
+  <view class='card_4' catchtap='noHide'>
+   <image src='/images/Group.png' style='width:137rpx;height:137rpx;margin-top:20rpx;margin-left:267rpx'></image>
+    <button style='margin-top:35rpx;' open-type='share'>发送好友或群聊</button>
+    <button style='margin-top:40rpx;background-color#D85940;' catchtap='createPic'>生成分享图</button> 
+    
+  </view>
+  <view class='card_1'  >
+
+    <image src='/images/Group2.png' style='width:80rpx;height:80rpx;' catchtap='hide'></image>
+  </view>
+</view>
+
+  
+  
+
+
+
+</view>
+

@@ -8,9 +8,9 @@ Page({
 
   data: {
     userInfo: wx.getStorageSync("userInfo"),
-    context: "恭喜发财，大吉大利",
+    context: "可设置文字/语音/图片",
     award: 0.00,
-    count: 0,
+    count: 1,
     submit: false,
     charge: 0.00,
     warrantShow: false,
@@ -18,6 +18,10 @@ Page({
     warn_show: false,
     job_type: 0,
     one_award: 0.00,
+    num: 0,
+    showModal: false,
+    handType: 0, //我用来区分卡片的
+    jobId:0
   },
 
   /**
@@ -48,55 +52,63 @@ Page({
         app.globalData.context = '';
       }
     }
+   
   },
   load: function (e) {
     console.log("公众号组件", e)
   },
 
-  /**
-   * 选择普通红包
-   */
-  changeType: function () {
-    const that = this;
-    let job_type = that.data.job_type;
-    if (job_type == 0) {
-      job_type = 1;
-    } else {
-      job_type = 0;
-    }
-    that.setData({
-      job_type: job_type,
-      award: 0.00,
-      count: 0,
-      one_award: 0.00,
-      submit: false
+  changeOil: function (e) {
+    console.log(e);
+   
+    this.setData({
+      num: e.target.dataset.num
     })
-  },
-  /**
-   * 去红包页面
-   */
-  toRedPackage: function (jobId) {
-    setTimeout(function () {
-      wx.navigateTo({
-        url: '/pages/package/package?id=' + jobId,
+    if (this.data.num==1){
+      this.setData({
+        award:0,
+        award:5.20
       })
-    }, 200)
+    }
+    if (this.data.num == 2) {
+      this. setData({
+        award: 0,
+        award: 66.66
+      })
+    }
+    if (this.data.num==3){
+      this.setData({
+        award: 0,
+        award: 8.88
+      })
+    }
+
+    if (this.data.num == 4) {
+      this.setData({
+        award: 0,
+        award: 99.99
+      })
+    }
+    if (this.data.num == 5) {
+      this.setData({
+        award: 0,
+      
+      })
+    }
+    const that = this;
+    that.checkSubmit();
+    console.log(this.data.award)
+    console.log(this.data.count)
   },
+
   /**
-   * 营销服务
-   */
-  toMarketing: function () {
-    wx.navigateTo({
-      url: '/pages/marketing/marketing',
-    })
-  },
+  
   /**
    * 创建
    */
-  toCommand: function () {
-    wx.setStorageSync("textCommand", false);
+  toChanges: function () {
     wx.navigateTo({
-      url: '/pages/command/command',
+      url: '/pages/changes/changes',
     })
   },
   input: function (e) {
@@ -139,11 +151,11 @@ Page({
     if (type1 == "count") {
       if (job_type == 0) {
         that.setData({
-          count: data
+        
         })
       } else {
         that.setData({
-          count: data,
+         
           award: one_award * data,
           charge: Math.round(one_award * data) * 2 / 100
         })
@@ -162,7 +174,6 @@ Page({
               award: 0.00,
               charge: 0.00,
               one_award: 0.00,
-              count: 0,
               submit: false
             })
             wx.navigateTo({
@@ -173,7 +184,6 @@ Page({
               award: 0.00,
               charge: 0.00,
               one_award: 0.00,
-              count: 0,
               submit: false
             })
           }
@@ -187,7 +197,7 @@ Page({
     const that = this;
     let job_type = that.data.job_type;
     var flag = true;
-    if (that.data.award == '' || that.data.count == '' || that.data.award == 0 || that.data.count == 0) {
+    if (that.data.award == ''  || that.data.award == 0 ) {
       flag = false;
     }
     if (job_type == 1) {
@@ -233,10 +243,10 @@ Page({
     if (that.data.award / that.data.count < 1) {
       flag = false;
     }
-    var jobId;
+   
     if (flag) {
       wx.request({
-        url: urls.profit + '/createJob',
+        url: urls.profit + '/createBegJob',
         data: {
           userId: userId,
           openid: openid,
@@ -249,34 +259,67 @@ Page({
         },
         success: res => {
           console.log(res.data);
-          jobId = res.data.jobId;
-          wx.requestPayment({
-            'timeStamp': res.data.timestamp + '',
-            'nonceStr': res.data.noncestr,
-            'package': res.data.package,
-            'signType': 'MD5',
-            'paySign': res.data.sign,
-            'success': function (res) {
-              console.log(123);
-              app.globalData.tags = '';
-              app.globalData.jobContext = '';
-              that.setData({
-                context: "恭喜发财，大吉大利",
-                award: '',
-                count: '',
-                charge: 0.00
+          
+         
+                that.setData({
+                 context: "可设置文字/语音/图片",
+                 award: '',
+                 charge: 0.00,
+                 num:0, 
+                 jobId : res.data.jobId
               })
-              setTimeout(function () {
-                wx.navigateTo({
-                  url: '/pages/package/package?id=' + jobId + "&handType=1"
-                })
-              }, 1000)
-            },
-            'fail': function (res) { }
-          })
+              that.checkSubmit();
+          that.changeHandType();
+          // wx.requestPayment({
+          //   'timeStamp': res.data.timestamp + '',
+          //   'nonceStr': res.data.noncestr,
+          //   'package': res.data.package,
+          //   'signType': 'MD5',
+          //   'paySign': res.data.sign,
+          //   'success': function (res) {
+          //     console.log(123);
+          //     app.globalData.tags = '';
+          //     app.globalData.jobContext = '';
+          //     that.setData({
+          //       context: "可设置文字/语音/图片",
+          //       award: '',
+          //       count: '',
+          //       charge: 0.00
+          //     })
+          //     setTimeout(function () {
+          //       wx.navigateTo({
+          //         url: '/pages/package/package?id=' + jobId + "&handType=1"
+          //       })
+          //     }, 1000)
+          //   },
+          //   'fail': function (res) { }
+          // })
         }
       })
     }
+  },
+  //卡片区分
+  changeHandType: function () {
+    wx.hideTabBar({
+      animation: true //是否需要过渡动画
+    })
+    const that = this;
+    that.setData({
+      handType: 1
+    })
+  },
+  /**
+   * 隐藏 卡片
+   */
+  hide: function () {
+    const that = this;
+    that.setData({
+      code: 0,
+      handType: 0
+    })
+    wx.showTabBar({
+      animation: true //是否需要过渡动画
+    })
   },
   closeWarn: function (e) {
     const that = this;
@@ -289,6 +332,47 @@ Page({
       url: '/pages/record/record',
     })
   },
+  submit_b: function () {
+    wx.hideTabBar({
+      animation: true //是否需要过渡动画
+    })
+    this.setData({
+      showModal: true
+
+
+    })
+  
+  },
+  
+  preventTouchMove: function () {
+  },
+  go: function () {
+    
+    this.setData({
+      showModal: false
+    })
+    wx.showTabBar({
+      animation: true //是否需要过渡动画
+    })
+  },
+  go1: function () {
+    this.setData({
+      showModal: false,
+      award:0,
+      num:0
+    })
+    const that =this;
+    that.checkSubmit();
+    
+    this.setData({
+      showModal: false
+    })
+    wx.showTabBar({
+      animation: true //是否需要过渡动画
+    })
+  },
+
+  
   toPlayRed: function () {
     // wx.navigateTo({
     //   url: '/pages/playRed/playRed',
@@ -335,14 +419,6 @@ Page({
   onPullDownRefresh: function () {
 
   },
-  /**
-  * 红包记录
-  */
-  toRecord: function () {
-    wx.navigateTo({
-      url: '/pages/record/record',
-    })
-  },
 
   /**
    * 页面上拉触底事件的处理函数
@@ -350,7 +426,6 @@ Page({
   onReachBottom: function () {
 
   },
- 
 
   /**
    * 用户点击右上角分享
@@ -358,8 +433,11 @@ Page({
   onShareAppMessage: function () {
     console.log("分享")
     const that = this;
+    const jobId = that.data.jobId;
     return {
-      path: "/pages/home/home",
+     
+      path: '/pages/begPackage/begPackage?id=' + jobId + " & handType=1",
+    
       success: function (res) {
 
       },
@@ -368,4 +446,5 @@ Page({
       }
     }
   }
+ 
 })

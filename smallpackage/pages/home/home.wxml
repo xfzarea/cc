@@ -4,17 +4,17 @@
   <image src="/images/54.png" style='width:100%;height:260rpx;position:relative'></image>
   <view class='box'>
     <image src='{{userInfo.avatarUrl}}' class='avatarUrl'></image>
-    <view class='list' style='margin-top:114rpx' catchtap='toCommand'>
-      <view class='list_1'>设置口令：</view>
+    <view class='list' style='margin-top:100rpx' catchtap='toCommand'>
+      <view class='list_1'>设置语音：</view>
       <view class='list_2'>
         <view class='list_5'>{{context}}</view>
-        <image class='list_3' src='/images/1.png'></image>
+        <image class='list_3' src='/images/Triangle.png'style='width:14.4rpx;height:20rpx'></image>
       </view>
     </view>
 
     <view class='tab' catchtap='toCommand'>
-      <view class="sayIntro">设置口令娱乐小伙伴，
-        <text style='color:#5c73a6;'>推荐口令></text>
+      <view class="sayIntro">好友说对语音即可获得红包
+        <image src='/images/Group3.png' style='width:22rpx;height:25rpx' ></image>
       </view>
     </view>
 
@@ -34,20 +34,23 @@
     </view>
 
     <view class='list' style='margin-top:40rpx'>
-      <view class='list_1'>红包个数：</view>
+      <view class='list_1'>红包数量：</view>
       <view class='list_2'>
         <input type='number' cursor-spacing="130" placeholder='0' bindinput='input' data-type='count' maxlength='6' value="{{count==''?'':count}}"></input>
         <view style='margin-right:20rpx;'>个</view>
       </view>
     </view>
-    <view class='bottom'>需支付¥{{filters.toFix(charge)}}元服务费</view>
-    <image src='{{submit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{submit?"createJob":""}}'></image>
+    <view class='bottom' style='margin-right:-10rpx;margin-top:60rpx'>需支付¥{{filters.toFix(charge)}}手续费</view>
+    <image  src='{{submit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{submit?"createJob":""}}'></image>
   </view>
   <view class='records'>
-    <button size='mini'  catchtap='toPlayRed'>玩转红包</button>
+     <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
+   
     <!-- <button size='mini' catchtap='toMarketing'>营销服务</button> -->
     <view style='margin:0 20rpx;color:#5c73a6;'>|</view>
-    <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
+  <!-- <button size='mini'  catchtap='toPlayRed'>玩转红包</button> -->
+  
+  <button size='mini'  catchtap='toRecord'>玩转红包</button>
   </view>
 
 </view>

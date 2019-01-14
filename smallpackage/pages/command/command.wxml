@@ -1,11 +1,16 @@
 <view class='container'>
   <!-- <view wx:if="{{leftInfos[leftInfos.length-1].contextId == 100}}" class='top'> -->
   <view class='top'>
-    <view class='write' catchtap='toCustomCommand'>
+    <!-- <view class='write' catchtap='toCustomCommand'>
       <image src='/images/13.png'></image>
       <view>向我们推荐你的口令</view>
     </view>
-    <view class='creator' catchtap='toCustomCommand1'>征集口令</view>
+    <view class='creator' catchtap='toCustomCommand1'>征集口令</view> -->
+     <view class='write' >
+      <image src='/images/13.png'></image>
+      <view>很抱歉此功能尚未开放</view>
+    </view>
+    <view class='creator' >创建口令</view>  
   </view>
 
   <!-- <view class='article {{leftInfos[leftInfos.length-1].contextId == 100?"article_1":""}}'> -->
@@ -27,10 +32,10 @@
           <view wx:if="{{changeId!=leftInfos[leftInfos.length-1].contextId}}" style='color:#5c73a6;font-size:26rpx;' catchtap='toCustomCommand'>找客服申请创建</view>
           <view  style='color:#5c73a6;font-size:26rpx;' catchtap='toCustomCommand'>点击申请创建</view>
         </view> -->
-        <view class='new_bottom' catchtap='toPasswd'>
+        <!-- <view class='new_bottom' catchtap='toPasswd'>
           <view>打开口令库，搜索更多</view>
           <image src="/images/58.png"></image>
-        </view>
+        </view> -->
 
         <view style="height:1rpx"></view>
       </scroll-view>
