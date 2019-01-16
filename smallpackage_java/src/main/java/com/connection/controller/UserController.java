@@ -23,11 +23,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.connection.dao.AdminDao;
+import com.connection.dao.BegJobDao;
 import com.connection.dao.DataDao;
 import com.connection.dao.InfoExampleDao;
 import com.connection.dao.JobDao;
 import com.connection.dao.VoiceRecordDao;
 import com.connection.entity.Admin;
+import com.connection.service.interfaces.BegJobService;
+import com.connection.service.interfaces.RedisService;
 import com.connection.service.interfaces.UserService;
 import com.connection.tool.HttpUtils;
 import com.connection.tool.Result;
@@ -56,9 +59,13 @@ public class UserController {
 	@Autowired
 	private AdminDao adminDao;
 	@Autowired
+	private RedisService redis;
+	@Autowired
 	private DataDao dataDao;
 	@Autowired
 	private JobDao jobDao;
+	@Autowired
+	private BegJobService begJobService;
 	@Autowired
 	private VoiceRecordDao voiceRecordDao;
 	@Autowired
@@ -539,7 +546,9 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String,Object>();
-			resInfo.put("commandImage", dataDao.getCommandImage(id));
+			
+			resInfo.put("commandImage", redis.getCommandImage(id));
+			redis.deleteCommandImage(id);//测试使用
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -560,7 +569,9 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String,Object>();
-			resInfo.put("voiceCommand", dataDao.getVoiceCommand(id));
+			
+			resInfo.put("voiceCommand", redis.getVoiceCommand(id));
+			redis.deleteVoiceCommand(id);//测试使用
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -568,5 +579,127 @@ public class UserController {
 		return result;
 	}
 	
+	/**
+	 * 获得视频口令例子
+	 * @param id 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getVedioCommand")
+	public Result getVedioCommand(@RequestParam("id") int id,HttpServletRequest request){
+		Result result = null;
+		Map<String,Object>resInfo = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String,Object>();
+			
+			resInfo.put("vedioCommand", redis.getVedioCommand(id));
+			redis.deleteVedioCommand(id);//测试使用
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
+	/**
+	 * 上传图片口令（地址还没改）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/loadBegCommandImage")
+	public Result loadBegCommandImage(@RequestParam("userId") int userId, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			file = ((MultipartHttpServletRequest) request).getFile("image");
+			input = file.getInputStream();// 获得文件输入流
+
+			resInfo.put("commandImage", begJobService.saveCommandImage(input, userId));
+		
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
+	}
+	/**
+	 * 上传语音口令（地址还没改）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/uploadVoiceCommand")
+	
+	public Result uploadVoiceCommand(@RequestParam("userId") int userId
+			, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+					file = ((MultipartHttpServletRequest) request).getFile("file");
+					input = file.getInputStream();// 获得文件输入流
+					
+				resInfo.put("voice", begJobService.saveVoice(input,  userId));
+						
+					
+				
+			
+			result.setObj(resInfo);
+		} catch (Exception e) {
+//			e.printStackTrace();
+			log.info("upload接口错误");
+		} finally {
+			resInfo = null;
+		}
+		return result;
+	}
+	
+	/**
+	 * 上传视频口令（地址还没改）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/loadBegVedio")
+	public Result loadBegVedio(@RequestParam("userId") int userId, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			file = ((MultipartHttpServletRequest) request).getFile("file");
+			input = file.getInputStream();// 获得文件输入流
+	
+			resInfo.put("vedio", begJobService.saveVedioCommand(input, userId));
+		
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
+	}
 }

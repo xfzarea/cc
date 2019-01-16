@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.connection.dao.BegJobDao;
+import com.connection.dao.DataDao;
 import com.connection.dao.JobDao;
 import com.connection.dao.VoiceRecordDao;
 import com.connection.service.interfaces.RedisService;
@@ -20,7 +22,11 @@ public class RedisServiceImpl implements RedisService {
 	@Autowired
 	private JobDao jobDao;
 	@Autowired
+	private BegJobDao begJobDao;
+	@Autowired
 	private VoiceRecordDao voiceRecordDao;
+	@Autowired
+	private DataDao dataDao;
 	
 	/**
 	 * 获得单一得job
@@ -34,6 +40,17 @@ public class RedisServiceImpl implements RedisService {
 		return jobDao.getJobById(id);//注意看，这是拿数据库
 	}
 	/**
+	 * 获得单一得begjob
+	 * @param id
+	 * @return
+	 * 
+	 * unless:当方法返回空值时，就不会被缓存起来,决定是否要否定方法缓存，可以用来做条件判断
+	 */
+	@Cacheable(value="begJob",key="'begJob'+#id",unless = "#result == null")
+	public HashMap<String,Object>getBegJobById(int id){
+		return begJobDao.getBegJobById(id);//注意看，这是拿数据库
+	}
+	/**
 	 * 获得自己得语音
 	 * @param userId
 	 * @param id
@@ -43,12 +60,42 @@ public class RedisServiceImpl implements RedisService {
 	public HashMap<String,Object>checkVoice(int userId,int id){
 		return voiceRecordDao.checkVoice(userId, id);
 	}
+
+	/**
+	 * 获得付讨包钱记录
+	 * @param userId
+	 * @param id
+	 * @return
+	 */
+	@Cacheable(value="begJobRecord",key="'begJobRecord,jobId:'+#jobId")
+	public List<HashMap<String,Object>>getRecord(int jobId){
+		return begJobDao.getRecord( jobId);
+	}
+	/**
+	 * 清除付讨包钱记录缓存
+	 * @param userId
+	 * @param id
+	 * @return
+	 */
+	@CacheEvict(value="begJobRecord",key="'begJobRecord,jobId:'+#jobId")
+	public void deleteRecord(int jobId){
+	
+	}
 	/**
 	 * 删除job得缓存
 	 * @param job
 	 */
-	@CacheEvict(value="job",key="'job'+#id")
+	@CacheEvict(value="Job",key="'job'+#id")
 	public void deleteRedisJob(int id){
+		
+	}
+	
+	/**
+	 * 删除begjob得缓存
+	 * @param job
+	 */
+	@CacheEvict(value="begJob",key="'BegJob'+#id")
+	public void deleteRedisBegJob(int id){
 		
 	}
 	/**
@@ -94,4 +141,69 @@ public class RedisServiceImpl implements RedisService {
 	public void deleteMineVoice(int userId, int jobId){
 		
 	}
+	/**
+	 * 获得数字
+	 */
+	
+	@Cacheable(value="lucky_number",key="'number'")
+	public List<String> getLuckyNumber() {
+		List<String> list =begJobDao.getLuckyNumber();
+
+		return list ;
+	}
+	/**
+	 * 删除数字
+	 */
+	@CacheEvict(value="lucky_number",key="'number'")
+	public void deleteLuckyNumber(){
+		
+	}
+
+	/**
+	 * 获得图片口令
+	 * @param id
+	 * @return
+	 * 
+	 * unless:当方法返回空值时，就不会被缓存起来,决定是否要否定方法缓存，可以用来做条件判断
+	 */
+	@Cacheable(value="CommandImage",key="'CommandImage'+#id",unless = "#result == null")
+	public List<HashMap<String,Object>> getCommandImage(int id){
+		return dataDao.getCommandImage(id);//注意看，这是拿数据库
+	}
+	/**
+	 * 获得图片口令
+	 * @param id
+	 * @return
+	 * 
+	 * unless:当方法返回空值时，就不会被缓存起来,决定是否要否定方法缓存，可以用来做条件判断
+	 */
+	@Cacheable(value="VoiceCommand",key="'VoiceCommand'+#id",unless = "#result == null")
+	public List<HashMap<String,Object>> getVoiceCommand(int id){
+		return dataDao.getVoiceCommand(id);//注意看，这是拿数据库
+	}
+	/**
+	 * 获得图片口令
+	 * @param id
+	 * @return
+	 * 
+	 * unless:当方法返回空值时，就不会被缓存起来,决定是否要否定方法缓存，可以用来做条件判断
+	 */
+	@Cacheable(value="VedioCommand",key="'VedioCommand'+#id",unless = "#result == null")
+	public List<HashMap<String,Object>> getVedioCommand(int id){
+		return dataDao.getVedioCommand(id);//注意看，这是拿数据库
+	}
+	//暂时没用到啊（别忘了）
+	@CacheEvict(value="CommandImage",key="'CommandImage'+#id")
+	public void deleteCommandImage(int id){
+		
+	}
+	@CacheEvict(value="VoiceCommand",key="'VoiceCommand'+#id")
+	public void deleteVoiceCommand(int id){
+		
+	}
+	@CacheEvict(value="VedioCommand",key="'VedioCommand'+#id")
+	public void deleteVedioCommand(int id){
+		
+	}
+	
 }

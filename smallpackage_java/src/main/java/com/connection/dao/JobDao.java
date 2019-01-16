@@ -30,4 +30,6 @@ public interface JobDao {
 	//修改是否推送消息的takepush，0应该是没推送过，1是推送了
 	void updateTakePush(int id);
 	void updateSharePic(@Param("shareUrl")String sharePic,@Param("id")int id);
+	
+
 }

@@ -3,41 +3,56 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="com.connection.dao.BegJobDao">
+   <!--  * -->
 	<insert id="addJob" parameterType="java.util.Map" keyProperty="id">
 		<selectKey keyProperty='id' resultType='int' order='AFTER'>
         	select LAST_INSERT_ID();
     	</selectKey>
-		INSERT INTO beg_job(userId,totalAward,award,totalCount,context,job_type,one_award)VALUE(#{userId},#{totalAward},
-		#{award},#{totalCount},#{context},#{job_type},#{one_award})
+		INSERT INTO beg_job(userId,totalAward,award,context,job_type)VALUE(#{userId},#{totalAward},
+		#{award},#{context},#{job_type})
 	</insert>
 	
-	<update id="payOver">
-		UPDATE beg_job SET transaction_id = #{transaction_id},out_trade_no=#{out_trade_no},version = version+1,state = 1 WHERE id = #{id} AND version = 0
-	</update>
-<!-- 	获得我发布得红包 -->
-	<select id="getMyPush" resultType="java.util.Map">
-		SELECT a.id,a.userId,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
-			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,a.state,b.nickName,b.avatarUrl FROM beg_job a
-		LEFT JOIN admin b ON a.userId = b.userId 
-			WHERE a.userId = #{userId} AND a.state IN(1,2,3)
+	<insert id="payOver">
+		insert into  beg_job_record(userId,transaction_id,out_trade_no,jobId)  values(#{userId},#{transaction_id},#{out_trade_no},#{jobId}) 
+	</insert>
+	
+<!-- 	获得我被讨得红包 -->
+	<select id="getMyBeggedPush" resultType="java.util.Map">
+		SELECT a.id,a.userId,a.award,a.context,
+			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl FROM beg_job a
+		LEFT JOIN admin b ON a.userId = b.userId
+			WHERE a.id = any(select jobId from beg_job_record c where c.userId=#{userId}) 
 			<if test="id!=0">
 				AND id &lt; #{id}
 			</if>
 			ORDER BY id DESC LIMIT 10
 	</select>
+	<!-- 	获得我讨得红包 -->
+	<select id="getMyBegPush" resultType="java.util.Map">
+		SELECT a.id,a.userId,a.award,a.context,
+			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl FROM beg_job a
+		LEFT JOIN admin b ON a.userId = b.userId 
+			WHERE a.userId = #{userId} 
+			<if test="id!=0">
+				AND id &lt; #{id}
+			</if>
+			ORDER BY id DESC LIMIT 10
+	</select>
+	
+	
 <!-- 	获得具体得红包 -->
-	<select id="getJobById" resultType="java.util.Map" parameterType="int">
-		SELECT a.id,a.userId,a.totalAward,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
-			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.state,a.headPic,
-			a.title,a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.`version`,a.wxchat_mark,a.pre_image,a.tweet,a.tweet_title,
-			a.job_type,a.one_award,b.nickName,b.avatarUrl FROM beg_job a
-		LEFT JOIN admin b ON a.userId = b.userId WHERE id = #{id} AND state != 0 AND a.totalAward &gt; a.award
+	<select id="getBegJobById" resultType="java.util.Map" parameterType="int">
+		SELECT a.id,a.userId,a.totalAward,a.award,a.context,
+			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.headPic,
+			a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.wxchat_mark,a.pre_image,a.tweet,a.tweet_title,
+			a.job_type,b.nickName,b.avatarUrl FROM beg_job a
+		LEFT JOIN admin b ON a.userId = b.userId WHERE id = #{id}  AND a.totalAward &gt; a.award
 	</select>
 <!-- 	支付回调 判断 -->
 	<select id="getJobById1" resultType="java.util.Map" parameterType="int">
-		SELECT a.id,a.userId,a.totalAward,a.award,a.alreadyAward,a.totalCount,a.alreadyCount,a.context,
+		SELECT a.id,a.userId,a.totalAward,a.award,a.alreadyAward,a.context,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.state,a.headPic,
-			a.title,a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.transaction_id FROM beg_job a
+			a.userName,a.skipAppid,a.skipUrl,a.shareUrl FROM beg_job a
 		 WHERE id = #{id} AND state = 0 AND version = 0
 	</select>
 <!-- 	判断语音是否可讲 -->
@@ -113,7 +128,66 @@
 			ORDER BY id DESC LIMIT 2
 	</select>
 <!-- 	保存分享图 -->
-	<update id="updateSharePic">
+	<update id="updateBegSharePic">
 		UPDATE beg_job SET shareUrl =#{shareUrl}  WHERE id =#{id}
 	</update>
+	
+	<select id="getLuckyNumber" resultType="String" >
+		SELECT number FROM lucky_number ;
+	
+	</select>
+	<insert id="addLuckyNumber" parameterType="double">
+	insert into lucky_number(number) values( #{number})
+	</insert>
+	
+	
+	<select id="getUserId">
+	select userId from admin where openId=#{openId}
+	
+	</select>
+	
+	<select id="getUserIdByJobId">
+	select userId from beg_job where id=#{jobId}
+	
+	</select>
+	<!-- 得到给讨付钱的人 -->
+	<select id="getRecord" parameterType="int" resultType="java.util.HashMap">
+	 SELECT a.userId,a.`nickName`,a.`avatarUrl`,c.state FROM admin a 
+	RIGHT JOIN beg_job_record c ON c.userId=a.`userId` WHERE
+	  jobId = #{jobId} AND state IN(0,1)
+	</select>
+	
+	<select id="getPaied" parameterType="int" resultType="java.util.HashMap">
+	 SELECT t.state,t.jobId,t.userId FROM beg_job_record t  WHERE
+	 userId = #{0}  AND jobId = #{1}
+	</select>
+	<update id="updataBegRecordState" parameterType="int">
+	update beg_job_record set state =1 where jobId=#{0} AND userId =#{1} AND state =0
+	
+	</update>
+	<insert id="insertCommandImage" >
+	insert into user_command_image(commandImagePath,userId) values(#{0},#{1})
+	</insert>
+	<insert id="insertVoiceCommand"  >
+	INSERT INTO user_command_voice(commandVoicePath,userId) VALUES(#{0},#{1})
+	</insert>
+	<insert id="insertVedioCommand"  >
+	insert into user_command_vedio(commandVedioPath,userId) values(#{0},#{1})
+	</insert>
+	
+	
+	
+	
+	
+	<insert id="sysCommandImage"  >
+	insert into command_image(commandImagePath,fatherId) values(#{0},#{1})
+	</insert>
+	<insert id="sysVedioCommand"  >
+	insert into vedio_command(vedioCommandPath,fatherId) values(#{0},#{1})
+	</insert>
+	<insert id="sysVoiceCommand"  >
+	insert into voice_command(voiceCommandPath,fatherId,context) values(#{0},#{1},#{2})
+	</insert>
+	
+	
 </mapper>

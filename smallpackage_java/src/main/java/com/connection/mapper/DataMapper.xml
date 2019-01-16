@@ -124,11 +124,14 @@
 		SELECT TIMESTAMPDIFF(SECOND,(SELECT createTime FROM ip_limit WHERE ip = #{ip} ORDER BY id DESC LIMIT 1),NOW()) AS second_limit
 	</select>
 	<!-- 这里还没号 -->
-		<select id="CommandImage" resultType="java.util.Map" parameterType="int">
-		SELECT * FROM info_example WHERE levelContextId = #{id}
+		<select id="getCommandImage" resultType="java.util.Map" parameterType="int">
+		SELECT * FROM command_image WHERE fatherId = #{id}
 	</select>
-		<select id="getCommand" resultType="java.util.Map" parameterType="int">
-		SELECT * FROM info_example WHERE levelContextId = #{id}
+		<select id="getVoiceCommand" resultType="java.util.Map" parameterType="int">
+		SELECT * FROM voice_command WHERE fatherId = #{id}
+	</select>
+	<select id="getVedioCommand" resultType="java.util.Map" parameterType="int">
+		SELECT * FROM vedio_command WHERE fatherId = #{id}
 	</select>
 	
 </mapper>

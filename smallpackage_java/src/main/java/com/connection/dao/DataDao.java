@@ -57,5 +57,7 @@ public interface DataDao {
 	List<HashMap<String,Object>>getCommandImage(int id);	
 	//得到语音口令
 	List<HashMap<String,Object>>getVoiceCommand(int id);
+	//得到视频口令
+		List<HashMap<String,Object>>getVedioCommand(int id);
 
 }

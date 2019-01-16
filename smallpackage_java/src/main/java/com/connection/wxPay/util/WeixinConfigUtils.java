@@ -22,7 +22,7 @@ public class WeixinConfigUtils {
 	public static String appid;//应用ID，微信开放平台审核通过的应用APPID
 	public static String mch_id;//商户号，微信支付分配的商户号
 	public static String notify_url;//通知地址，接收微信支付异步通知回调地址，通知URL必须为直接可访问的URL，不能携带参数
-
+	public static String beg_notify_url;//通知地址，接收微信支付异步通知回调地址，通知URL必须为直接可访问的URL，不能携带参数
 	static {
 		/*ResourceBundle bundle = ResourceBundle.getBundle("resources/sys");
 		appid = bundle.getString("appid");
@@ -37,6 +37,7 @@ public class WeixinConfigUtils {
 			appid = properties.getProperty("appid");
 			mch_id = properties.getProperty("mch_id");
 			notify_url = properties.getProperty("notify_url");
+			beg_notify_url = properties.getProperty("beg_notify_url");
 		}catch(Exception ex){
 			log.debug("加载配置文件："+ex.getMessage());
 		}

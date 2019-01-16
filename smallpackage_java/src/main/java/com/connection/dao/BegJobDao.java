@@ -9,11 +9,17 @@ import org.apache.ibatis.annotations.Param;
 public interface BegJobDao {
 	//增加job数据
 	void addJob(Map<String,Object>param);
-	void payOver(@Param("transaction_id")String transaction_id,
-			@Param("out_trade_no")String out_trade_no,@Param("id")int id);
-	//	获得我发布得红包 
-	List<HashMap<String,Object>>getMyPush(@Param("userId")int userId,@Param("id")int id);
-	HashMap<String,Object>getJobById(int id);
+
+	
+	int payOver(@Param("transaction_id")String transaction_id,
+			@Param("out_trade_no")String out_trade_no,@Param("jobId")int id,@Param("userId")int userId);
+//	获得我被讨或讨的
+	List<HashMap<String,Object>>getMyBegPush(@Param("userId")int userId,@Param("id")int id);
+	List<HashMap<String,Object>>getMyBeggedPush(@Param("userId")int userId,@Param("id")int id);
+	
+	//通过job查询用户
+	
+	HashMap<String,Object>getBegJobById(int id);
 	HashMap<String,Object>getJobById1(int id);
 	//<!-- 	判断语音是否可讲 -->
 	HashMap<String,Object>getJobById2(int id);
@@ -29,5 +35,28 @@ public interface BegJobDao {
 	List<HashMap<String,Object>>pushTimeDue();
 	//修改是否推送消息的takepush，0应该是没推送过，1是推送了
 	void updateTakePush(int id);
-	void updateSharePic(@Param("shareUrl")String sharePic,@Param("id")int id);
+	void updateBegSharePic(@Param("shareUrl")String sharePic,@Param("id")int id);
+	//用户自定义上传
+	int insertCommandImage(String commandImagePath,int userId);
+	int insertVoiceCommand(String commandVoicePath,int userId);
+	int insertVedioCommand(String commandVedioPath,int userId);
+	//sys上传
+	int sysCommandImage(String commandImagePath, int fatherId);
+	int sysVedioCommand(String commandImagePath, int fatherId);
+	int sysVoiceCommand(String commandImagePath, int fatherId,String context);
+	
+	
+	public List<String> getLuckyNumber();
+	public int addLuckyNumber(Double number);
+	
+	public int getUserId(String openId);
+	
+	public int getUserIdByJobId(int jobId);
+	
+	
+	List<HashMap<String,Object>>getRecord( int jobId);
+	
+	HashMap<String,Object> getPaied(int userId, int jobId);
+	
+	int updataBegRecordState(int jobId,int userId);
 }

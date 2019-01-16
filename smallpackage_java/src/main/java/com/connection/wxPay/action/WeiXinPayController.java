@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -222,9 +223,10 @@ public class WeiXinPayController {
 		JSONObject json = new JSONObject();
 		try {
 			//得到三个参数，总金额（包含服务费），红包总金额，总条数
-			double totalAward = Double.parseDouble(getParams.get("totalAward"));
+			double totalAward = Double.parseDouble(getParams.get("award"))*0.02+Double.parseDouble(getParams.get("award"));
+			getParams.put("totalAward",  totalAward+"");
 			double award = Double.parseDouble(getParams.get("award"));
-			int count = Integer.parseInt(getParams.get("totalCount"));
+		
 			boolean flag = true;
 			if (totalAward < award || award < 0 || totalAward < 0) {
 				flag = false;
@@ -232,6 +234,50 @@ public class WeiXinPayController {
 			if (flag) {
 				
 				int jobId = begJobService.addJob(getParams);//把job信息添加到数据库，返回的jobid
+				
+						json.put("jobId", jobId);
+						
+						out.print(json.toString());
+
+					
+				} else {
+
+					out.print("chuangjiancuowu");
+				}
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
+	}
+	//返回预付单
+	@RequestMapping("/payBegJob")
+	public void weixinGeneratepayBegOrder(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam Map<String, String> getParams) throws IOException {
+		PrintWriter out = null;
+		out = response.getWriter();
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		JSONObject json = new JSONObject();
+		try {
+			//得到三个参数，总金额（包含服务费），红包总金额，总条数
+			double totalAward = Double.parseDouble(getParams.get("totalAward"));
+			double award = Double.parseDouble(getParams.get("award"));
+			int jobId=Integer.parseInt(getParams.get("jobId"));
+			int userId=Integer.parseInt(getParams.get("userId"));
+			HashMap<String,Object> cc =begJobDao.getPaied(userId, jobId);
+			if(cc!=null) {
+				out.print("niwanguole");
+				return;
+			}
+			boolean flag = true;
+			if (totalAward < award || award < 0 || totalAward < 0) {
+				flag = false;
+			}
+			if (flag) {
+				
 				WeixinConfigUtils config = new WeixinConfigUtils();
 				// 参数组 需要客户端传过来的数据有：商品信息 商品描述 商品金额 充值类型 充值账号
 				String appid = config.appid;// 应用ID
@@ -249,7 +295,7 @@ public class WeiXinPayController {
 														// 用户端实际ip
 				String time_start = RandCharsUtils.timeStart();// 交易起始时间
 				String time_expire = RandCharsUtils.timeExpire();// 交易结束时间
-				String notify_url = config.notify_url;// 通知地址
+				String notify_url = config.beg_notify_url;// 通知地址
 														// 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
 				String trade_type = "JSAPI";// 交易类型 支付类型(小程序)
 
@@ -439,6 +485,7 @@ public class WeiXinPayController {
 					}
 					job = null;
 				}
+				
 			} else {// 验证失败
 				response.getWriter().println("fail");
 				log.info("失敗");
@@ -451,6 +498,91 @@ public class WeiXinPayController {
 		}
 	}
 
+	/**
+	 * beg微信支付 （通知地址、回调）
+	 */
+	@RequestMapping("/weixinConfirmPayBeg")
+	public void weixinConfirmPayBeg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+
+		InputStream in = request.getInputStream();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		while ((len = in.read(buffer)) != -1) {
+			out.write(buffer, 0, len);
+		}
+		out.close();
+		in.close();
+		try {
+			String msgxml = new String(out.toByteArray(), "utf-8");// xml数据
+			log.info("返回的xml数据为=" + msgxml);
+			Map map = ParseXMLUtils.jdomParseXml(msgxml);// 解析xml数据
+			log.info("解析返回的xml数据得到=" + map);
+			String return_code = map.get("return_code").toString();
+			String result_code = (String) map.get("result_code");
+			String appid = map.get("appid").toString();
+			String mch_id = map.get("mch_id").toString();
+			String nonce_str = map.get("nonce_str").toString();
+			String sign = (String) map.get("sign");
+			String openid = map.get("openid").toString();
+			String trade_type = map.get("trade_type").toString();
+			String bank_type = map.get("bank_type").toString();
+			String total_fee = (String) map.get("total_fee");
+			String fee_type = map.get("fee_type").toString();
+			String cash_fee = map.get("cash_fee").toString();
+			String transaction_id = map.get("transaction_id").toString();
+			String out_trade_no = (String) map.get("out_trade_no");
+			Double amount = Double.parseDouble(total_fee) / 100;// 获取订单金额
+			String attach = (String) map.get("attach");
+
+			String is_subscribe = map.get("is_subscribe").toString();
+			String sn = out_trade_no.split("\\|")[0];// 获取订单编号
+			String time_end = map.get("time_end").toString();
+
+			// 验证签名
+			if (result_code.equals("SUCCESS")) {
+				SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
+				packageParams.put("appid", appid);
+				packageParams.put("attach", attach);
+				packageParams.put("bank_type", bank_type);
+				packageParams.put("cash_fee", cash_fee);
+				packageParams.put("fee_type", fee_type);
+				packageParams.put("is_subscribe", is_subscribe);
+				packageParams.put("mch_id", mch_id);
+				packageParams.put("nonce_str", nonce_str);
+				packageParams.put("openid", openid);
+				packageParams.put("out_trade_no", out_trade_no);
+				packageParams.put("result_code", result_code);
+				packageParams.put("return_code", return_code);
+				packageParams.put("time_end", time_end);
+				packageParams.put("total_fee", total_fee);
+				packageParams.put("trade_type", trade_type);
+				packageParams.put("transaction_id", transaction_id);
+				String endsign = WXSignUtils.createSign("UTF-8", packageParams);
+				if (endsign.equals(sign)) {
+					Map<String, Object> job =begJobDao.getJobById1(Integer.parseInt(attach));
+					if ((double) job.get("totalAward") > (double) job.get("award")) {// 在做一波处理
+						int userId =begJobService.getUserId(openid);
+						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach),userId,(double) job.get("award"));
+						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
+					}
+					job = null;
+				}
+				
+			} else {// 验证失败
+				response.getWriter().println("fail");
+				log.info("失敗");
+			}
+		} catch (Exception e) {
+			response.getWriter().print("fail");
+			log.info("系统错误");
+			log.info(e);
+			throw new RuntimeException(e);
+		}
+	}
 	/**
 	 * 微信退款 url回调
 	 * 

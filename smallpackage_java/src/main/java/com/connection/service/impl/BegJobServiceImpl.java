@@ -42,7 +42,7 @@ import com.connection.xunfei.yuyintingxie.TestWebIat;
 public class BegJobServiceImpl implements BegJobService {
 	public static Logger log = Logger.getLogger(BegJobServiceImpl.class);
 	@Autowired
-	private BegJobDao jobDao;
+	private BegJobDao begjobDao;
 	@Autowired
 	private VoiceRecordDao voiceRecordDao;
 	@Autowired
@@ -77,11 +77,9 @@ public class BegJobServiceImpl implements BegJobService {
 		job.put("userId", Integer.parseInt(param.get("userId")));
 		job.put("totalAward", Double.parseDouble(param.get("totalAward")));
 		job.put("award", Double.parseDouble(param.get("award")));
-		job.put("totalCount", Integer.parseInt(param.get("totalCount")));
 		job.put("context", param.get("context"));
 		job.put("job_type", Integer.parseInt(param.get("job_type")));
-		job.put("one_award", Double.parseDouble(param.get("one_award")));
-		jobDao.addJob(job);
+		begjobDao.addJob(job);
 		int id = (Integer) job.get("id");
 		param = null;
 		job = null;
@@ -89,186 +87,30 @@ public class BegJobServiceImpl implements BegJobService {
 	}
 
 	@Transactional
-	public void payOver(String transaction_id, String out_trade_no, int id) {
-		jobDao.payOver(transaction_id, out_trade_no, id);
-	}
-
-	/**
-	 * 保存录音文件并且得到内容
-	 * 
-	 * @param input
-	 * @throws IOException
-	 */
-	public synchronized String saveVedio(InputStream input, int id, int userId, int second) throws IOException {
-		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
-		OutputStream os = null;
-		File file = null;
-		InputStream fileInput = null;
-		int len;
-		Map<String, Object> job = null;
-		String result = "";
-		WeixinMoney w = null;
-		Map<String, Object> returnParam = null;
-		String appid = "5bda9a52";
-		String secret = "d2b3b2eec6cc60760c783472ef1b30f8";
-		try {
-			//输出到MP3文件
-			byte[] bs = new byte[1024];
-			String inputFilePath = dedioPath + name + ".mp3";
-			os = new FileOutputStream(inputFilePath);
-			while ((len = input.read(bs)) != -1) {
-				os.write(bs, 0, len);
+	public void payOver(String transaction_id, String out_trade_no, int jobId,int  userId,double award) {
+		int cc= 0;
+		cc=	begjobDao.payOver(transaction_id, out_trade_no, jobId, userId);
+		
+		if(cc==1) {
+			redis.deleteRecord(jobId);
+			int fauserId =begjobDao.getUserIdByJobId(jobId);
+			Map<String,Object>admin = adminDao.getUserById(fauserId);
+			int num = adminDao.checkVersion(fauserId, (Integer)admin.get("money_version"));
+			if(num == 1){
+				adminDao.modifyMoney(award, fauserId);
+				
+			}else if(num == 0){
+				//失败
+				log.info("给到用户钱出问题了");
 			}
-			//格式转换
-			String outputFilePath = dedioPath + name + ".wav";
-			boolean flag = Util.Mp3ToWav(inputFilePath, outputFilePath);
-
-			String dataPath = "https://static.yaohoudy.com/static/vedio/" + name + ".wav";// 数据库位置
-			String ossSavePath = "static/vedio/" + name + ".wav";// oss保存路径
-			if (flag) {
-				//拿到讯飞的账号
-				Map<String, Object> xunfei = dataDao.getXunfei();
-				if (xunfei != null) {
-					appid = (String) xunfei.get("appid");
-					secret = (String) xunfei.get("secret");
-					//讯飞inCount + 1
-					dataDao.updateXunfei((int) xunfei.get("id"));
-				}
-				String data = TestWebIat.parse(outputFilePath, appid, secret);// 得到语音中得内容
-																				// 拼音
-				job = redis.getJobById(id);// 乐观锁
-				log.info("jobService中缓存得job:"+job);
-				if (job.get("alreadyAward") == job.get("award") && job.get("totalCount") == job.get("alreadyCount")) {// 说明没有机会了
-					result = "haveNoChance";
-				} else if (job.get("alreadyCount") != job.get("award")
-						&& job.get("totalCount") != job.get("alreadyCount")) {// 成功
-					String rightAnswer = (String) job.get("context");
-					//把数据库中的context变成拼音
-					rightAnswer = PinYinUtil.getFullSpell(rightAnswer);
-
-					double num = EqualStr.getSimilarityRatio(data, rightAnswer);// 准确率
-
-					
-					file = new File(outputFilePath);// 保存文件以及改变数据
-					fileInput = new FileInputStream(file);
-					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
-					fileInput.close();
-					//查询语音信息并放入缓存中
-					Map<String, Object> voice = redis.checkVoice(userId, id);
-					log.info("jobService中缓存得voice:"+voice);
-					if (num >= 80 && voice == null) {// 代表通过
-						int people = (int) job.get("totalCount") - (int) job.get("alreadyCount");
-						double award = 0.00;
-						int job_type = (Integer) job.get("job_type");
-						double money = 0.00;
-						double money1 = 0.00;
-						if (job_type == 0) {//0是拼手气
-							money = (Double) job.get("award") - (Double) job.get("alreadyAward");
-							money1 = money - Double.parseDouble(String.format("%.2f", 0.29 * people));// 保证
-																												// 领取的红包
-																												// 在0.3元以上
-							if (money1 > 0) {
-								//这是算法参数的构造器，new
-								w = new WeixinMoney(people, money1);
-								//使用算法，因为至少得出0.01，所以加上0.29肯定在0.3之上
-								award = WeixinMoney.getMoney(w) + 0.29;
-							} else {
-								return "error";
-							}
-						} else if (job_type == 1) {//job_type =1是普通
-							award = (Double) job.get("one_award");
-						}
-						
-						if (award > 0) {
-							result = saveVoice(userId, id, dataPath, award, num, 0, second,(Integer) job.get("version"), "success");// 成功得代表
-							if (result.indexOf("success") != -1) {// 代表乐观锁起作用了(通过)
-								if (people == 1 && (int) job.get("state") == 1) {
-									jobDao.updateState(2, id);//设置红包已完成
-									// 消息推送 红包已完成
-									returnParam = dataDao.getFormid(userId);	//查询 user_formid.id,user_formid.formid,user_formid.userId,admin.openid，
-																				//根据 userId 、state 、TIMESTAMPDIFF(HOUR,insertTime,NOW()) &lt; 167 LIMIT 1（插入到现在的时间小于167个小时）
-									if (returnParam != null) {
-										String msg = Util.getMsg(returnParam, job, 2);
-										userService.sendMsg(msg);
-										dataDao.updateState((int) returnParam.get("id"));//更新user_formid表的state变成1，根据id
-									}
-								}
-							}
-						}
-					} else {// 代表不通过
-						result = saveVoice(userId, id, dataPath, 0.00, num, 1, second, (Integer) job.get("version"),
-								"fail");// 失败得代表;
-					}
-					voice = null;
-
-				} else {
-					result = "error";
-				}
-
-				// 删除本地两个文件
-				file = new File(inputFilePath);
-				file.delete();
-				file = new File(outputFilePath);
-				file.delete();
-
-			}
-
-		} catch (Exception e) {
-//			e.printStackTrace();
-			log.info("upload内部方法报错");
-		} finally {
-			os.close();
-			input.close();
-			file = null;
-			job = null;
-			w = null;
-			returnParam = null;
 		}
-		return result;
+	    
 	}
+
 	
 	
-	/**
-	 * 读完 正确之后开始保存
-	 */
-	public String saveVoice(int userId, int jobId, String voicePath, double award, double rate, int state, int second,
-			int version, String code) {
-		Map<String, Object> voice = new HashMap<String, Object>();
-		redis.deleteMineVoice(userId,jobId);//删除缓存
-		String result = "";
-		String id = "";
-		voice.put("userId", userId);
-		voice.put("jobId", jobId);
-		voice.put("voice_path", voicePath);
-		voice.put("award", award);
-		voice.put("rate", rate);
-		voice.put("state", state);
-		voice.put("second", second);
-		if ("success".equals(code)) {
-			int num = jobDao.modifyCount(award, jobId, version);//这个sql语句使用了乐观锁（version），//一个人抢走红包之后，跟新红包信息
-			if (num != 0) {// 表示可行
-				adminDao.modifyMoney(award, userId);//根据用户id，menoy增加award的钱
-				voiceRecordDao.saveVoice(voice);//插入语音信息到语音表，并插入主键信息到voice
-				redis.deleteVoiceRedis(userId, jobId);//删除语音缓存
-				redis.deleteRedisJob(jobId);//删除红包缓存
-				id = voice.get("id") + "";
-				result = "success," + id;
-			} else {
-				voice.put("award", 0);
-				voice.put("state", 1);//这里是语音表中的state，1是没抢成功的语音状态，0是成功的
-				voice.put("rate", 79);
-				voiceRecordDao.saveVoice(voice);//插入语音信息到语音表，，并插入主键信息到voice
-				id = voice.get("id") + "";
-				result = "fail," + id;
-			}
-		} else {
-			voiceRecordDao.saveVoice(voice);//插入语音信息到语音表，，并插入主键信息到voice
-			id = voice.get("id") + "";
-			result = "fail," + id;
-		}
-		voice = null;
-		return result;
-	}
+	
+	
 	
 	/**
 	 * 保存证书//voice表
@@ -297,18 +139,337 @@ public class BegJobServiceImpl implements BegJobService {
 	 * @return
 	 */
 	@Transactional
-	public String saveSharePic(InputStream input, int id) {
+	public String saveBegSharePic(InputStream input, int id) {
 		String name = System.currentTimeMillis() + "";
 		String dataPath = "";
 		try {
 			String ossSavePath = "static/sharePic/" + name + ".png";// oss保存路径
 			dataPath = "https://static.yaohoudy.com/static/sharePic/" + name + ".png";// 数据库位置
 			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, input);
-			jobDao.updateSharePic(dataPath, id);
+			begjobDao.updateBegSharePic(dataPath, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dataPath;
 	}
 
+	@Override
+	public int getUserId(String openId) {
+		// TODO Auto-generated method stub
+		return begjobDao.getUserId(openId);
+		
+		
+	
+	}
+	
+	/**
+	 * 保存图片口令
+	 * 
+	 * @return
+	 */
+	@Transactional
+	public String saveCommandImage(InputStream input, int userId) {
+		String name = System.currentTimeMillis() + "";
+		String dataPath = "";
+		try {
+			String ossSavePath = "static/sharePic/" + name + ".png";// oss保存路径
+			dataPath = "https://static.yaohoudy.com/static/sharePic/" + name + ".png";// 数据库位置
+			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, input);
+			begjobDao.insertCommandImage(dataPath, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dataPath;
+	}
+	/**
+	 * 上传语音口令
+	 * 
+	 * @param input
+	 * @throws IOException
+	 */
+	public synchronized String  saveVoice(InputStream input, int userId) throws IOException {
+		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
+		OutputStream os = null;
+		File file = null;
+		InputStream fileInput = null;
+		int len;
+		Map<String, Object> job = null;
+		String result = "";
+		WeixinMoney w = null;
+		Map<String, Object> returnParam = null;
+		String appid = "5bda9a52";
+		String secret = "d2b3b2eec6cc60760c783472ef1b30f8";
+		String dataPath=null;
+		try {
+			//输出到MP3文件
+			byte[] bs = new byte[1024];
+			String inputFilePath = dedioPath + name + ".mp3";
+			os = new FileOutputStream(inputFilePath);
+			while ((len = input.read(bs)) != -1) {
+				os.write(bs, 0, len);
+			}
+			//格式转换
+			String outputFilePath = dedioPath + name + ".wav";
+			boolean flag = Util.Mp3ToWav(inputFilePath, outputFilePath);
+
+			 dataPath = "https://static.yaohoudy.com/static/vedio/" + name + ".wav";// 数据库位置
+			String ossSavePath = "static/vedio/" + name + ".wav";// oss保存路径
+					file = new File(outputFilePath);// 保存文件以及改变数据
+					
+					fileInput = new FileInputStream(file);
+					begjobDao.insertVoiceCommand(dataPath,userId);// 成功得代表
+					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
+					fileInput.close();
+
+					
+					
+				
+
+				
+
+				// 删除本地两个文件
+				file = new File(inputFilePath);
+				file.delete();
+				file = new File(outputFilePath);
+				file.delete();
+
+			
+
+		} catch (Exception e) {
+//			e.printStackTrace();
+			log.info("upload内部方法报错");
+		} finally {
+			os.close();
+			input.close();
+			file = null;
+			job = null;
+			w = null;
+			returnParam = null;
+		}
+		return dataPath;
+	}
+	/**
+	 * 上传视频口令
+	 * 
+	 * @param input
+	 * @throws IOException
+	 */
+	public synchronized String saveVedioCommand(InputStream input, int userId) throws IOException {
+		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
+		OutputStream os = null;
+		File file = null;
+		InputStream fileInput = null;
+		int len;
+		Map<String, Object> job = null;
+		String result = "";
+		WeixinMoney w = null;
+		Map<String, Object> returnParam = null;
+		String appid = "5bda9a52";
+		String secret = "d2b3b2eec6cc60760c783472ef1b30f8";
+		String dataPath=null;
+		try {
+			//输出到MP3文件
+			byte[] bs = new byte[1024];
+			String inputFilePath = dedioPath + name + ".mp4";
+			os = new FileOutputStream(inputFilePath);
+			while ((len = input.read(bs)) != -1) {
+				os.write(bs, 0, len);
+			}
+			//格式转换
+			String outputFilePath = dedioPath + name + ".mp4";
+			boolean flag = Util.Mp3ToWav(inputFilePath, outputFilePath);
+
+			 dataPath = "https://static.yaohoudy.com/static/vedio/" + name + ".mp4";// 数据库位置
+			String ossSavePath = "static/vedio/" + name + ".mp4";// oss保存路径
+					file = new File(outputFilePath);// 保存文件以及改变数据
+					fileInput = new FileInputStream(file);
+				 begjobDao.insertVedioCommand(dataPath,userId);// 成功得代表
+					
+					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
+				
+					
+					
+
+					fileInput.close();
+					
+				// 删除本地两个文件
+				file = new File(inputFilePath);
+				file.delete();
+				file = new File(outputFilePath);
+				file.delete();
+
+			
+
+		} catch (Exception e) {
+//			e.printStackTrace();
+			log.info("upload内部方法报错");
+		} finally {
+			os.close();
+			input.close();
+			file = null;
+			job = null;
+			w = null;
+			returnParam = null;
+		}
+		return dataPath;
+	}
+	
+
+	
+	
+	
+	
+	
+	/**
+	 * 保存sys图片口令
+	 * 
+	 * @return
+	 */
+	@Transactional
+	public String saveSysCommandImage(InputStream input, int fatherId) {
+		String name = System.currentTimeMillis() + "";
+		String dataPath = "";
+		try {
+			String ossSavePath = "static/sharePic/" + name + ".png";// oss保存路径
+			dataPath = "https://static.yaohoudy.com/static/sharePic/" + name + ".png";// 数据库位置
+			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, input);
+			begjobDao.sysCommandImage(dataPath, fatherId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dataPath;
+	}
+	/**
+	 * 上传sys视频口令
+	 * 
+	 * @param input
+	 * @throws IOException
+	 */
+	public synchronized String saveSysVedioCommand(InputStream input, int userId) throws IOException {
+		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
+		OutputStream os = null;
+		File file = null;
+		InputStream fileInput = null;
+		int len;
+		Map<String, Object> job = null;
+		String result = "";
+		WeixinMoney w = null;
+		Map<String, Object> returnParam = null;
+		String appid = "5bda9a52";
+		String secret = "d2b3b2eec6cc60760c783472ef1b30f8";
+		String dataPath=null;
+		try {
+			//输出到MP3文件
+			byte[] bs = new byte[1024];
+			String inputFilePath = dedioPath + name + ".mp4";
+			os = new FileOutputStream(inputFilePath);
+			while ((len = input.read(bs)) != -1) {
+				os.write(bs, 0, len);
+			}
+			//格式转换
+			String outputFilePath = dedioPath + name + ".mp4";
+			boolean flag = Util.Mp3ToWav(inputFilePath, outputFilePath);
+
+			 dataPath = "https://static.yaohoudy.com/static/vedio/" + name + ".mp4";// 数据库位置
+			String ossSavePath = "static/vedio/" + name + ".mp4";// oss保存路径
+					file = new File(outputFilePath);// 保存文件以及改变数据
+					fileInput = new FileInputStream(file);
+				 begjobDao.sysVedioCommand(dataPath,userId);// 成功得代表
+					
+					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
+				
+					
+					
+
+					fileInput.close();
+					
+				// 删除本地两个文件
+				file = new File(inputFilePath);
+				file.delete();
+				file = new File(outputFilePath);
+				file.delete();
+
+			
+
+		} catch (Exception e) {
+//			e.printStackTrace();
+			log.info("upload内部方法报错");
+		} finally {
+			os.close();
+			input.close();
+			file = null;
+			job = null;
+			w = null;
+			returnParam = null;
+		}
+		return dataPath;
+	}
+	/**
+	 * 上传sys语音口令
+	 * 
+	 * @param input
+	 * @throws IOException
+	 */
+	public synchronized String  saveSysVoice(InputStream input, int userId,String context) throws IOException {
+		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
+		OutputStream os = null;
+		File file = null;
+		InputStream fileInput = null;
+		int len;
+		Map<String, Object> job = null;
+		String result = "";
+		WeixinMoney w = null;
+		Map<String, Object> returnParam = null;
+		String appid = "5bda9a52";
+		String secret = "d2b3b2eec6cc60760c783472ef1b30f8";
+		String dataPath=null;
+		try {
+			//输出到MP3文件
+			byte[] bs = new byte[1024];
+			String inputFilePath = dedioPath + name + ".mp3";
+			os = new FileOutputStream(inputFilePath);
+			while ((len = input.read(bs)) != -1) {
+				os.write(bs, 0, len);
+			}
+			//格式转换
+			String outputFilePath = dedioPath + name + ".wav";
+			boolean flag = Util.Mp3ToWav(inputFilePath, outputFilePath);
+
+			 dataPath = "https://static.yaohoudy.com/static/vedio/" + name + ".wav";// 数据库位置
+			String ossSavePath = "static/vedio/" + name + ".wav";// oss保存路径
+					file = new File(outputFilePath);// 保存文件以及改变数据
+					
+					fileInput = new FileInputStream(file);
+					begjobDao.sysVoiceCommand(dataPath,userId,context);// 成功得代表
+					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
+					fileInput.close();
+
+					
+					
+				
+
+				
+
+				// 删除本地两个文件
+				file = new File(inputFilePath);
+				file.delete();
+				file = new File(outputFilePath);
+				file.delete();
+
+			
+
+		} catch (Exception e) {
+//			e.printStackTrace();
+			log.info("upload内部方法报错");
+		} finally {
+			os.close();
+			input.close();
+			file = null;
+			job = null;
+			w = null;
+			returnParam = null;
+		}
+		return dataPath;
+	}
+	
 }

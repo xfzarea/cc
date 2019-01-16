@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.connection.dao.BegJobDao;
 import com.connection.dao.DataDao;
 import com.connection.dao.JobDao;
 import com.connection.dao.VoiceRecordDao;
+import com.connection.service.interfaces.BegJobService;
 import com.connection.service.interfaces.JobService;
 import com.connection.service.interfaces.RedisService;
 import com.connection.tool.Result;
@@ -31,6 +33,10 @@ public class JobController {
 	private JobDao jobDao;
 	@Autowired
 	private JobService jobService;
+	@Autowired
+	private BegJobService begJobService;
+	@Autowired
+	private BegJobDao begJobDao;
 	@Autowired
 	private DataDao dataDao;
 	@Autowired
@@ -70,6 +76,39 @@ public class JobController {
 		}
 		return result;
 	}
+	
+	/**
+	 * 获得讨或者被讨的红包（begrecord）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getBegRecordData")
+	public Result getBegCommand(@RequestParam("id") int id, @RequestParam("userId") int userId,
+			@RequestParam("tabId") int tabId) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			if (tabId == 0) {
+				//我讨的
+				resInfo.put("jobs", begJobDao.getMyBegPush(userId, id));
+			} else {
+				//我被讨的
+				resInfo.put("jobs", begJobDao.getMyBeggedPush(userId, id));
+			}
+
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+	}
 
 	/**
 	 * 获得具体得红包信息（先从缓存，没有从数据库拿）
@@ -96,6 +135,35 @@ public class JobController {
 		}
 		return result;
 	}
+	
+	
+	/**
+	 * 获得具体得tao红包信息（先从缓存，没有从数据库拿）
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/toBegPackage")
+	public Result getBegJobById(@RequestParam("id") int id) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+		
+			resInfo.put("job", redis.getBegJobById(id));
+			resInfo.put("begJobRecord", redis.getRecord(id));
+			//redis.deleteRecord(id);
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+	}
+	
 
 	/**
 	 * 上传录音文件
@@ -151,7 +219,6 @@ public class JobController {
 		return result;
 	}
 
-	
 	
 	/**
 	 * 获得该任务下面得所有语音
@@ -224,7 +291,7 @@ public class JobController {
 	}
 
 	/**
-	 * 上传红包分享图
+	 * 上传红包分享图（job）
 	 * 
 	 * @param id
 	 * @param request
@@ -252,24 +319,28 @@ public class JobController {
 		}
 		return result;
 	}
-
 	/**
-	 * 福利界面
+	 * 上传红包分享图(beg表)
 	 * 
 	 * @param id
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/getTimerJob")
-	public Result getTimerJob(@RequestParam("id") int id, @RequestParam("userId") int userId) {
+	@RequestMapping("/loadBegSharePic")
+	public Result loadBegSharePic(@RequestParam("id") int id, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
-			resInfo.put("jobs", redis.cachTimerJob(id));
-			resInfo.put("apps", dataDao.getApps());
+			file = ((MultipartHttpServletRequest) request).getFile("image");
+			input = file.getInputStream();// 获得文件输入流
+
+			resInfo.put("sharePic", begJobService.saveBegSharePic(input, id));
+			redis.deleteRedisBegJob(id);
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -277,5 +348,97 @@ public class JobController {
 			resInfo = null;
 		}
 		return result;
+	}
+
+//	/**
+//	 * 福利界面
+//	 * 
+//	 * @param id
+//	 * @param request
+//	 * @return
+//	 */
+//	@ResponseBody
+//	@RequestMapping("/getTimerJob")
+//	public Result getTimerJob(@RequestParam("id") int id, @RequestParam("userId") int userId) {
+//		Result result = null;
+//		Map<String, Object> resInfo = null;
+//		try {
+//			result = Result.successResult();
+//			resInfo = new HashMap<String, Object>();
+//			resInfo.put("jobs", redis.cachTimerJob(id));
+//			resInfo.put("apps", dataDao.getApps());
+//			result.setObj(resInfo);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			resInfo = null;
+//		}
+//		return result;
+//	}
+	/**
+	 * 获得吉利数值
+	 */
+	@ResponseBody
+	@RequestMapping("/getLuckyNumber")
+	public Result  getLuckyNumber() {
+		Result result=null;
+		List<String> number= redis.getLuckyNumber();
+		result = Result.successResult();
+		result.setObj(number);
+		
+		return result;
+		
+	}
+	/**
+	 * 添加吉利数值
+	 */
+	@ResponseBody
+	@RequestMapping("/addLuckyNumber")
+	public Result  addLuckyNumber(@RequestParam("number")String number) {
+		Result result=null;
+		ArrayList<String> list =(ArrayList<String>) redis.getLuckyNumber();
+		if(list.contains(number)) {
+			result=Result.errorResult();
+			result.setMsg("已存在该数字");
+			return result;
+		}
+	
+		 if(Double.parseDouble(number)<=200) {
+		int cc =begJobDao.addLuckyNumber( Double.parseDouble(number));
+		if(cc==1) {
+		result = Result.successResult();
+		redis.deleteLuckyNumber();
+		
+		}else {
+			result=Result.errorResult();
+			result.setMsg("数据库操作失败");
+		}
+		 }else {
+			 result=Result.errorResult();
+			 result.setMsg("金额大于200");
+		 }
+		return result;
+		
+	}
+	/**
+	 * 修改答谢状态
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping("/thanks")
+	public Result thanks(@RequestParam("id")int id,@RequestParam("userId")int userId ) {
+		Result result=null;
+	
+		 int cc =begJobDao.updataBegRecordState(id,userId);
+		if(cc==1) {
+			redis.deleteRecord(id);
+			result = Result.successResult();
+		}else {
+			result = Result.errorResult();
+		}
+		
+		
+		return result;
+		
 	}
 }

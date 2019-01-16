@@ -1,28 +1,34 @@
 package com.connection.controller;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.connection.dao.SysAdminDao;
 import com.connection.entity.Admin;
+import com.connection.service.interfaces.BegJobService;
 import com.connection.service.interfaces.SystemHandler;
 import com.connection.service.interfaces.UserService;
 import com.connection.tool.Result;
 
 @Controller
 public class SystemController {
+	public static Logger log = Logger.getLogger(UserController.class);
 	@Value("#{wx.sysappid}")
 	private String appId;
 	@Value("#{wx.syssecret}")
@@ -33,6 +39,8 @@ public class SystemController {
 	private SystemHandler systemHandler;
 	@Autowired
 	private SysAdminDao sysAdminDao;
+	@Autowired
+	private BegJobService begJobService;
 	/**
 	 * 包享说系统用户登录
 	 * @return
@@ -194,5 +202,106 @@ public class SystemController {
 			resInfo = null;
 		}
 		return result;
+	}
+	
+	
+	/**
+	 * 上传图片口令（地址还没改）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/sysCommandImage")
+	public Result sysCommandImage(@RequestParam("fatherId") int fatherId, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			file = ((MultipartHttpServletRequest) request).getFile("image");
+			input = file.getInputStream();// 获得文件输入流
+
+			resInfo.put("commandImage", begJobService.saveSysCommandImage(input, fatherId));
+		
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
+	}
+	/**
+	 * 上传语音口令（地址还没改）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/sysVoiceCommand")
+	
+	public Result sysVoiceCommand(@RequestParam("fatherId") int fatherId 
+			,@RequestParam("context") String context, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+					file = ((MultipartHttpServletRequest) request).getFile("file");
+					input = file.getInputStream();// 获得文件输入流
+					
+				resInfo.put("voice", begJobService.saveSysVoice(input, fatherId,context));
+						
+					
+				
+			
+			result.setObj(resInfo);
+		} catch (Exception e) {
+//			e.printStackTrace();
+			log.info("upload接口错误");
+		} finally {
+			resInfo = null;
+		}
+		return result;
+	}
+	
+	/**
+	 * 上传视频口令（地址还没改）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/sysBegVedio")
+	public Result sysBegVedio(@RequestParam("fatherId") int fatherId, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		MultipartFile file = null;
+		InputStream input = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			file = ((MultipartHttpServletRequest) request).getFile("file");
+			input = file.getInputStream();// 获得文件输入流
+	
+			resInfo.put("vedio", begJobService.saveSysVedioCommand(input, fatherId));
+		
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
 	}
 }
