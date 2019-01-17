@@ -329,7 +329,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			response = new HashMap<String,Object>();
-			//检测敏感词
+			//检测敏感词,true代表有敏感词
 			response.put("flag", HttpUtils.checkWord(content));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -413,49 +413,49 @@ public class UserController {
 		return result;
 	}
 	
-	/**
-	 * 自定义头像（接受单一图片）
-	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping("/app/doImageLoad")
-	public void doFileLoad(HttpServletRequest request, HttpServletResponse response) {
-		response.setContentType("text/html;charset=utf8");
-		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-		//获取前端的值
-		MultipartFile file = multiRequest.getFile("image");
-		//获取上传文件的原名，并且利用replaceAll去空格
-		String name = file.getOriginalFilename().replaceAll(" ", "");
-		long currentTime = System.currentTimeMillis();
-		/*name.substring(name.lastIndexOf("."), name.length())这条代码最后的结果就是去的此文件名的扩展名如xxx.exe返回的就是.exe（包括点） ，
-		 * 去的filename的子串，第一个参数是起始index，第二个参数是最后的index，只是着个index对应的字符不包含在最后的结果中
-		 */
-		String imagePath = "static/head/" + currentTime + name.substring(name.lastIndexOf("."), name.length());
-		String dbPath = "https://static.yaohoudy.com/static/head/" +currentTime+name.substring(name.lastIndexOf("."), name.length());
-		PrintWriter out = null;
-		InputStream input = null;
-		try {
-			out = response.getWriter();
-			request.setCharacterEncoding("utf-8");
-			input = file.getInputStream();
-			//存到阿里云
-			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, imagePath, input);
-			//输出地址dbPath
-			out.print(dbPath);
-		} catch (Exception e) {
-			log.error("/infoPicLoad:"+dbPath);
-		} finally {
-			out.close();
-			try {
-				input.close();
-			} catch (IOException e) {
-
-			}
-		}
-	}
-	
+//	/**
+//	 * 自定义头像（接受单一图片）
+//	 * 
+//	 * @param request
+//	 * @param response
+//	 * @return
+//	 */
+//	@RequestMapping("/app/doImageLoad")
+//	public void doFileLoad(HttpServletRequest request, HttpServletResponse response) {
+//		response.setContentType("text/html;charset=utf8");
+//		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+//		//获取前端的值
+//		MultipartFile file = multiRequest.getFile("image");
+//		//获取上传文件的原名，并且利用replaceAll去空格
+//		String name = file.getOriginalFilename().replaceAll(" ", "");
+//		long currentTime = System.currentTimeMillis();
+//		/*name.substring(name.lastIndexOf("."), name.length())这条代码最后的结果就是去的此文件名的扩展名如xxx.exe返回的就是.exe（包括点） ，
+//		 * 去的filename的子串，第一个参数是起始index，第二个参数是最后的index，只是着个index对应的字符不包含在最后的结果中
+//		 */
+//		String imagePath = "static/head/" + currentTime + name.substring(name.lastIndexOf("."), name.length());
+//		String dbPath = "https://static.yaohoudy.com/static/head/" +currentTime+name.substring(name.lastIndexOf("."), name.length());
+//		PrintWriter out = null;
+//		InputStream input = null;
+//		try {
+//			out = response.getWriter();
+//			request.setCharacterEncoding("utf-8");
+//			input = file.getInputStream();
+//			//存到阿里云
+//			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, imagePath, input);
+//			//输出地址dbPath
+//			out.print(dbPath);
+//		} catch (Exception e) {
+//			log.error("/infoPicLoad:"+dbPath);
+//		} finally {
+//			out.close();
+//			try {
+//				input.close();
+//			} catch (IOException e) {
+//
+//			}
+//		}
+//	}
+//	
 	/**
 	 * 小程序获得用户自定义口令
 	 */
@@ -533,7 +533,7 @@ public class UserController {
 	
 	
 	/**
-	 * 获得图片口令例子
+	 * 获得公共图片口令例子
 	 * @param id 
 	 * @param request
 	 * @return
@@ -548,7 +548,7 @@ public class UserController {
 			resInfo = new HashMap<String,Object>();
 			
 			resInfo.put("commandImage", redis.getCommandImage(id));
-			redis.deleteCommandImage(id);//测试使用
+			
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -556,7 +556,7 @@ public class UserController {
 		return result;
 	}
 	/**
-	 * 获得语音口令例子
+	 * 获得公共语音口令例子
 	 * @param id 
 	 * @param request
 	 * @return
@@ -571,7 +571,7 @@ public class UserController {
 			resInfo = new HashMap<String,Object>();
 			
 			resInfo.put("voiceCommand", redis.getVoiceCommand(id));
-			redis.deleteVoiceCommand(id);//测试使用
+			
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -580,13 +580,13 @@ public class UserController {
 	}
 	
 	/**
-	 * 获得视频口令例子
+	 * 获得公共视频口令例子(视频暂时不开放)
 	 * @param id 
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping("/getVedioCommand")
+	//@ResponseBody
+	//@RequestMapping("/getVedioCommand")
 	public Result getVedioCommand(@RequestParam("id") int id,HttpServletRequest request){
 		Result result = null;
 		Map<String,Object>resInfo = null;
@@ -595,7 +595,7 @@ public class UserController {
 			resInfo = new HashMap<String,Object>();
 			
 			resInfo.put("vedioCommand", redis.getVedioCommand(id));
-			redis.deleteVedioCommand(id);//测试使用
+		
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -604,7 +604,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 上传图片口令（地址还没改）
+	 * 上传自定义图片口令（地址还没改）
 	 * 
 	 * @param id
 	 * @param request
@@ -635,7 +635,7 @@ public class UserController {
 		
 	}
 	/**
-	 * 上传语音口令（地址还没改）
+	 * 上传自定义语音口令（地址还没改）
 	 * 
 	 * @param id
 	 * @param request
@@ -672,14 +672,14 @@ public class UserController {
 	}
 	
 	/**
-	 * 上传视频口令（地址还没改）
+	 * 上传自定义视频口令（地址还没改）(视频暂时不开放)
 	 * 
 	 * @param id
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping("/loadBegVedio")
+	//@ResponseBody
+	//@RequestMapping("/loadBegVedio")
 	public Result loadBegVedio(@RequestParam("userId") int userId, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -702,4 +702,69 @@ public class UserController {
 		return result;
 		
 	}
+	/**
+	 * 小程序获得用户自定义图片口令
+	 */
+	@ResponseBody
+	@RequestMapping("getUserCommandImage")
+	public Result getUserCommandImage(@RequestParam("userId")int userId){
+		Result result = null;
+		Map<String,Object>response = null;
+		try {
+			result = Result.successResult();
+			response = new HashMap<String, Object>();
+			//<!-- 	根据用户id降序和state=1，查找user_command_image 的口令（单用户自己的） -->
+			response.put("userCommandImage", dataDao.getUserCommandImage(userId));
+			result.setObj(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			response = null;
+		}
+		return result;
+	}
+	/**
+	 * 小程序获得用户自定义视频口令
+	 */
+	@ResponseBody
+	@RequestMapping("getUserCommandVedio")
+	public Result getUserCommandVedio(@RequestParam("userId")int userId){
+		Result result = null;
+		Map<String,Object>response = null;
+		try {
+			result = Result.successResult();
+			response = new HashMap<String, Object>();
+			//<!-- 	根据用户id降序和state=1，查找user_command_vedio的口令（单用户自己的） -->
+			response.put("userCommandVedio", dataDao.getUserCommandVedio(userId));
+			result.setObj(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			response = null;
+		}
+		return result;
+	}
+	/**
+	 * 小程序获得用户自定义语音口令
+	 */
+	@ResponseBody
+	@RequestMapping("getUserCommandVoice")
+	public Result getUserCommandVoice(@RequestParam("userId")int userId){
+		Result result = null;
+		Map<String,Object>response = null;
+		try {
+			result = Result.successResult();
+			response = new HashMap<String, Object>();
+			//<!-- 	根据用户id降序和state=1，查找user_command_vedio的口令（单用户自己的） -->
+			response.put("userCommandVedio", dataDao.getUserCommandVoice(userId));
+			result.setObj(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			response = null;
+		}
+		return result;
+	}
+	
+	
 }

@@ -105,6 +105,21 @@
 <!-- 	根据用户id降序和state=1，查找user_command 的口令（单用户自己的） -->
 		SELECT command AS context FROM user_command WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
 	</select>
+	
+	<select id="getUserCommandImage" resultType="java.util.Map" parameterType="int">
+
+		SELECT commandImagePath FROM user_command_image WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
+	</select>
+	
+	<select id="getUserCommandVedio" resultType="java.util.Map" parameterType="int">
+
+		SELECT commandVedioPath FROM user_command_vedio WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
+	</select>
+	<select id="getUserCommandVoice" resultType="java.util.Map" parameterType="int">
+
+		SELECT commandVoicePath FROM user_command_voice WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
+	</select>
+	
 <!-- 	搜索口令 -->
 	<select id="searchCommand" resultType="java.util.Map">
 	<!-- 查询infoexample表所有，除了顶级父id的（ levelContextId类似以前的父id），并上，user_command中所与状态为1的口令，之后查找当中类似关键字的 -->

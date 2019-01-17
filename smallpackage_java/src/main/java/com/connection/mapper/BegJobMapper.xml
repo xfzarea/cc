@@ -188,6 +188,9 @@
 	<insert id="sysVoiceCommand"  >
 	insert into voice_command(voiceCommandPath,fatherId,context) values(#{0},#{1},#{2})
 	</insert>
+	<insert id="sysCommand"  >
+	insert into info_example(contextId,levelContextId,context) values(#{0},#{1},#{2})
+	</insert>
 	
 	
 </mapper>

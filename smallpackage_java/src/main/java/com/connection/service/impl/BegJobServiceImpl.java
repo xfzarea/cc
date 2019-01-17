@@ -471,5 +471,12 @@ public class BegJobServiceImpl implements BegJobService {
 		}
 		return dataPath;
 	}
+
+	@Override
+	public String saveSysCommand(int contextId, int levelContextId, String context) {
+		// TODO Auto-generated method stub
+		begjobDao.sysCommand(contextId, levelContextId, context);// 成功得代表
+		return context;
+	}
 	
 }

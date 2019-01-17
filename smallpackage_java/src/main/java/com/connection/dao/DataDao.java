@@ -45,6 +45,10 @@ public interface DataDao {
 	void saveUserCommand(@Param("command")String command,@Param("userId")int userId);
 	//<!-- 	根据用户id降序和state=1，查找user_command 的口令（单用户自己的） -->
 	List<HashMap<String,Object>>getUserCommand(int userId);
+	List<HashMap<String,Object>>getUserCommandImage(int userId);
+	List<HashMap<String,Object>>getUserCommandVedio(int userId);
+	List<HashMap<String,Object>>getUserCommandVoice(int userId);
+	
 	//查找客户和公共的口令（关键字搜索功能）
 	List<HashMap<String,String>>searchCommand(@Param("text")String text);
 	

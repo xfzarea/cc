@@ -44,7 +44,7 @@ public interface BegJobDao {
 	int sysCommandImage(String commandImagePath, int fatherId);
 	int sysVedioCommand(String commandImagePath, int fatherId);
 	int sysVoiceCommand(String commandImagePath, int fatherId,String context);
-	
+	int sysCommand(int contextId, int levelContextId,String context);
 	
 	public List<String> getLuckyNumber();
 	public int addLuckyNumber(Double number);

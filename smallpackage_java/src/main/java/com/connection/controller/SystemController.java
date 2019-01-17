@@ -22,8 +22,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.connection.dao.SysAdminDao;
 import com.connection.entity.Admin;
 import com.connection.service.interfaces.BegJobService;
+import com.connection.service.interfaces.RedisService;
 import com.connection.service.interfaces.SystemHandler;
 import com.connection.service.interfaces.UserService;
+import com.connection.tool.HttpUtils;
 import com.connection.tool.Result;
 
 @Controller
@@ -41,6 +43,8 @@ public class SystemController {
 	private SysAdminDao sysAdminDao;
 	@Autowired
 	private BegJobService begJobService;
+	@Autowired
+	private RedisService redis;
 	/**
 	 * 包享说系统用户登录
 	 * @return
@@ -226,6 +230,7 @@ public class SystemController {
 			input = file.getInputStream();// 获得文件输入流
 
 			resInfo.put("commandImage", begJobService.saveSysCommandImage(input, fatherId));
+			redis.deleteCommandImage(fatherId);//测试使用
 		
 			result.setObj(resInfo);
 		} catch (Exception e) {
@@ -259,7 +264,7 @@ public class SystemController {
 					input = file.getInputStream();// 获得文件输入流
 					
 				resInfo.put("voice", begJobService.saveSysVoice(input, fatherId,context));
-						
+				redis.deleteVoiceCommand(fatherId);//测试使用	
 					
 				
 			
@@ -274,14 +279,14 @@ public class SystemController {
 	}
 	
 	/**
-	 * 上传视频口令（地址还没改）
+	 * 上传视频口令（地址还没改）(视频暂时不开放)
 	 * 
 	 * @param id
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping("/sysBegVedio")
+	//@ResponseBody
+	//@RequestMapping("/sysBegVedio")
 	public Result sysBegVedio(@RequestParam("fatherId") int fatherId, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -294,6 +299,40 @@ public class SystemController {
 			input = file.getInputStream();// 获得文件输入流
 	
 			resInfo.put("vedio", begJobService.saveSysVedioCommand(input, fatherId));
+			redis.deleteVedioCommand(fatherId);//测试使用
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
+	}
+	/**
+	 * 上传文字口令（）有检测
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/sysCommand")
+	public Result sysCommand(@RequestParam("contextId") int contextId,@RequestParam("levelContextId") int levelContextId,@RequestParam("context") String context, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		Boolean flag =HttpUtils.checkWord(context);
+		if(flag) {
+			result = Result.errorResult();
+			result.setMsg("有敏感词");
+			return result;
+		}
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			
+
+			resInfo.put("command", begJobService.saveSysCommand(contextId, levelContextId,context));
 		
 			result.setObj(resInfo);
 		} catch (Exception e) {

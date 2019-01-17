@@ -25,5 +25,6 @@ public interface BegJobService {
 	public String saveSysCommandImage(InputStream input,int id);
 	public String saveSysVedioCommand(InputStream input,int id) throws IOException ;
 	public String saveSysVoice(InputStream input,int id,String context) throws IOException ;
+	public String saveSysCommand(int contextId,int  levelContextId,String context);
 	
 }
