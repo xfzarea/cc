@@ -42,6 +42,7 @@ public interface BegJobDao {
 	int insertCommandImage(String commandImagePath,int userId);
 	int insertVoiceCommand(String commandVoicePath,int userId);
 	int insertVedioCommand(String commandVedioPath,int userId);
+	int saveBegCommand(int userId,String context);
 	//sysÉÏ´«
 	int sysCommandImage(String commandImagePath, int fatherId);
 	int sysVedioCommand(String commandImagePath, int fatherId);

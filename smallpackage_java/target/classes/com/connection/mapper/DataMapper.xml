@@ -119,6 +119,10 @@
 
 		SELECT commandVoicePath FROM user_command_voice WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
 	</select>
+	<select id="getUserBegCommand" resultType="java.util.Map" parameterType="int">
+
+		SELECT context FROM user_beg_command WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
+	</select>
 	
 <!-- 	搜索口令 -->
 	<select id="searchCommand" resultType="java.util.Map">

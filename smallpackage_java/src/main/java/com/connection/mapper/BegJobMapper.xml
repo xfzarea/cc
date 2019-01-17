@@ -178,7 +178,9 @@
 	<insert id="insertVedioCommand"  >
 	insert into user_command_vedio(commandVedioPath,userId) values(#{0},#{1})
 	</insert>
-	
+	<insert id="saveBegCommand"  >
+	insert into user_beg_command(userId,context) values(#{0},#{1})
+	</insert>
 	
 	
 	
@@ -198,5 +200,6 @@
 	<insert id="sysBegCommand"  >
 	insert into beg_command(fatherId,context) values(#{0},#{1})
 	</insert>
+	
 	
 </mapper>

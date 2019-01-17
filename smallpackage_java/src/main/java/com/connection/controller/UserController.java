@@ -639,8 +639,8 @@ public class UserController {
 	 * @param request
 	 * @return
 	 */
-	//@ResponseBody
-	//@RequestMapping("/getVedioCommand")
+	@ResponseBody
+	@RequestMapping("/getVedioCommand")
 	public Result getVedioCommand(@RequestParam("id") int id,HttpServletRequest request){
 		Result result = null;
 		Map<String,Object>resInfo = null;
@@ -658,7 +658,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 上传自定义图片口令（地址还没改）
+	 * 上传自定义图片口令
 	 * 
 	 * @param id
 	 * @param request
@@ -689,7 +689,7 @@ public class UserController {
 		
 	}
 	/**
-	 * 上传自定义语音口令（地址还没改）
+	 * 上传自定义语音口令
 	 * 
 	 * @param id
 	 * @param request
@@ -726,14 +726,14 @@ public class UserController {
 	}
 	
 	/**
-	 * 上传自定义视频口令（地址还没改）(视频暂时不开放)
+	 * 上传自定义视频口令(视频暂时不开放)
 	 * 
 	 * @param id
 	 * @param request
 	 * @return
 	 */
-	//@ResponseBody
-	//@RequestMapping("/loadBegVedio")
+	@ResponseBody
+	@RequestMapping("/loadBegVedio")
 	public Result loadBegVedio(@RequestParam("userId") int userId, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -760,7 +760,7 @@ public class UserController {
 	 * 小程序获得用户自定义图片口令
 	 */
 	@ResponseBody
-	@RequestMapping("getUserCommandImage")
+	@RequestMapping("/getUserCommandImage")
 	public Result getUserCommandImage(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -781,7 +781,7 @@ public class UserController {
 	 * 小程序获得用户自定义视频口令
 	 */
 	@ResponseBody
-	@RequestMapping("getUserCommandVedio")
+	@RequestMapping("/getUserCommandVedio")
 	public Result getUserCommandVedio(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -802,7 +802,7 @@ public class UserController {
 	 * 小程序获得用户自定义语音口令
 	 */
 	@ResponseBody
-	@RequestMapping("getUserCommandVoice")
+	@RequestMapping("/getUserCommandVoice")
 	public Result getUserCommandVoice(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -810,7 +810,7 @@ public class UserController {
 			result = Result.successResult();
 			response = new HashMap<String, Object>();
 			//<!-- 	根据用户id降序和state=1，查找user_command_vedio的口令（单用户自己的） -->
-			response.put("userCommandVedio", dataDao.getUserCommandVoice(userId));
+			response.put("userCommandVoice", dataDao.getUserCommandVoice(userId));
 			result.setObj(response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -820,5 +820,56 @@ public class UserController {
 		return result;
 	}
 	
+	/**
+	 * 上传自定义beg文字口令
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/loadBegCommand")
+	public Result loadBegCommand(@RequestParam("userId") int userId, String context) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			
+	
+			resInfo.put("BegCommand", begJobService.saveBegCommand( userId,context));
+		
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
+	}
+	
+	/**
+	 * 小程序获得用户自定义beg文字口令
+	 */
+	@ResponseBody
+	@RequestMapping("/getUserBegCommand")
+	public Result getUserBegCommand(@RequestParam("userId")int userId){
+		Result result = null;
+		Map<String,Object>response = null;
+		try {
+			result = Result.successResult();
+			response = new HashMap<String, Object>();
+			//<!-- 	根据用户id降序和state=1，查找user_command_vedio的口令（单用户自己的） -->
+			response.put("userBegCommand", dataDao.getUserBegCommand(userId));
+			result.setObj(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			response = null;
+		}
+		return result;
+	}
 	
 }

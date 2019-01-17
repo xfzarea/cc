@@ -285,8 +285,8 @@ public class SystemController {
 	 * @param request
 	 * @return
 	 */
-	//@ResponseBody
-	//@RequestMapping("/sysBegVedio")
+	@ResponseBody
+	@RequestMapping("/sysBegVedio")
 	public Result sysBegVedio(@RequestParam("fatherId") int fatherId, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;

@@ -48,6 +48,7 @@ public interface DataDao {
 	List<HashMap<String,Object>>getUserCommandImage(int userId);
 	List<HashMap<String,Object>>getUserCommandVedio(int userId);
 	List<HashMap<String,Object>>getUserCommandVoice(int userId);
+	List<HashMap<String,Object>>getUserBegCommand(int userId);
 	
 	//查找客户和公共的口令（关键字搜索功能）
 	List<HashMap<String,String>>searchCommand(@Param("text")String text);

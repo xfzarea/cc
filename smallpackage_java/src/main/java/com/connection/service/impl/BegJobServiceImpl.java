@@ -98,7 +98,7 @@ public class BegJobServiceImpl implements BegJobService {
 			int num = adminDao.checkVersion(fauserId, (Integer)admin.get("money_version"));
 			if(num == 1){
 				adminDao.modifyMoney(award, fauserId);
-				
+				num=0;
 			}else if(num == 0){
 				//失败
 				log.info("给到用户钱出问题了");
@@ -482,6 +482,12 @@ public class BegJobServiceImpl implements BegJobService {
 	@Override
 	public String saveSysBegCommand(int fatherId, String context) {
 		begjobDao.sysBegCommand(fatherId, context);
+		return context;
+	}
+
+	@Override
+	public String saveBegCommand(int userId,String context) throws IOException {
+		begjobDao.saveBegCommand(userId, context);
 		return context;
 	}
 	
