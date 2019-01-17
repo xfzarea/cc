@@ -210,7 +210,7 @@ public class SystemController {
 	
 	
 	/**
-	 * 上传图片口令（地址还没改）
+	 * 上传公共图片口令
 	 * 
 	 * @param id
 	 * @param request
@@ -242,7 +242,7 @@ public class SystemController {
 		
 	}
 	/**
-	 * 上传语音口令（地址还没改）
+	 * 上传公共语音口令
 	 * 
 	 * @param id
 	 * @param request
@@ -279,7 +279,7 @@ public class SystemController {
 	}
 	
 	/**
-	 * 上传视频口令（地址还没改）(视频暂时不开放)
+	 * 上传公共视频口令 (接口有效，但视频暂时不开放)
 	 * 
 	 * @param id
 	 * @param request
@@ -310,7 +310,7 @@ public class SystemController {
 		
 	}
 	/**
-	 * 上传文字口令（）有检测
+	 * 上传文字口令 ，//有检测（job）
 	 * 
 	 * @param id
 	 * @param request
@@ -322,11 +322,11 @@ public class SystemController {
 		Result result = null;
 		Map<String, Object> resInfo = null;
 		Boolean flag =HttpUtils.checkWord(context);
-		if(flag) {
-			result = Result.errorResult();
-			result.setMsg("有敏感词");
-			return result;
-		}
+//		if(flag) {
+//			result = Result.errorResult();
+//			result.setMsg("有敏感词");
+//			return result;
+//		}
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
@@ -334,6 +334,38 @@ public class SystemController {
 
 			resInfo.put("command", begJobService.saveSysCommand(contextId, levelContextId,context));
 		
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resInfo = null;
+		}
+		return result;
+		
+	}
+	/**
+	 * 上传文字口令//有检测（beg）
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/sysBegCommand")
+	public Result sysBegCommand(@RequestParam("fatherId") int fatherId,@RequestParam("context") String context, HttpServletRequest request) {
+		Result result = null;
+		Map<String, Object> resInfo = null;
+		Boolean flag =HttpUtils.checkWord(context);
+//		if(flag) {
+//			result = Result.errorResult();
+//			result.setMsg("有敏感词");
+//			return result;
+//		}
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String, Object>();
+			resInfo.put("begCommand", begJobService.saveSysBegCommand(fatherId,context));
+		redis.deleteBegCommand(fatherId);
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -63,5 +63,7 @@ public interface DataDao {
 	List<HashMap<String,Object>>getVoiceCommand(int id);
 	//得到视频口令
 		List<HashMap<String,Object>>getVedioCommand(int id);
+		//得到beg文字口令
+				List<HashMap<String,Object>>getBegCommand(int id);	
 
 }

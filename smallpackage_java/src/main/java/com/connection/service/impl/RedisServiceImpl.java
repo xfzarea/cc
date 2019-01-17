@@ -158,6 +158,17 @@ public class RedisServiceImpl implements RedisService {
 	public void deleteLuckyNumber(){
 		
 	}
+	/**
+	 * 获得beg文字口令
+	 * @param id
+	 * @return
+	 * 
+	 * unless:当方法返回空值时，就不会被缓存起来,决定是否要否定方法缓存，可以用来做条件判断
+	 */
+	@Cacheable(value="BegCommand",key="'BegCommand'+#id",unless = "#result == null")
+	public List<HashMap<String,Object>> getBegCommand(int id){
+		return dataDao.getBegCommand(id);//注意看，这是拿数据库
+	}
 
 	/**
 	 * 获得图片口令
@@ -171,7 +182,7 @@ public class RedisServiceImpl implements RedisService {
 		return dataDao.getCommandImage(id);//注意看，这是拿数据库
 	}
 	/**
-	 * 获得图片口令
+	 * 获得语音口令
 	 * @param id
 	 * @return
 	 * 
@@ -182,7 +193,7 @@ public class RedisServiceImpl implements RedisService {
 		return dataDao.getVoiceCommand(id);//注意看，这是拿数据库
 	}
 	/**
-	 * 获得图片口令
+	 * 获得视频口令
 	 * @param id
 	 * @return
 	 * 
@@ -203,6 +214,10 @@ public class RedisServiceImpl implements RedisService {
 	}
 	@CacheEvict(value="VedioCommand",key="'VedioCommand'+#id")
 	public void deleteVedioCommand(int id){
+		
+	}
+	@CacheEvict(value="BegCommand",key="'BegCommand'+#id")
+	public void deleteBegCommand(int id){
 		
 	}
 	

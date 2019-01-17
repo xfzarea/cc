@@ -67,6 +67,8 @@ public class UserController {
 	@Autowired
 	private BegJobService begJobService;
 	@Autowired
+	private BegJobDao begJobDao;
+	@Autowired
 	private VoiceRecordDao voiceRecordDao;
 	@Autowired
 	private InfoExampleDao infoExampleDao;
@@ -148,6 +150,7 @@ public class UserController {
 		}
 		return result;
 	}
+	
 	
 	/**
 	 * 我页面得到个人数据
@@ -237,6 +240,34 @@ public class UserController {
 				response.put("total", jobDao.getCount(userId));
 			}else if("join".equals(handType)){
 				response.put("total", voiceRecordDao.getCount(userId));
+			}
+			result.setObj(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			response = null;
+		}
+		return result;
+	}
+	
+	/**
+	 * 讨和被讨记录页的获得总数量和总金额
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getBegTotal")
+	//total总数（这里根据 handType区分是我发的红包，还是我抢的红包总数，和总金额）
+	public Result getBegTotal(@RequestParam("userId")int userId,@RequestParam("tabId")int tabId){
+		Result result = null;
+		Map<String,Object>response = null;
+		try {
+			result = Result.successResult();
+			response = new HashMap<String,Object>();
+			if(tabId==0){
+				response.put("total", begJobDao.getBegCount(userId));
+			}else if(tabId==1){
+				response.put("total", begJobDao.getBegRecordCount(userId));
 			}
 			result.setObj(response);
 		} catch (Exception e) {
@@ -529,6 +560,29 @@ public class UserController {
 		return Result.successResult();
 	}
 	
+	/**
+	 * 获得公共口令例子（beg）
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getBegCommand")
+	public Result getBegCommand(@RequestParam("id") int id,HttpServletRequest request){
+		Result result = null;
+		Map<String,Object>resInfo = null;
+		try {
+			result = Result.successResult();
+			resInfo = new HashMap<String,Object>();
+			//查询口令，存到map，再存到result
+			//这里的id是数据库的levelContextId类似父类id，就是查父类的所有子类
+			resInfo.put("begCommand", redis.getBegCommand(id));
+			result.setObj(resInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	

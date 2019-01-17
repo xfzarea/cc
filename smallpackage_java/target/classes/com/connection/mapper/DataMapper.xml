@@ -138,7 +138,7 @@
 	<select id="checkSecond" parameterType="String" resultType="java.util.Map">
 		SELECT TIMESTAMPDIFF(SECOND,(SELECT createTime FROM ip_limit WHERE ip = #{ip} ORDER BY id DESC LIMIT 1),NOW()) AS second_limit
 	</select>
-	<!-- 这里还没号 -->
+	<!-- 好了 -->
 		<select id="getCommandImage" resultType="java.util.Map" parameterType="int">
 		SELECT * FROM command_image WHERE fatherId = #{id}
 	</select>
@@ -147,6 +147,9 @@
 	</select>
 	<select id="getVedioCommand" resultType="java.util.Map" parameterType="int">
 		SELECT * FROM vedio_command WHERE fatherId = #{id}
+	</select>
+	<select id="getBegCommand" resultType="java.util.Map" parameterType="int">
+		SELECT * FROM beg_command WHERE fatherId = #{id}
 	</select>
 	
 </mapper>

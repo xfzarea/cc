@@ -478,5 +478,11 @@ public class BegJobServiceImpl implements BegJobService {
 		begjobDao.sysCommand(contextId, levelContextId, context);// 成功得代表
 		return context;
 	}
+
+	@Override
+	public String saveSysBegCommand(int fatherId, String context) {
+		begjobDao.sysBegCommand(fatherId, context);
+		return context;
+	}
 	
 }

@@ -11,6 +11,9 @@ public interface RedisService {
 	public HashMap<String,Object>getJobById(int id);
 	public HashMap<String,Object>checkVoice(int userId,int id);
 	public List<HashMap<String,Object>>getRecord(int jobId);//beg
+	public List<HashMap<String,Object>>getBegCommand( int id);
+	public void deleteBegCommand(int id);
+	
 	public void deleteRedisBegJob(int id);//beg
 	public void deleteRecord(int jobId);
 	public void deleteRedisJob(int id);

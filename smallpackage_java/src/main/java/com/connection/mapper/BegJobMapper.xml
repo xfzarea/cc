@@ -89,12 +89,16 @@
 		WHERE id = #{id} AND state != 0 AND VERSION = #{version} AND totalCount &gt; alreadyCount
 	</update>
 	
-	<select id="getCount" resultType="java.util.Map" parameterType = "int">
+	<select id="getBegCount" resultType="java.util.Map" parameterType = "int">
 		SELECT IF(a.totalCount IS NULL,0,a.totalCount) AS totalCount,IF(b.totalAward IS NULL,0,b.totalAward) AS totalAward FROM
-		<!-- count(1)和count(*)基本没有差别！这sql是统计符合userId和state的数据条数  别名是 totalCount  -->
-		(SELECT COUNT(1) AS totalCount FROM beg_job WHERE userId = #{userId} AND state!=0) a,
-		<!-- 这sql是统计符合userId和state的award的总和 别名是 totalAward  -->
-		(SELECT SUM(award) AS totalAward FROM beg_job WHERE userId = #{userId} AND state !=0) b
+		(SELECT COUNT(1) AS totalCount FROM beg_job WHERE userId = #{0} ) a,
+		(SELECT SUM(award) AS totalAward FROM beg_job  WHERE userId = #{0} ) b
+	</select>
+	
+	<select id="getBegRecordCount" resultType="java.util.Map" parameterType = "int">
+		SELECT IF(a.totalCount IS NULL,0,a.totalCount) AS totalCount,IF(b.totalAward IS NULL,0,b.totalAward) AS totalAward FROM
+		(SELECT COUNT(1) AS totalCount FROM beg_job_record WHERE userId = #{0} ) a,
+		(SELECT SUM(award) AS totalAward FROM beg_job WHERE id = ANY(SELECT jobId  FROM beg_job_record  WHERE userId = #{0} ) ) b
 	</select>
 	
 	<select id="getOverdue" resultType="java.util.Map">
@@ -191,6 +195,8 @@
 	<insert id="sysCommand"  >
 	insert into info_example(contextId,levelContextId,context) values(#{0},#{1},#{2})
 	</insert>
-	
+	<insert id="sysBegCommand"  >
+	insert into beg_command(fatherId,context) values(#{0},#{1})
+	</insert>
 	
 </mapper>

@@ -25,8 +25,10 @@ public interface BegJobDao {
 	HashMap<String,Object>getJobById2(int id);
 	//一个人抢走红包之后，跟新红包信息
 	int modifyCount(@Param("award")double award,@Param("id")int id,@Param("version")int version);
-	//获得红包总数和总金额（我发的）
-	HashMap<String,Object>getCount(int userId);
+	//获得红包总数和总金额（我讨的）
+	HashMap<String,Object>getBegCount(int userId);
+	//获得红包总数和总金额（我被讨的）
+	HashMap<String,Object>getBegRecordCount(int userId);
 	List<HashMap<String,Object>>getOverdue();
 	//修改红包状态
 	void updateState(@Param("state")int state,@Param("id")int id);
@@ -45,6 +47,7 @@ public interface BegJobDao {
 	int sysVedioCommand(String commandImagePath, int fatherId);
 	int sysVoiceCommand(String commandImagePath, int fatherId,String context);
 	int sysCommand(int contextId, int levelContextId,String context);
+	int sysBegCommand(int fatherId,String context);
 	
 	public List<String> getLuckyNumber();
 	public int addLuckyNumber(Double number);
