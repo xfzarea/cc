@@ -99,7 +99,7 @@ public class BegJobServiceImpl implements BegJobService {
 			if(num == 1){
 				adminDao.modifyMoney(award, fauserId);
 				num=0;
-			}else if(num == 0){
+			}else {
 				//失败
 				log.info("给到用户钱出问题了");
 			}
