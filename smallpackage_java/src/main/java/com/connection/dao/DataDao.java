@@ -59,12 +59,12 @@ public interface DataDao {
 	void saveIp(String ip);
 	HashMap<String,Object>checkSecond(String ip);
 	//得到图片口令
-	List<HashMap<String,Object>>getCommandImage(int id);	
+	List<HashMap<String,Object>>getCommandImage(@Param("fatherId") int id);	
 	//得到语音口令
-	List<HashMap<String,Object>>getVoiceCommand(int id);
+	List<HashMap<String,Object>>getVoiceCommand(@Param("fatherId") int id);
 	//得到视频口令
-		List<HashMap<String,Object>>getVedioCommand(int id);
+		List<HashMap<String,Object>>getVedioCommand(@Param("fatherId") int id);
 		//得到beg文字口令
-				List<HashMap<String,Object>>getBegCommand(int id);	
+				List<HashMap<String,Object>>getBegCommand(@Param("fatherId") int id);	
 
 }

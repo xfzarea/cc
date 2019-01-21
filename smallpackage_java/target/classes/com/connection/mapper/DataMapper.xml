@@ -143,17 +143,29 @@
 		SELECT TIMESTAMPDIFF(SECOND,(SELECT createTime FROM ip_limit WHERE ip = #{ip} ORDER BY id DESC LIMIT 1),NOW()) AS second_limit
 	</select>
 	<!-- 好了 -->
-		<select id="getCommandImage" resultType="java.util.Map" parameterType="int">
-		SELECT * FROM command_image WHERE fatherId = #{id}
+		<select id="getCommandImage" resultType="java.util.Map" parameterType="java.lang.Integer">
+		SELECT id,commandImagePath,fatherId FROM command_image WHERE fatherId = #{fatherId}
+		<if test="fatherId!=0">
+				 order by id desc
+			</if>
 	</select>
-		<select id="getVoiceCommand" resultType="java.util.Map" parameterType="int">
-		SELECT * FROM voice_command WHERE fatherId = #{id}
+		<select id="getVoiceCommand" resultType="java.util.Map" parameterType="java.lang.Integer">
+		SELECT id,voiceCommandPath,context,fatherId FROM voice_command WHERE fatherId = #{fatherId}
+			<if test="fatherId!=0">
+				 order by id desc
+			</if>
 	</select>
-	<select id="getVedioCommand" resultType="java.util.Map" parameterType="int">
-		SELECT * FROM vedio_command WHERE fatherId = #{id}
+	<select id="getVedioCommand" resultType="java.util.Map" parameterType="java.lang.Integer">
+		SELECT id,vedioCommandPath,fatherId FROM vedio_command WHERE fatherId = #{fatherId}
+			<if test="fatherId!=0">
+				 order by id desc
+			</if>
 	</select>
-	<select id="getBegCommand" resultType="java.util.Map" parameterType="int">
-		SELECT * FROM beg_command WHERE fatherId = #{id}
+	<select id="getBegCommand" resultType="java.util.Map" parameterType="java.lang.Integer">
+		SELECT id,context,fatherId FROM beg_command WHERE fatherId = #{fatherId}
+			<if test="fatherId!=0">
+				 order by id desc
+			</if>
 	</select>
 	
 </mapper>
