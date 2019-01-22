@@ -23,4 +23,7 @@ public interface AdminDao {
 	int checkVersion(@Param("userId")int userId,@Param("money_version")int money_version);
 	//根据 openid、头像地址、昵称，查询用户id（这个用来干嘛的？？）
 	HashMap<String,Integer>sysFindUser(Admin admin);
+	
+//根据userId查询openId
+	String getOpenIdByUserId(int userId);
 }

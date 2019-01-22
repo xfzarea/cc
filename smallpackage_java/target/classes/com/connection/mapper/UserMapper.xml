@@ -38,4 +38,10 @@
  	<update id="checkVersion">
  		UPDATE admin SET money_version = money_version + 1 WHERE userId = #{userId} AND money_version = #{money_version}
  	</update>
+ 	
+ 	
+ 	
+ 	<select id="getOpenIdByUserId" resultType="java.lang.String" parameterType="int">
+ 		SELECT openid FROM admin WHERE userId = #{userId}
+ 	</select>
 </mapper>
