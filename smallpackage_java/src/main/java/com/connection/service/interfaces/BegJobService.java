@@ -20,12 +20,12 @@ public interface BegJobService {
 	//用户自定义上传
 	public String saveCommandImage(InputStream input,int id);
 	public String saveVedioCommand(InputStream input,int id) throws IOException ;
-	public String saveVoice(InputStream input,int userId) throws IOException;
+	public String saveVoice(InputStream input,int userId,int voiceTime) throws IOException;
 	public String saveBegCommand(int userId,String context) throws IOException;
 	//sys上传
 	public String saveSysCommandImage(InputStream input,int id);
 	public String saveSysVedioCommand(InputStream input,int id) throws IOException ;
-	public String saveSysVoice(InputStream input,int id,String context) throws IOException ;
+	public String saveSysVoice(InputStream input,int id,String context,int voiceTime) throws IOException ;
 	public String saveSysCommand(int contextId,int  levelContextId,String context);
 	public String saveSysBegCommand(int fatherId,String context);
 	

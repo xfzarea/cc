@@ -36,6 +36,9 @@ import com.connection.tool.HttpUtils;
 import com.connection.tool.Result;
 import com.connection.tool.Util;
 
+import javazoom.jl.decoder.Bitstream;
+import javazoom.jl.decoder.Header;
+
 
 
 @Controller
@@ -709,8 +712,13 @@ public class UserController {
 			resInfo = new HashMap<String, Object>();
 					file = ((MultipartHttpServletRequest) request).getFile("file");
 					input = file.getInputStream();// 获得文件输入流
+					int b = input.available();
+		            Bitstream bt = new Bitstream(input);
+		            Header h = bt.readFrame();
+		           int voiceTime= ((int) h.total_ms(b))/1000;//s
+
 					
-				resInfo.put("voice", begJobService.saveVoice(input,  userId));
+				resInfo.put("voice", begJobService.saveVoice(input,  userId,voiceTime));
 						
 					
 				

@@ -40,13 +40,13 @@ public interface BegJobDao {
 	void updateBegSharePic(@Param("shareUrl")String sharePic,@Param("id")int id);
 	//用户自定义上传
 	int insertCommandImage(String commandImagePath,int userId);
-	int insertVoiceCommand(String commandVoicePath,int userId);
+	int insertVoiceCommand(String commandVoicePath,int userId,int voiceTime);
 	int insertVedioCommand(String commandVedioPath,int userId);
 	int saveBegCommand(int userId,String context);
 	//sys上传
 	int sysCommandImage(String commandImagePath, int fatherId);
 	int sysVedioCommand(String commandImagePath, int fatherId);
-	int sysVoiceCommand(String commandImagePath, int fatherId,String context);
+	int sysVoiceCommand(String commandImagePath, int fatherId,String context, int voiceTime);
 	int sysCommand(int contextId, int levelContextId,String context);
 	int sysBegCommand(int fatherId,String context);
 	

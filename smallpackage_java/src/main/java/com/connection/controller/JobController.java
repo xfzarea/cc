@@ -154,7 +154,7 @@ public class JobController {
 		
 			resInfo.put("job", redis.getBegJobById(id));
 			resInfo.put("begJobRecord", redis.getRecord(id));
-			//redis.deleteRecord(id);
+//			redis.deleteRecord(id);
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();

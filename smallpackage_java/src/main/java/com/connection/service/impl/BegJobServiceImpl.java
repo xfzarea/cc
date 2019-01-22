@@ -79,6 +79,12 @@ public class BegJobServiceImpl implements BegJobService {
 		job.put("award", Double.parseDouble(param.get("award")));
 		job.put("context", param.get("context"));
 		job.put("job_type", Integer.parseInt(param.get("job_type")));
+		if(Integer.parseInt(param.get("job_type"))==1) {
+			job.put("voiceTime", param.get("voiceTime"));
+		}else {
+			job.put("voiceTime",0);
+		}
+		
 		begjobDao.addJob(job);
 		int id = (Integer) job.get("id");
 		param = null;
@@ -187,7 +193,7 @@ public class BegJobServiceImpl implements BegJobService {
 	 * @param input
 	 * @throws IOException
 	 */
-	public synchronized String  saveVoice(InputStream input, int userId) throws IOException {
+	public synchronized String  saveVoice(InputStream input, int userId,int voiceTime) throws IOException {
 		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
 		OutputStream os = null;
 		File file = null;
@@ -217,7 +223,7 @@ public class BegJobServiceImpl implements BegJobService {
 					file = new File(outputFilePath);// 保存文件以及改变数据
 					
 					fileInput = new FileInputStream(file);
-					begjobDao.insertVoiceCommand(dataPath,userId);// 成功得代表
+					begjobDao.insertVoiceCommand(dataPath,userId,voiceTime);// 成功得代表
 					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
 					fileInput.close();
 
@@ -410,7 +416,7 @@ public class BegJobServiceImpl implements BegJobService {
 	 * @param input
 	 * @throws IOException
 	 */
-	public synchronized String  saveSysVoice(InputStream input, int userId,String context) throws IOException {
+	public synchronized String  saveSysVoice(InputStream input, int userId,String context,int  voiceTime) throws IOException {
 		String name = System.currentTimeMillis() + (int) Math.random() * 10 + (int) Math.random() * 10 + "";
 		OutputStream os = null;
 		File file = null;
@@ -440,7 +446,7 @@ public class BegJobServiceImpl implements BegJobService {
 					file = new File(outputFilePath);// 保存文件以及改变数据
 					
 					fileInput = new FileInputStream(file);
-					begjobDao.sysVoiceCommand(dataPath,userId,context);// 成功得代表
+					begjobDao.sysVoiceCommand(dataPath,userId,context,voiceTime);// 成功得代表
 					Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, ossSavePath, fileInput);//存到阿里oss
 					fileInput.close();
 

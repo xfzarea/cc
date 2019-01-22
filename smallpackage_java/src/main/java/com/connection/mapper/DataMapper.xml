@@ -117,7 +117,7 @@
 	</select>
 	<select id="getUserCommandVoice" resultType="java.util.Map" parameterType="int">
 
-		SELECT commandVoicePath FROM user_command_voice WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
+		SELECT commandVoicePath,voiceTime FROM user_command_voice WHERE userId = #{userId} AND state = 1 ORDER BY id DESC
 	</select>
 	<select id="getUserBegCommand" resultType="java.util.Map" parameterType="int">
 
@@ -150,7 +150,7 @@
 			</if>
 	</select>
 		<select id="getVoiceCommand" resultType="java.util.Map" parameterType="java.lang.Integer">
-		SELECT id,voiceCommandPath,context,fatherId FROM voice_command WHERE fatherId = #{fatherId}
+		SELECT id,voiceCommandPath,context,fatherId,voiceTime FROM voice_command WHERE fatherId = #{fatherId}
 			<if test="fatherId!=0">
 				 order by id desc
 			</if>

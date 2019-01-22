@@ -8,8 +8,8 @@
 		<selectKey keyProperty='id' resultType='int' order='AFTER'>
         	select LAST_INSERT_ID();
     	</selectKey>
-		INSERT INTO beg_job(userId,totalAward,award,context,job_type)VALUE(#{userId},#{totalAward},
-		#{award},#{context},#{job_type})
+		INSERT INTO beg_job(userId,totalAward,award,context,job_type,voiceTime)VALUE(#{userId},#{totalAward},
+		#{award},#{context},#{job_type},#{voiceTime})
 	</insert>
 	
 	<insert id="payOver">
@@ -42,7 +42,7 @@
 	
 <!-- 	获得具体得红包 -->
 	<select id="getBegJobById" resultType="java.util.Map" parameterType="int">
-		SELECT a.id,a.userId,a.totalAward,a.award,a.context,
+		SELECT a.id,a.userId,a.totalAward,a.award,a.context,a.voiceTime,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.headPic,
 			a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.wxchat_mark,a.pre_image,a.tweet,a.tweet_title,
 			a.job_type,b.nickName,b.avatarUrl FROM beg_job a
@@ -173,7 +173,7 @@
 	insert into user_command_image(commandImagePath,userId) values(#{0},#{1})
 	</insert>
 	<insert id="insertVoiceCommand"  >
-	INSERT INTO user_command_voice(commandVoicePath,userId) VALUES(#{0},#{1})
+	INSERT INTO user_command_voice(commandVoicePath,userId,voiceTime) VALUES(#{0},#{1},#{2})
 	</insert>
 	<insert id="insertVedioCommand"  >
 	insert into user_command_vedio(commandVedioPath,userId) values(#{0},#{1})
@@ -192,7 +192,7 @@
 	insert into vedio_command(vedioCommandPath,fatherId) values(#{0},#{1})
 	</insert>
 	<insert id="sysVoiceCommand"  >
-	insert into voice_command(voiceCommandPath,fatherId,context) values(#{0},#{1},#{2})
+	insert into voice_command(voiceCommandPath,fatherId,context,voiceTime) values(#{0},#{1},#{2},#{3})
 	</insert>
 	<insert id="sysCommand"  >
 	insert into info_example(contextId,levelContextId,context) values(#{0},#{1},#{2})
