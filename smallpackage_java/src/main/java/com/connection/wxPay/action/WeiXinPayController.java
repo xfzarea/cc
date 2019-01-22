@@ -284,9 +284,7 @@ public class WeiXinPayController {
 				flag = false;
 			}
 			String openId =adminDao.getOpenIdByUserId(userId);
-			System.out.println(openId);
-			System.out.println(getParams.get("openid")+"");
-			System.out.println(!openId.equals(getParams.get("openid")+""));
+			
 			if(openId==null||!openId.equals(getParams.get("openid")+"")) {
 				out.print("nishengfenbudui");
 				return;
