@@ -8,8 +8,8 @@
 		<selectKey keyProperty='id' resultType='int' order='AFTER'>
         	select LAST_INSERT_ID();
     	</selectKey>
-		INSERT INTO beg_job(userId,totalAward,award,context,job_type,voiceTime)VALUE(#{userId},#{totalAward},
-		#{award},#{context},#{job_type},#{voiceTime})
+		INSERT INTO beg_job(userId,totalAward,award,context,job_type)VALUE(#{userId},#{totalAward},
+		#{award},#{context},#{job_type})
 	</insert>
 	
 	<insert id="payOver">

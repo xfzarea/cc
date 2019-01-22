@@ -79,11 +79,7 @@ public class BegJobServiceImpl implements BegJobService {
 		job.put("award", Double.parseDouble(param.get("award")));
 		job.put("context", param.get("context"));
 		job.put("job_type", Integer.parseInt(param.get("job_type")));
-		if(Integer.parseInt(param.get("job_type"))==1) {
-			job.put("voiceTime", param.get("voiceTime"));
-		}else {
-			job.put("voiceTime",0);
-		}
+		
 		
 		begjobDao.addJob(job);
 		int id = (Integer) job.get("id");
