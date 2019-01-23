@@ -27,4 +27,8 @@ public interface SysAdminDao {
 	void updataTimerJob(Map<String,Object>param);
 	Map<String,Integer>getUserIdById(int id);
 	void updateAdmin(Admin admin);
+	
+	int getcheckFunction(String name);
+	int updateState(String name,int state);
+	
 }

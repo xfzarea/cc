@@ -1,6 +1,7 @@
 package com.connection.controller;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -22,6 +23,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.connection.aop.FruitAspectBC;
+import com.connection.aop.FruitAspectC;
+import com.connection.aop.FruitAspectI;
+import com.connection.aop.FruitAspectVE;
+import com.connection.aop.FruitAspectVO;
 import com.connection.dao.AdminDao;
 import com.connection.dao.BegJobDao;
 import com.connection.dao.DataDao;
@@ -493,6 +499,7 @@ public class UserController {
 	/**
 	 * 小程序获得用户自定义口令
 	 */
+	@FruitAspectC
 	@ResponseBody
 	@RequestMapping("getUserCommand")
 	public Result getUserCommand(@RequestParam("userId")int userId){
@@ -540,6 +547,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("saveUserCommand")
+	@FruitAspectC
 	public Result saveUserCommand(@RequestParam("command")String command,@RequestParam("userId")int userId){
 		Result result = null;
 		try {
@@ -669,6 +677,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/loadBegCommandImage")
+	@FruitAspectI
 	public Result loadBegCommandImage(@RequestParam("userId") int userId, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -700,7 +709,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/uploadVoiceCommand")
-	
+	@FruitAspectVO
 	public Result uploadVoiceCommand(@RequestParam("userId") int userId
 			, HttpServletRequest request) {
 		Result result = null;
@@ -742,6 +751,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/loadBegVedio")
+	@FruitAspectVE
 	public Result loadBegVedio(@RequestParam("userId") int userId, HttpServletRequest request) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -769,6 +779,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getUserCommandImage")
+	@FruitAspectI
 	public Result getUserCommandImage(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -790,6 +801,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getUserCommandVedio")
+	@FruitAspectVE
 	public Result getUserCommandVedio(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -811,6 +823,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getUserCommandVoice")
+	@FruitAspectVO
 	public Result getUserCommandVoice(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;
@@ -835,8 +848,10 @@ public class UserController {
 	 * @param request
 	 * @return
 	 */
+	
 	@ResponseBody
 	@RequestMapping("/loadBegCommand")
+	@FruitAspectBC
 	public Result loadBegCommand(@RequestParam("userId") int userId, String context) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -863,6 +878,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getUserBegCommand")
+	@FruitAspectBC
 	public Result getUserBegCommand(@RequestParam("userId")int userId){
 		Result result = null;
 		Map<String,Object>response = null;

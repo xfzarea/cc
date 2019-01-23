@@ -107,6 +107,8 @@
     	<property name="defaultEncoding" value="utf-8" />
     </bean>
     
+    
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
     <!--      spring拦截器 -->
     <mvc:interceptors>
 	     <mvc:interceptor>

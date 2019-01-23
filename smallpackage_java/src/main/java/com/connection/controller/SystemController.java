@@ -386,4 +386,18 @@ public class SystemController {
 		return result;
 		
 	}
+	
+	//关闭自定义功能
+	@ResponseBody
+	@RequestMapping("/sysCustom")
+	public Result sysCustom(String customName ,int state) {
+		Result result = null;
+		int cc=sysAdminDao.updateState(customName, state);
+		if(cc==1) {
+			result = Result.successResult();
+		}else {
+			result = Result.errorResult();
+		}
+		return result;
+	}
 }
