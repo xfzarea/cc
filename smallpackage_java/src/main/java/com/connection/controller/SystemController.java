@@ -392,11 +392,16 @@ public class SystemController {
 	@RequestMapping("/sysCustom")
 	public Result sysCustom(String customName ,int state) {
 		Result result = null;
+		Map<String, Object> resInfo = null;
 		int cc=sysAdminDao.updateState(customName, state);
 		if(cc==1) {
 			result = Result.successResult();
+			resInfo= new HashMap<String, Object>();
+			resInfo.put(customName, state);
+			result.setObj(resInfo);
 		}else {
 			result = Result.errorResult();
+			
 		}
 		return result;
 	}
