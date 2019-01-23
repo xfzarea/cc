@@ -1,0 +1,64 @@
+.main {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(0deg, #ff8d50 0%, #d85940 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main_box{
+  width: 322rpx;
+  height: 322rpx;
+  margin-top: 48rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main_pic {
+  width: 322rpx;
+  height: 322rpx;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.main_pic_x{
+  animation: pic_x 4s linear infinite;
+} 
+.main_pic_1{
+  width: 72.8rpx;
+  height: 128rpx;
+}
+.main_play{
+  color:#fff;
+  font-size: 60rpx;
+  /* margin-top: 78rpx; */
+  /* font-weight: bold; */
+  letter-spacing: -1.45rpx;
+  margin-top: 60rpx;
+}
+.main_b_pic{
+  position: fixed;
+  bottom: 40rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.main_b_pic > view{
+  font-size: 28rpx;
+  color:#fff;
+  margin-top: 48rpx;
+}
+.main_b_pic > image{
+  width: 222rpx;
+  height: 222rpx;
+} 
+
+@keyframes pic_x{
+  from { 
+  transform: rotateZ(0); 
+} 
+to { 
+  transform: rotateZ(360deg); 
+}
+}

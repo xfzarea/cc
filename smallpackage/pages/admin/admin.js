@@ -29,6 +29,11 @@ Page({
       url: '/pages/record/record',
     })
   },
+  toBegRecord:function(){
+    wx.navigateTo({
+      url: '/pages/begRecord/begRecord',
+    })
+  },
   toComplain:function(e){
     wx.navigateTo({
       url: '/pages/complain/complain',

@@ -1,0 +1,14 @@
+<view class='main'>
+  <view class='main_box'>
+    <image wx:if="{{state}}" class='main_pic {{state?"main_pic_x":""}}' src='/images/77.png'></image>
+    <image class='main_pic_1' src="/images/65.png"></image>
+  </view>
+  
+  <view class='main_play'>{{time}}</view>
+
+  <view class='main_b_pic'>
+    <image src='{{state?"/images/79.png":"/images/78.png"}}' catchtouchstart='toSay' catchtouchend='sayEnd' ></image>
+    <view>长按即进行录制</view>
+  </view>
+  
+</view>

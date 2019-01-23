@@ -82,6 +82,7 @@ App({
     userInfo: null,
     context:'',
     jobId:0,
-    page:''
+    page:'',
+    jBegInfo:{begType:0,begInfo:''}
   }
 })

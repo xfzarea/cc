@@ -1,0 +1,37 @@
+<view class="main">
+  <view class='top'>
+    <image src='/images/7.png'></image>
+    <view>提示：推荐的内容会经人工审核，请勿输入违禁内容</view>
+  </view>
+
+  <view class="article">
+    <textarea wx:if="{{type==1}}" placeholder="请输入..." value='{{context}}' maxlength="30" bindinput="input">
+      <view class='count'>{{count}}/30</view>
+    </textarea>
+    
+    <view wx:elif="{{type==2}}" class='article_view {{context?"article_view_se":""}}' catchtap='chooseImage'>
+      <view wx:if="{{context==''}}">点击选择图片~~</view>
+      <image src='{{context}}' mode='aspectFit' class='article_view_image'></image>
+    </view>
+
+    <view class='btns'>
+      <view catchtap='cancel'>取消</view>
+      <view class='{{over?"btn":""}}' catchtap='{{over?"submit":""}}'>完成</view>
+    </view>
+    <!-- <view class="historyBar">历史记录</view>
+    <view class='history' wx:for="{{jobContexts}}" wx:for-item="item" data-context='{{item}}' catchtap='click'>{{item}}</view>
+
+    <view class='bottom' catchtap='clearHistory' wx:if="{{jobContexts.length>0}}">
+      <image src='/images/delete.png'></image>
+    <view>清空历史</view> -->
+  <!-- </view> -->
+  </view>
+</view>
+
+<view class='card' wx:if="{{code==1}}">
+  <view class='card_box'>
+    <image src='https://static.yaohoudy.com/static/check.gif' class='checkGif' mode="aspectFit"></image>
+    <view>客服正在审核，请稍后...</view>
+  </view>
+  
+</view>

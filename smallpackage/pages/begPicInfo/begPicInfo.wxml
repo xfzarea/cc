@@ -1,0 +1,34 @@
+<view class='container'>
+  <!-- <view wx:if="{{leftInfos[leftInfos.length-1].contextId == 100}}" class='top'> -->
+  <view class='top'>
+    <!-- <view class='write' catchtap='toCustomCommand'>
+      <image src='/images/13.png'></image>
+      <view>向我们推荐你的口令</view>
+    </view>
+    <view class='creator' catchtap='toCustomCommand1'>征集口令</view> -->
+     <view class='write' catchtap='toCustomCommand1'>
+      <image src='/images/13.png'></image>
+      <view>自定义添加图片</view>
+    </view>
+    <view class='creator' catchtap='toCustomCommand1'>添加图片</view>  
+  </view>
+
+  <!-- <view class='article {{leftInfos[leftInfos.length-1].contextId == 100?"article_1":""}}'> -->
+  <view class='article article_1'>
+    <scroll-view class='orders' scroll-y>
+      <view wx:for="{{leftInfos}}" wx:for-item="leftInfo" wx:key="index" class='order {{changeId==leftInfo.id?"changeOrder":""}}' data-contextid='{{leftInfo.id}}' catchtap='changeOrderId'>{{leftInfo.commandImagePath}}</view>
+      
+    </scroll-view>
+    <view class='content'>
+      <scroll-view class='rigthCommands' scroll-y>
+        <!-- <view style='height:40rpx;background-color:#fff;'></view> -->
+        <view class='rigthCommand'>
+          <image mode="aspectFit" wx:if="{{leftInfos.length>0}}" wx:for="{{rightInfos}}" wx:for-item="rigthInfo" wx:key="index"  catchtap='toBeg' src='{{rigthInfo.commandImagePath}}' class='rightCommand_image' data-src="{{rigthInfo.commandImagePath}}"></image>
+        </view>
+
+        <view style="height:1rpx"></view>
+      </scroll-view>
+      <!-- <view class='createCommand' catchtap='toCustomCommand'>申请创建自定义口令</view> -->
+    </view>
+  </view>
+</view>

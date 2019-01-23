@@ -137,7 +137,8 @@ button::after{
   border-radius: 12rpx;
   position: relative;
   bottom: 160rpx;
-  box-shadow: 0rpx 4rpx 40rpx #b9b9b9;
+  box-shadow: 0rpx 2rpx 50rpx rgba(216,89,64,.5);
+  /* box-shadow: 0rpx 2rpx 28rpx #FFDCD5; */
   /* box-shadow: 0rpx 4rpx 20rpx #D85940; */
   display: flex;
   flex-direction: column;

@@ -1,170 +1,76 @@
-<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
-<warrant wx:if="{{warrantShow}}" bind:getWarrant="getWarrant"></warrant>
-<warn wx:if="{{warn_show}}" getCode="{{getCode}}" show="{{show}}" mark="{{job.wxchat_mark}}" bind:closeWarn="closeWarn"></warn>
-<view class='container' style='background-color: #fff'>
-  <view class='icon' wx:if="{{job.state!=4}}" catchtap='checkWarnShow' data-code='1'>
-    <image src='/images/47.png' ></image>
-  </view>
-  <scroll-view class='scroll' scroll-y bindscrolltolower="freshJobs">
-    <view class='top_b' >
-      <!-- <image wx:if="{{homeTrue}}" style='width:60rpx;height:60rpx;position:absolute;top:18rpx;left:40rpx;' src='/images/52.png' catchtap='toHome'></image> -->
-      <!-- <view style='position:absolute;top:0;left:20rpx;color:#fff;font-size:28rpx;pading:10rpx 20rpx;border-radius:30rpx;' src='/images/52.png' catchtap='toHome'>首页</view> -->
-      <image wx:if="{{job.state==3}}" class='mark' src='/images/35.png'></image>
-      <image wx:if="{{!begin}}" class='head_pic' src='{{job.state==4?job.headPic:job.avatarUrl}}'></image>
-      <image wx:if="{{begin}}" class='head_pic' src='/images/20.gif'></image>
-
-      <view wx:if="{{!begin}}" class="nickName"><text style='color:#FFE4E4'>{{job.state==4?job.userName:job.nickName}}</text>的语音红包</view>
-      <view wx:if="{{begin}}" class="nickName">{{second}}s</view>
-
-      <view wx:if="{{timerShow == 1}}" class='timer'>
-        <image src='/images/36.png'></image>
-        <view>{{time}}</view>
-      </view>
-
-      <view class='context'>“{{job.context}}”</view>
-      <view class='btn' wx:if="{{timerShow == 1}}" >
-        <image  src="/images/21_2.png"></image>
-        <view  class='btn_bar'>
-          <form report-submit='true' bindsubmit="take">
-            <button class="talk" form-type='submit'>
-              <image src='/images/59.png'></image>
-              <view>点击开启订阅红包</view>
-            </button>
-          </form>
-        </view>
-      </view>
-      <view wx:elif="{{!doSay}}" class='already'>你的普通话非常标准，<text style='color:#5CACEE !important' catchtap='searchBook'>查看登记证书</text></view>
-      <view wx:elif="{{job.state==3&&doSay}}" style='color:#EDD071;font-size:40rpx;font-weight:bold;margin-top:50rpx;'>该红包已经过期了</view>
-      <view wx:elif="{{job.totalCount == job.alreadyCount||job.state==2}}" style='color:#EDD071;font-size:40rpx;font-weight:bold;margin-top:50rpx;'>该红包已经全部抢完了</view>
-
-      <view class='btn' wx:elif="{{doSay}}">
-        <image src='{{begin?"/images/21_2.png":"/images/21_1.png"}}'></image>
-        <view  class='btn_bar' catchtouchstart='toSay' catchtouchend='sayEnd'>
-          <image src='/images/14.png'></image>
-          <view>按住说出以上口令领红包</view>
-        </view>
-      </view>
-      <!-- 三个按钮 -->
-      <view class="bars">
-        <view class='bar' catchtap='toHome'>
-          <image src="/images/45.png"></image>
-          <view>回到首页</view>
-        </view>
-        <!-- <view class='bar' catchtap='changeHandType'>
-          <image src='/images/43.png' ></image>
-          <view>转发好友</view>
-        </view> -->
-        <image src='/images/53.jpg' class='sharePic' catchtap='changeHandType'></image>
-        <view class='bar' catchtap='toWallet'>
-          <image src='/images/44.png'></image>
-          <view>余额提现</view>
-        </view>
+<scroll-view class='container' scroll-y style='background-color:#fff;' wx:if="{{begPackage}}">
+  <view class='package'>
+    <image src='{{begPackage.avatarUrl}}' class='avatarUrl'></image>
+    <view class='package_box'>
+      <view wx:if="{{begPackage.job_type==0}}" class='package_box_view'>{{begPackage.context}}</view>
+      <image wx:elif="{{begPackage.job_type==2}}" class='package_box_image'  src='{{begPackage.context}}' mode="aspectFit"></image>
+      <view class='package_box_voice' wx:elif="{{begPackage.job_type==1}}">
+        <image class='package_box_voice_pic1' src='/images/66.png' data-src='{{begPackage.context}}' catchtap='toVoicePlay'></image>
+        <view style='color:#d85940;font-size:28rpx;margin-top:12rpx;font-weight:bold;'>点击播放</view>
+        <image style='width:495rpx;height:37rpx;margin-top:36rpx;' src='/images/61.png'></image>
       </view>
     </view>
-    
-    <view style='background-color: #fff;'>
 
-      <!-- <image src='/images/16.png' class='top_image'></image> -->
-      <view class='label'>
-        <view class='info' style='margin-left:40rpx;'>共{{job.award}}元，已领取{{job.alreadyCount}}/{{job.totalCount}}个</view>
-        <button  session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' class='but info' open-type='contact'>联系客服</button>
+    <view class='package_award'>
+      <image src='/images/67.png'></image>
+      <view>该好友向您讨要¥6.66红包</view>
+    </view>
+
+    <view wx:if="{{!state}}" class='package_btns'>
+      <button size='mini' catchtap='toPay'>
+        <image src='/images/68.png'></image>
+      </button>
+      <button size='mini' catchtap='toBeg'>
+        <image src='/images/69.png'></image>
+      </button>
+    </view>
+    <!-- 我看自己发的 -->
+    <view wx:elif="{{state}}" class='package_btns'>
+      <button size='mini' open-type='share'>
+        <image src='/images/76.png'></image>
+      </button>
+      <button size='mini' catchtap='toBeg'>
+        <image src='/images/75.png'></image>
+      </button>
+    </view>
+
+    <image style='width:24rpx;height:30rpx;margin-top:40rpx' src='/images/70.png'></image>
+  </view>
+
+  <view class='gap'></view>
+  <view class='award'>
+    <view class='award_top'>
+      <image src='/images/71.png'></image>
+      <view>打赏列表</view>
+    </view>
+
+    <view class='award_info'>
+      <image class="award_info_ava" src='{{userInfo.avatarUrl}}'></image>
+      <view class='award_info_x' wx:if="{{state}}">
+        <button class='award_info_x_b' size='mini'>去答谢</button>
+        <view>2018-12-09</view>
       </view>
+      <view wx:elif="{{!state}}" class='award_info_1_view'>6.66元</view>
+    </view>
 
-      <!-- 广告部分 -->
-      <image wx:if="{{job.skipAppid}}" class='skip' mode="widthFix" data-skipappid='{{job.skipAppid}}' src='{{job.skipUrl}}' catchtap='openWx' data-code='1'></image>
-
-      <!-- 语音部分 -->
-      <view class='voice' wx:for="{{voices}}" wx:key="navItems" wx:for-item="voice" wx:for-index="index">
-        <view style='display:flex;align-items:center'>
-          <image src='{{voice.avatarUrl}}' class='voice_1'></image>
-          <image src='/images/18.png' data-index='{{index}}' class='voice_2' catchtap='audioPlay'></image>
-          <image src='/images/17.png' wx:if="{{voice.play == 0}}" class='voice_3' data-index='{{index}}' catchtap='audioPlay'></image>
-
-          <view wx:if="{{voice.play == 1}}" class='voice_8' catchtap='audioPlay' data-index='{{index}}'>播放中</view>
-          <view wx:if="{{voice.play == 0}}" catchtap='audioPlay' class='voice_4' data-index='{{index}}'>{{voice.second}}''</view>
-          <view class='voice_4' style="left:325rpx;font-size:24rpx;bottom:15rpx;">准确率:{{voice.rate}}%</view>
-        </view>
-        <view class='voice_5'>
-          <view class='voice_6' wx:if="{{voice.state == 0}}">{{filters.toFix(voice.award)}}元</view>
-          <view class='voice_6' wx:if="{{voice.state == 1}}">未成功</view>
-          <view class='voice_7'>{{voice.createTime}}</view>
-        </view>
+    <view class='award_info'>
+      <image class="award_info_ava" src='{{userInfo.avatarUrl}}'></image>
+      <view class='award_info_x' wx:if="{{state}}">
+        <button class='award_info_x_b1' size='mini'>已答谢</button>
+        <view>2018-12-09</view>
       </view>
-      <view style='height:1rpx;'></view>
-
+      <view wx:elif="{{!state}}" class='award_info_1_view'>6.66元</view>
     </view>
-  </scroll-view>
 
-  <!-- <view class='btns_b' wx:if="{{handType != 1}}">
-    <button type='mini' class='btn_b' catchtap='toHome'>
-      <image src='/images/4.png'></image>
-      <view>发个红包</view>
-    </button>
-
-    <button type='mini' class='btn_b' catchtap='changeHandType'>
-      <image src='/images/3.png' style='width:27rpx !important;height:30rpx !important;'></image>
-      <view>转发好友</view>
-    </button>
-  </view> -->
-</view>
-
-<!-- 领取到得 -->
-<view wx:if="{{code==2}}" class='card' catchtap='hide'>
-  <view class='card_box' catchtap='noHide'>
-    <image style="width:130rpx;height:140rpx;margin-top:90rpx;" src='/images/23.png'></image>
-    <view style='color:#D85940;font-size:32rpx;margin-top:50rpx;'>恭喜成功，喜获{{filters.toFix(voice.award)}}元红包</view>
-    <view style='color:#838383;font-size:28rpx;margin-top:4rpx;'>分享好友，一起来抢</view>
-    <view class='btns'>
-      <button open-type='share'>转发好友</button>
-      <button style='margin-left:30rpx;background-color:#838383;' catchtap='searchBook'>查看证书</button>
+    <view class='award_info'>
+      <image class="award_info_ava" src='{{userInfo.avatarUrl}}'></image>
+      <view class='award_info_x' wx:if="{{state}}">
+        <button class='award_info_x_b' size='mini'>去答谢</button>
+        <view>2018-12-09</view>
+      </view>
+      <view wx:elif="{{!state}}" class='award_info_1_view'>6.66元</view>
     </view>
+
+    <view style='height:1rpx;'></view>
   </view>
-</view>
-
-<view wx:if="{{code==1}}" class='card' catchtap='hide'>
-  <view class='card_box' catchtap='noHide'>
-    <image style="width:130rpx;height:140rpx;margin-top:70rpx;" src='/images/24.png'></image>
-    <view style='color:#D85940;font-size:32rpx;margin-top:55rpx;'>还差一点点，再接再厉</view>
-    <view style='color:#838383;font-size:28rpx;margin-top:4rpx;'>分享好友，一起来抢</view>
-    <view class='btns'>
-      <button open-type='share'>转发好友</button>
-      <button style='margin-left:30rpx;background-color:#838383;' catchtap='hide'>再来一次</button>
-    </view>
-  </view>
-</view>
-
-<!-- <view wx:if="{{handType==1}}" class='card c' catchtap='hide'>
-  <view class='card_c' catchtap='noHide'>
-    <image src="/images/38.png"></image>
-    <view>有事没事,发个红包</view>
-    <button open-type='share'>发给好友或到群聊</button>
-  </view>
-</view> -->
-
-<view wx:if="{{handType==2}}" class='card c' catchtap='hide'>
-  <view class='card_c' catchtap='noHide'>
-    
-    <canvas class='card_canvas' canvas-id='card_canvas'>
-
-    </canvas>
-    <view class="c_buts">
-      <!-- <button style='margin-left:45rpx;' open-type='share'>发送好友或群聊</button> -->
-      <button style='width:562rpx;margin-left:40rpx;' catchtap='saveCanvas'>保存该图片并分享</button>
-    </view>
-  </view>
-</view>
-
-<view wx:if="{{handType==1}}" class='card c' catchtap='hide'>
-  <view class='card_4' catchtap='noHide'>
-    <button style='margin-top:40rpx;' open-type='share'>发红包给好友</button>
-   <!-- <button style='margin-top:30rpx;color:#303030;background-color:#e5e5e5;' catchtap='createPic'>生成分享图</button> -->
-    <view catchtap='hide'>取消操作></view>
-  </view>
-</view>
-
-<canvas class="myCanvas" canvas-id="myCanvas">
-  
-</canvas>
-<canvas class="canvas_2" canvas-id="canvas_2">
-  
-</canvas>
+</scroll-view>

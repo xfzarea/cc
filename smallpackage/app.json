@@ -1,9 +1,17 @@
 {
   "pages": [
+    "pages/begPackage/begPackage",
     "pages/home/home",
+    "pages/voicePlay/voicePlay1",
+    
+    "pages/package/package",
+    "pages/begVoiceInfo/begVoiceInfo",
+    "pages/begPicInfo/begPicInfo",
+    "pages/voicePlay/voicePlay",
+    "pages/changes/changes",
+    "pages/beg/beg",
     "pages/passwd/passwd",
     "pages/marketing/marketing",
-    "pages/package/package",
     "pages/searchBook/searchBook",
     "pages/playRed/playRed",
     "pages/diploma/diploma",
@@ -19,9 +27,11 @@
     "pages/detail/detail",
     "components/warrant/warrant",
     "pages/tweet/tweet",
-    "pages/changes/changes",
-    "pages/beg/beg",
-    "pages/begPackage/begPackage"
+    "pages/begRecord/begRecord",
+    "pages/command/command1",
+    "pages/begVideoInfo/begVideoInfo",
+    "pages/customCommand/sustomCommand1"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",

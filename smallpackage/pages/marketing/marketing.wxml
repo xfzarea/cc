@@ -1,6 +1,6 @@
 <scroll-view class='main' scroll-y>
   <view class='bgPic'>
-    <image class='bgPic' src='/images/51.jpg'></image>
+    <image class='bgPic' src='https://static.yaohoudy.com/static/51.jpg'></image>
     <view class='pic_1'>
       <image src='/images/49.png'></image>
       <view class='info'>

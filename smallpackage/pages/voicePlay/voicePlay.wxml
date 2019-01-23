@@ -1,0 +1,6 @@
+<view class='main'>
+  <image class='main_pic {{state?"main_pic_x":""}}' src='/images/62.png'></image>
+  <image class='main_pic_1' src="/images/65.png"></image>
+  <view class='main_play'>{{state?"正在播放中···":"暂停"}}</view>
+  <image class='main_b_pic' src='{{state?"/images/63.png":"/images/64.png"}}' catchtap='changePlay'></image>
+</view>

@@ -10,31 +10,35 @@ Page({
   /**
  * 文字
  */
-  toCommand: function () {
-    wx.setStorageSync("textCommand",true);
+  toCommand1:function(){
     wx.navigateTo({
-      url: '/pages/command/command',
-    })
-  },
-  /**
- * 语音
- */
-  toCommandImage: function () {
-    wx.setStorageSync("commandImaged", true);
-    wx.navigateTo({
-      url: '/pages/changes/changes',
+      url: '/pages/command/command1',
     })
   },
   /**
  * 图片
  */
-  toVoiceCommand: function () {
-    wx.setStorageSync("voiceCommand", true);
+  toBegPicInfo: function () {
     wx.navigateTo({
-      url: '/pages/changes/changes',
+      url: '/pages/begPicInfo/begPicInfo',
     })
   },
-
+  /**
+ * 语音
+ */
+  toBegVoiceInfo: function () {
+    wx.navigateTo({
+      url: '/pages/begVoiceInfo/begVoiceInfo',
+    })
+  },
+  /**
+   * 视频
+   */
+  toBegVidoInfo:function(){
+    wx.navigateTo({
+      url: '/pages/begVideoInfo/begVideoInfo',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

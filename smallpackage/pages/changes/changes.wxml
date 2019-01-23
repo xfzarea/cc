@@ -1,41 +1,35 @@
+<view class='box' catchtap='toCommand1'>
+  <image src='/images/60.png' class='box_image'></image>
+  <view class='box_view_1'>
+    <image style='width:50rpx;height:50rpx;' src='/images/wenicon.png'></image>
+    <view style='color:#fff;margin-left:20rpx;font-size:48rpx;'>文字形式</view>
+  </view>
+  <view class='box_view_2'>副标题简洁说明</view>
+</view>
 
-      <view class='box'catchtap='toCommand'>
-       <view class='xie'></view>
-        <view class='wen'>推荐</view>
-        <view style='position:absolute;top:62rpx;left:200rpx;bottom:101rpx;display:flex;align-items:center'>
-         <image style='width:50rpx;height:50rpx;' src='/images/文字icon.png'></image>
-          <view style='color:#fff;;margin-left:20rpx;font-size:50rpx;' >文字形式</view>
-         
-        </view>
+<view class='box' catchtap='toBegPicInfo'>
+  <image src='/images/60.png' class='box_image'></image>
+  <view class='box_view_1'>
+    <image style='width:50rpx;height:50rpx;' src='/images/picicon.png'></image>
+    <view style='color:#fff;margin-left:20rpx;font-size:48rpx;'>图片形式</view>
+  </view>
+  <view class='box_view_2'>副标题简洁说明</view>
+</view>
 
-      </view>
-      
-      <view class='box1' catchtap='toCommandImage' >
-        <view class='xie1'></view>
-        <view class='wen1'>推荐</view>
-       
-        <view style='position:absolute;top:62rpx;left:200rpx;bottom:101rpx;display:flex;align-items:center'>
-            <image style='width:50rpx;height:50rpx;' src='/images/图片icon.png'></image>
-          <view style='color:#fff;;margin-left:20rpx;font-size:50rpx;'>图片形式</view>
-      
-        </view>
+<view class='box' catchtap='toBegVoiceInfo'>
+  <image src='/images/60.png' class='box_image'></image>
+  <view class='box_view_1'>
+    <image style='width:50rpx;height:50rpx;' src='/images/voiceicon.png'></image>
+    <view style='color:#fff;margin-left:20rpx;font-size:48rpx;'>语音形式</view>
+  </view>
+  <view class='box_view_2'>副标题简洁说明</view>
+</view>
 
-      </view>
-      
-      <view class='box2' catchtap=' toVoiceCommand'>
-        <view class='xie1'></view>
-        <view class='wen1'>推荐</view>
-
-        <view style='position:absolute;top:62rpx;left:200rpx;bottom:101rpx;display:flex;align-items:center'>
-         <image style='width:50rpx;height:50rpx;' src='/images/语音icon.png'></image>
-          <view style='color:#fff;;margin-left:20rpx;font-size:50rpx;'>语音形式</view>
-         
-        </view>
-
-      </view>
-  
-
-
-
-  
-
+<!-- <view class='box' catchtap='toBegVidoInfo'>
+  <image src='/images/60.png' class='box_image'></image>
+  <view class='box_view_1'>
+    <image style='width:50rpx;height:50rpx;' src='/images/voiceicon.png'></image>
+    <view style='color:#fff;margin-left:20rpx;font-size:48rpx;'>视频形式</view>
+  </view>
+  <view class='box_view_2'>副标题简洁说明</view>
+</view> -->

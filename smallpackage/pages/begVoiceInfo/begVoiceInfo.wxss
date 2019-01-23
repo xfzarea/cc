@@ -1,0 +1,32 @@
+.voices{
+  width: 670rpx;
+  margin-left: 40rpx;
+  border-radius: 20rpx;
+  margin-bottom: 40rpx;
+}
+.voices_v{
+  width: 670rpx;
+  background-color: #4C4C4C;
+  padding-top: 26rpx;
+  border-radius: 20rpx 20rpx 0 0;
+}
+.voices_v > view{
+  color: #fff;
+  font-size: 32rpx;
+  margin-left: 32rpx;
+}
+.voices_v > image{
+  width: 495rpx;
+  height: 37rpx;
+  margin:20rpx 0 40rpx 32rpx;
+}
+.voices_btn{
+  display: flex;
+  height: 85rpx;
+  background-color: #fff;
+  border-radius: 0 0 20rpx 20rpx;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 32rpx;
+  color: #d85940;
+}

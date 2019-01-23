@@ -3,28 +3,48 @@
 <warn wx:if="{{warn_show}}" getCode="{{getCode}}" show="{{show}}" mark="{{job.wxchat_mark}}" bind:closeWarn="closeWarn"></warn>
 <view class='container' style='background-color: #fff'>
   <view class='icon' wx:if="{{job.state!=4}}" catchtap='checkWarnShow' data-code='1'>
-    <image src='/images/47.png' ></image>
+    <image src='/images/47.png'></image>
   </view>
   <scroll-view class='scroll' scroll-y bindscrolltolower="freshJobs">
-    <view class='top_b' >
+    <view class='top_b'>
       <!-- <image wx:if="{{homeTrue}}" style='width:60rpx;height:60rpx;position:absolute;top:18rpx;left:40rpx;' src='/images/52.png' catchtap='toHome'></image> -->
       <!-- <view style='position:absolute;top:0;left:20rpx;color:#fff;font-size:28rpx;pading:10rpx 20rpx;border-radius:30rpx;' src='/images/52.png' catchtap='toHome'>首页</view> -->
       <image wx:if="{{job.state==3}}" class='mark' src='/images/35.png'></image>
       <image wx:if="{{!begin}}" class='head_pic' src='{{job.state==4?job.headPic:job.avatarUrl}}'></image>
       <image wx:if="{{begin}}" class='head_pic' src='/images/20.gif'></image>
 
-      <view wx:if="{{!begin}}" class="nickName"><text style='color:#FFE4E4'>{{job.state==4?job.userName:job.nickName}}</text>的语音红包</view>
+      <view wx:if="{{!begin}}" class="nickName">
+        <text style='color:#FFF;'>{{job.state==4?job.userName:job.nickName}}</text>
+      </view>
       <view wx:if="{{begin}}" class="nickName">{{second}}s</view>
+
+      <!-- 三个按钮 -->
+      <view class="bars">
+        <view class='bar' catchtap='toHome'>
+          <image src="/images/45.png"></image>
+          <view>发一个</view>
+        </view>
+        <view class='bar' catchtap='changeHandType'>
+          <image src='/images/43.png'></image>
+          <view>去转发</view>
+        </view>
+        <!-- <image src='/images/53.jpg' class='sharePic' catchtap='changeHandType'></image> -->
+        <!-- <view class='bar' catchtap='toWallet'>
+          <image src='/images/44.png'></image>
+          <view>余额提现</view>
+        </view> -->
+      </view>
 
       <view wx:if="{{timerShow == 1}}" class='timer'>
         <image src='/images/36.png'></image>
         <view>{{time}}</view>
       </view>
 
-      <view class='context'>“{{job.context}}”</view>
-      <view class='btn' wx:if="{{timerShow == 1}}" >
-        <image  src="/images/21_2.png"></image>
-        <view  class='btn_bar'>
+      <view class='context'>{{job.context}}</view>
+
+      <view class='btn' wx:if="{{timerShow == 1}}">
+        <image src="/images/21_2.png"></image>
+        <view class='btn_bar'>
           <form report-submit='true' bindsubmit="take">
             <button class="talk" form-type='submit'>
               <image src='/images/59.png'></image>
@@ -33,41 +53,31 @@
           </form>
         </view>
       </view>
-      <view wx:elif="{{!doSay}}" class='already'>你的普通话非常标准，<text style='color:#5CACEE !important' catchtap='searchBook'>查看登记证书</text></view>
+      <view wx:elif="{{!doSay}}" class='already'>你的普通话非常标准，
+        <text style='color:#5CACEE !important' catchtap='searchBook'>查看登记证书</text>
+      </view>
       <view wx:elif="{{job.state==3&&doSay}}" style='color:#EDD071;font-size:40rpx;font-weight:bold;margin-top:50rpx;'>该红包已经过期了</view>
       <view wx:elif="{{job.totalCount == job.alreadyCount||job.state==2}}" style='color:#EDD071;font-size:40rpx;font-weight:bold;margin-top:50rpx;'>该红包已经全部抢完了</view>
 
-      <view class='btn' wx:elif="{{doSay}}">
+      <view class='btn' wx:elif="{{doSay}}" catchtouchstart='toSay' catchtouchend='sayEnd'>
         <image src='{{begin?"/images/21_2.png":"/images/21_1.png"}}'></image>
-        <view  class='btn_bar' catchtouchstart='toSay' catchtouchend='sayEnd'>
-          <image src='/images/14.png'></image>
-          <view>按住说出以上口令领红包</view>
-        </view>
       </view>
-      <!-- 三个按钮 -->
-      <view class="bars">
-        <view class='bar' catchtap='toHome'>
-          <image src="/images/45.png"></image>
-          <view>回到首页</view>
-        </view>
-        <!-- <view class='bar' catchtap='changeHandType'>
-          <image src='/images/43.png' ></image>
-          <view>转发好友</view>
-        </view> -->
-        <image src='/images/53.jpg' class='sharePic' catchtap='changeHandType'></image>
-        <view class='bar' catchtap='toWallet'>
-          <image src='/images/44.png'></image>
-          <view>余额提现</view>
-        </view>
-      </view>
+
+      <image class='package_j' style='width:24rpx;height:30rpx;margin-top:40rpx;position:relative' src='/images/70.png'></image>
     </view>
-    
+    <view class='gap'></view>
+
     <view style='background-color: #fff;'>
 
+      <view wx:if="{{job.skipAppid}}" class='award_top'>
+        <image src='/images/72.png'></image>
+        <view>更多福利</view>
+      </view>
       <!-- <image src='/images/16.png' class='top_image'></image> -->
       <view class='label'>
-        <view class='info' style='margin-left:40rpx;'>共{{job.award}}元，已领取{{job.alreadyCount}}/{{job.totalCount}}个</view>
-        <button  session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' class='but info' open-type='contact'>联系客服</button>
+        <image src='/images/71.png'></image>
+        <view class='info' style='margin-left:12rpx;'>共{{filters.toFix(job.award)}}元。已领取{{job.alreadyCount}}/{{job.totalCount}}个</view>
+        <!-- <button session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' class='but info' open-type='contact'>联系客服</button> -->
       </view>
 
       <!-- 广告部分 -->
@@ -143,7 +153,7 @@
 
 <view wx:if="{{handType==2}}" class='card c' catchtap='hide'>
   <view class='card_c' catchtap='noHide'>
-    
+
     <canvas class='card_canvas' canvas-id='card_canvas'>
 
     </canvas>
@@ -157,14 +167,14 @@
 <view wx:if="{{handType==1}}" class='card c' catchtap='hide'>
   <view class='card_4' catchtap='noHide'>
     <button style='margin-top:40rpx;' open-type='share'>发红包给好友</button>
-   <!-- <button style='margin-top:30rpx;color:#303030;background-color:#e5e5e5;' catchtap='createPic'>生成分享图</button> -->
+    <!-- <button style='margin-top:30rpx;color:#303030;background-color:#e5e5e5;' catchtap='createPic'>生成分享图</button> -->
     <view catchtap='hide'>取消操作></view>
   </view>
 </view>
 
 <canvas class="myCanvas" canvas-id="myCanvas">
-  
+
 </canvas>
 <canvas class="canvas_2" canvas-id="canvas_2">
-  
+
 </canvas>

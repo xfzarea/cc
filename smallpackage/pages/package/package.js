@@ -40,7 +40,7 @@ Page({
   onLoad: function(options) {
     const that = this;
     var id = options.id;
-    // id=368;
+    // id = 100110;
     var scene = decodeURIComponent(options.scene); //从二维码进来
     if (scene != undefined && scene != "undefined" && scene != null) {
       id = scene

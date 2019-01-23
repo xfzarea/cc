@@ -34,16 +34,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 80rpx;
+  margin-top: 160rpx;
 }
 .list{
-  width: 690rpx;
-  height: 90rpx;
-  border-radius: 8rpx;
+  width: 670rpx;
+  height: 105rpx;
   background-color: #fff;
   display: flex;
   align-items: center;
-  margin-bottom: 20rpx;
+  justify-content: space-between;
+  /* margin-bottom: 20rpx; */
+  border-bottom: 1rpx solid #E0E0E0;
+}
+.list_icon{
+  display: flex;
+  height: 90rpx;
+  align-items: center;
 }
 .btn{
   margin:0;

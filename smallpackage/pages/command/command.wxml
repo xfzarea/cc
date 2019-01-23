@@ -6,11 +6,11 @@
       <view>向我们推荐你的口令</view>
     </view>
     <view class='creator' catchtap='toCustomCommand1'>征集口令</view> -->
-     <view class='write' >
+     <view class='write' catchtap='toCustomCommand'>
       <image src='/images/13.png'></image>
-      <view>很抱歉此功能尚未开放</view>
+      <view>向我们推荐你的口令</view>
     </view>
-    <view class='creator' >创建口令</view>  
+    <view class='creator' catchtap='toCustomCommand'>创建口令</view>  
   </view>
 
   <!-- <view class='article {{leftInfos[leftInfos.length-1].contextId == 100?"article_1":""}}'> -->

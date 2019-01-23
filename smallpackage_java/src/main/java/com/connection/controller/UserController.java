@@ -447,49 +447,49 @@ public class UserController {
 		return result;
 	}
 	
-//	/**
-//	 * 自定义头像（接受单一图片）
-//	 * 
-//	 * @param request
-//	 * @param response
-//	 * @return
-//	 */
-//	@RequestMapping("/app/doImageLoad")
-//	public void doFileLoad(HttpServletRequest request, HttpServletResponse response) {
-//		response.setContentType("text/html;charset=utf8");
-//		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-//		//获取前端的值
-//		MultipartFile file = multiRequest.getFile("image");
-//		//获取上传文件的原名，并且利用replaceAll去空格
-//		String name = file.getOriginalFilename().replaceAll(" ", "");
-//		long currentTime = System.currentTimeMillis();
-//		/*name.substring(name.lastIndexOf("."), name.length())这条代码最后的结果就是去的此文件名的扩展名如xxx.exe返回的就是.exe（包括点） ，
-//		 * 去的filename的子串，第一个参数是起始index，第二个参数是最后的index，只是着个index对应的字符不包含在最后的结果中
-//		 */
-//		String imagePath = "static/head/" + currentTime + name.substring(name.lastIndexOf("."), name.length());
-//		String dbPath = "https://static.yaohoudy.com/static/head/" +currentTime+name.substring(name.lastIndexOf("."), name.length());
-//		PrintWriter out = null;
-//		InputStream input = null;
-//		try {
-//			out = response.getWriter();
-//			request.setCharacterEncoding("utf-8");
-//			input = file.getInputStream();
-//			//存到阿里云
-//			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, imagePath, input);
-//			//输出地址dbPath
-//			out.print(dbPath);
-//		} catch (Exception e) {
-//			log.error("/infoPicLoad:"+dbPath);
-//		} finally {
-//			out.close();
-//			try {
-//				input.close();
-//			} catch (IOException e) {
-//
-//			}
-//		}
-//	}
-//	
+	/**
+	 * （接受单一图片）
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/app/doImageLoad")
+	public void doFileLoad(HttpServletRequest request, HttpServletResponse response) {
+		response.setContentType("text/html;charset=utf8");
+		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		//获取前端的值
+		MultipartFile file = multiRequest.getFile("image");
+		//获取上传文件的原名，并且利用replaceAll去空格
+		String name = file.getOriginalFilename().replaceAll(" ", "");
+		long currentTime = System.currentTimeMillis();
+		/*name.substring(name.lastIndexOf("."), name.length())这条代码最后的结果就是去的此文件名的扩展名如xxx.exe返回的就是.exe（包括点） ，
+		 * 去的filename的子串，第一个参数是起始index，第二个参数是最后的index，只是着个index对应的字符不包含在最后的结果中
+		 */
+		String imagePath = "static/head/" + currentTime + name.substring(name.lastIndexOf("."), name.length());
+		String dbPath = "https://static.yaohoudy.com/static/head/" +currentTime+name.substring(name.lastIndexOf("."), name.length());
+		PrintWriter out = null;
+		InputStream input = null;
+		try {
+			out = response.getWriter();
+			request.setCharacterEncoding("utf-8");
+			input = file.getInputStream();
+			//存到阿里云
+			Util.ossLoad(endPoint, accessKeyId, accessKeySecret, bucketName, imagePath, input);
+			//输出地址dbPath
+			out.print(dbPath);
+		} catch (Exception e) {
+			log.error("/infoPicLoad:"+dbPath);
+		} finally {
+			out.close();
+			try {
+				input.close();
+			} catch (IOException e) {
+
+			}
+		}
+	}
+	
 	/**
 	 * 小程序获得用户自定义口令
 	 */
@@ -681,7 +681,7 @@ public class UserController {
 			input = file.getInputStream();// 获得文件输入流
 
 			resInfo.put("commandImage", begJobService.saveCommandImage(input, userId));
-		
+			
 			result.setObj(resInfo);
 		} catch (Exception e) {
 			e.printStackTrace();

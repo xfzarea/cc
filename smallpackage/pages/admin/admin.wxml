@@ -6,26 +6,36 @@
   </view>
   <view class='lists'>
     <view class='list' catchtap='toWallet'>
-      <image src='/images/9.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
-      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>我的钱包</view>
-      <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
+      <view class='list_icon'>
+        <image src='/images/9.png' style='width:34rpx;height:34rpx;'></image>
+        <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>我的钱包</view>
+      </view>
+      <image src='/images/6.png' style='width:33rpx;height:33rpx'></image>
     </view>
 
     <view class='list' catchtap='toRecord'>
-      <image src='/images/5.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
-      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>发的红包</view>
-      <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
+      <view class='list_icon'>
+        <image src='/images/5.png' style='width:34rpx;height:34rpx'></image>
+        <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>发的红包</view>
+      </view>
+      <image src='/images/6.png' style='width:33rpx;height:33rpx'></image>
     </view>
-     <view class='list' catchtap='toRecord'>
-      <image src='/images/5.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
-      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>讨的红包</view>
-      <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
+    <view class='list' catchtap='toBegRecord'>
+      <view class='list_icon'>
+        <image src='/images/5.png' style='width:34rpx;height:34rpx'></image>
+        <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>讨的红包</view>
+      </view>
+
+      <image src='/images/6.png' style='width:33rpx;height:33rpx'></image>
     </view>
 
     <view class='list' catchtap='toMoreQuestion'>
-      <image src='/images/8.png' style='width:34rpx;height:34rpx;margin-left:30rpx'></image>
-      <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>常见问题</view>
-      <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
+      <view class='list_icon'>
+        <image src='/images/8.png' style='width:34rpx;height:34rpx'></image>
+        <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>常见问题</view>
+      </view>
+
+      <image src='/images/6.png' style='width:33rpx;height:33rpx'></image>
     </view>
 
     <!-- <view class='list' catchtap='toSearchBook'>
@@ -46,10 +56,10 @@
       <image src='/images/6.png' style='width:33rpx;height:33rpx;margin-left:440rpx'></image>
     </button> -->
     <view class="bot bottom">
-      <view  catchtap='toComplain'>投诉</view>
+      <view catchtap='toComplain'>投诉</view>
       <view style='padding:0 10rpx;'>/</view>
       <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
     </view>
-    
+
   </view>
 </view>

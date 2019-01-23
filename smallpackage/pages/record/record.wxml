@@ -24,7 +24,7 @@
 
     <view class='intro'>红包明细：</view>
 
-    <view class='content' wx:for="{{jobs}}" wx:for-item="job" catchtap="toPackage" data-id='{{job.id}}'>
+    <view class='content' wx:for="{{jobs}}" wx:for-item="job" catchtap="toPackage" data-id='{{job.id}}' wx:key="index">
       <view style='display:flex;align-items:center;'>
         <image src='{{job.headPic?job.headPic:job.avatarUrl}}'></image>
         <view class='job_box'>

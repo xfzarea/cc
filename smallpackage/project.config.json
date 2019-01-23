@@ -12,9 +12,9 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.2",
+	"libVersion": "2.5.0",
 	"appid": "wx17d53dad32f8a6d0",
-	"projectname": "new%E5%B0%8F%E7%BA%A2%E5%8C%85",
+	"projectname": "smallpackage",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
