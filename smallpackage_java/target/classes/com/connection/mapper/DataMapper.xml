@@ -35,8 +35,10 @@
 	
 	<select id="getRealMoney" parameterType="int" resultType="java.util.Map">
 <!-- 	查询（用户在语音记录表中的奖励金和），减去，（现金表中的提现记录和） -->
-		SELECT ((SELECT IF(SUM(award) IS NULL,0,SUM(award)) FROM voice_record WHERE userId = #{userId} AND state = 0)-
-		(SELECT IF(SUM(money)IS NULL,0,SUM(money))FROM cash WHERE userId = #{userId}))AS money
+		
+		SELECT ((SELECT IF(SUM(award) IS NULL,0,SUM(award)) FROM voice_record WHERE userId =  #{userId} AND state = 0)+
+(SELECT IF(SUM(award) IS NULL,0,SUM(award)) FROM beg_job_record LEFT JOIN  beg_job bj ON jobId=id WHERE bj.userId = #{userId})-
+		(SELECT IF(SUM(money)IS NULL,0,SUM(money))FROM cash WHERE userId =  #{userId}))AS money
 	</select>
 	
 	
