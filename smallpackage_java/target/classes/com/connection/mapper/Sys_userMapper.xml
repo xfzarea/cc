@@ -81,4 +81,10 @@
  	<update id="updateAdmin" parameterType="com.connection.entity.Admin">
  		UPDATE admin SET nickName = #{nickName},avatarUrl = #{avatarUrl} WHERE userId = #{userId}  AND openid = "bxszc"
  	</update>
+ 	<select id="getcheckFunction" resultType="int" >
+ 	select state from TF where name=#{0} 
+ 	</select>
+ 	<update id="updateState" >
+ 		UPDATE TF set state=#{1} WHERE name = #{0}  
+ 	</update>
 </mapper>
