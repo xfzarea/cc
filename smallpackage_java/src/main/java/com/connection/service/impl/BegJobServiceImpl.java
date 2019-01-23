@@ -97,7 +97,7 @@ public class BegJobServiceImpl implements BegJobService {
 			redis.deleteRecord(jobId);
 			int fauserId =begjobDao.getUserIdByJobId(jobId);
 			Map<String,Object>admin = adminDao.getUserById(fauserId);
-			int num = adminDao.checkVersion(fauserId, (Integer)admin.get("money_version"));
+			int num = adminDao.checkVersion(fauserId, (int)admin.get("money_version"));
 			if(num == 1){
 				adminDao.modifyMoney(award, fauserId);
 				num=0;

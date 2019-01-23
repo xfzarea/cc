@@ -50,10 +50,10 @@
 	</select>
 <!-- 	支付回调 判断 -->
 	<select id="getJobById1" resultType="java.util.Map" parameterType="int">
-		SELECT a.id,a.userId,a.totalAward,a.award,a.alreadyAward,a.context,
-			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.state,a.headPic,
+		SELECT a.id,a.userId,a.totalAward,a.award,a.context,
+			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.headPic,
 			a.userName,a.skipAppid,a.skipUrl,a.shareUrl FROM beg_job a
-		 WHERE id = #{id} AND state = 0 AND version = 0
+		 WHERE id = #{id} 
 	</select>
 <!-- 	判断语音是否可讲 -->
 	<select id="getJobById2" resultType="java.util.Map" parameterType="int">
