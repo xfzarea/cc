@@ -43,6 +43,12 @@ Page({
     })
   },
 
+  toVoicePlay1:function(){
+    wx.navigateTo({
+      url: '/pages/voicePlay/voicePlay1',
+    })
+  },
+
   toVoicePlay:function(e){
     const that = this;
     let index = e.currentTarget.dataset.index;

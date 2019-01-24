@@ -1,3 +1,4 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
 <scroll-view class='container' scroll-y style='background-color:#fff;' wx:if="{{begPackage}}">
   <view class='package'>
     <image src='{{begPackage.avatarUrl}}' class='avatarUrl'></image>
@@ -13,7 +14,7 @@
 
     <view class='package_award'>
       <image src='/images/67.png'></image>
-      <view>该好友向您讨要¥6.66红包</view>
+      <view>该好友向您讨要¥{{filters.toFix(begPackage.award)}}红包</view>
     </view>
 
     <view wx:if="{{!state}}" class='package_btns'>

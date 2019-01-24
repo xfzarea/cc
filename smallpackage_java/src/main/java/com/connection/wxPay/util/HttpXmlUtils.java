@@ -443,17 +443,17 @@ public class HttpXmlUtils {
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 */
-	public static String refundHand(String url,String data){
+	public static String refundHand(String url,String data,String book_url,String mch_id){
 		try {
 			KeyStore keyStore  = KeyStore.getInstance("PKCS12");
 
-			FileInputStream instream = new FileInputStream(new File("E:/apiclient_cert.p12"));
+			FileInputStream instream = new FileInputStream(new File(book_url));
 
-			 keyStore.load(instream, "1509656321".toCharArray());//这里写�
+			 keyStore.load(instream, mch_id.toCharArray());//这里写�
 
 			 instream.close();
 
-			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, "1509656321".toCharArray()).build();
+			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mch_id.toCharArray()).build();
 
 			 @SuppressWarnings("deprecation")
 			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext,new String[] { "TLSv1" },null,

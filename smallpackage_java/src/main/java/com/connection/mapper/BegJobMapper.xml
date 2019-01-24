@@ -146,11 +146,11 @@
 	
 	
 	<select id="getUserId">
-	select userId from admin where openId=#{openId}
+		select userId from admin where openId=#{openId}
 	
 	</select>
 	
-	<select id="getUserIdByJobId">
+	<select id="getUserIdByJobId" parameterType="int">
 	select userId from beg_job where id=#{jobId}
 	
 	</select>

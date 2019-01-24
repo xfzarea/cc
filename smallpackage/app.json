@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/begPackage/begPackage",
+    
     "pages/home/home",
     "pages/voicePlay/voicePlay1",
-    
+    "pages/begPackage/begPackage",
     "pages/package/package",
     "pages/begVoiceInfo/begVoiceInfo",
     "pages/begPicInfo/begPicInfo",

@@ -1,18 +1,22 @@
-<scroll-view class='container' scroll-y>
-  <view style='height:40rpx;'></view>
-  <view class='voices' wx:for="{{voices}}" wx:key="index" wx:for-item="item">
-    <view class='voices_v'>
-      <view>{{item.context}}</view>
-      <image src='/images/61.png'></image>
+<view class='container '>
+  <scroll-view class="main" scroll-y>
+    <view style='height:40rpx;'></view>
+    <view class='voices' wx:for="{{voices}}" wx:key="index" wx:for-item="item">
+      <view class='voices_v'>
+        <view>{{item.context}}</view>
+        <image src='/images/61.png'></image>
+      </view>
+      <view class='voices_btn'>
+        <view style='margin-left:50rpx;' catchtap='toVoicePlay' data-index='{{index}}'>预览音频</view>
+        <view style='color:#DADADA;'>|</view>
+        <view style='margin-right:50rpx;' data-src='{{item.voiceCommandPath}}' data-context='{{item.context}}' catchtap='toBeg' data-second='{{item.voiceTime}}'>使用音频</view>
+      </view>
     </view>
-    <view class='voices_btn'>
-      <view style='margin-left:50rpx;' catchtap='toVoicePlay' data-index='{{index}}'>预览音频</view>
-      <view style='color:#DADADA;'>|</view>
-      <view style='margin-right:50rpx;' data-src='{{item.voiceCommandPath}}' data-context='{{item.context}}' catchtap='toBeg' data-second='{{item.voiceTime}}'>使用音频</view>
-    </view>
+    <view style='height:1rpx;'></view>
+  </scroll-view>
+
+  <view class='botton_view'>
+    <image class='bottom_view_image1' src='/images/81.png'></image>
+    <image class='bottom_view_image2' src='/images/82.png' catchtap='toVoicePlay1'></image>
   </view>
-
-  
-
-  <view style='height:1rpx;'></view>
-</scroll-view>
+</view>

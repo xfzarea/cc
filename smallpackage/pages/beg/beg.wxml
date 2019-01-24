@@ -17,7 +17,7 @@
       <!-- 语音 -->
       <view wx:if="{{jBegInfo.begType==3}}" class='list_6_type3'>
         <image src='/images/80.png'></image>
-        <view>{{jBegInfo.second}}` `</view>
+        <view>{{jBegInfo.second}} ``</view>
         
       </view>
     </view>
@@ -42,14 +42,9 @@
 
   <view class='records'>
     <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
-
     <!-- <button size='mini' catchtap='toMarketing'>营销服务</button> -->
     <view style='margin:0 20rpx;color:#5c73a6;'>|</view>
-
     <button size='mini' catchtap='toRecord'>红包记录</button>
-
-
-
   </view>
   <!--开始-->
 
@@ -87,12 +82,20 @@
     <view class='card_4' catchtap='noHide'>
       <image src='/images/73.png' style='width:137rpx;height:137rpx;margin-top:20rpx;margin-left:267rpx'></image>
       <button style='margin-top:35rpx;' open-type='share'>发送好友或群聊</button>
-      <button style='margin-top:40rpx;background-color#D85940;' catchtap='createPic'>生成分享图</button>
-
+      <button style='margin-top:40rpx;background-color#D85940;' catchtap='create_share_pic'>生成分享图</button>
     </view>
     <view class='card_1'>
-
       <image src='/images/74.png' style='width:80rpx;height:80rpx;' catchtap='hide'></image>
     </view>
   </view>
+
+  <view wx:if="{{handType==2}}" class='card' style='align-items:center' catchtap='hide'>
+    <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;' catchtap='noHide'>
+      <image src='{{share_pic_src}}' style='width:600rpx;height:842rpx;'></image>
+      <view class="card_share_btn">保存到朋友圈</view>
+    </view>
+  </view>
 </view>
+<canvas canvas-id="share_pic" class='canvas_share'>
+
+</canvas>

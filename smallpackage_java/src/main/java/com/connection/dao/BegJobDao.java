@@ -51,12 +51,12 @@ public interface BegJobDao {
 	int sysBegCommand(int fatherId,String context);
 	
 	public List<String> getLuckyNumber();
+	
 	public int addLuckyNumber(Double number);
 	
-	public int getUserId(String openId);
+	public int getUserId(@Param("openId")String openId);
 	
 	public int getUserIdByJobId(int jobId);
-	
 	
 	List<HashMap<String,Object>>getRecord( int jobId);
 	

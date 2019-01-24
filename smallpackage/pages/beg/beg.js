@@ -62,6 +62,39 @@ Page({
     }
 
   },
+
+  /**
+   * canvas画分享图
+   */
+  draw_share_pic: function () {
+    var that = this;
+    var rem;
+    wx.getSystemInfo({
+      success: function (res) {
+        rem = res.screenWidth / 750;
+      },
+    })
+    const ctx = wx.createCanvasContext('share_pic');
+    ctx.drawImage("/images/83.jpg", 0, 0, 600 * rem, 842 * rem);
+    ctx.drawImage("/images/29.png", 155 * rem, 388 * rem, 290 * rem, 290 * rem);
+    ctx.draw();
+    that.downImg();
+  },
+  downImg: function (id) {
+    const that = this;
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      canvasId: 'share_pic',
+      success: function (res) {
+        console.log(res.tempFilePath);
+        that.setData({
+          share_pic_src: res.tempFilePath
+        })
+      }
+    })
+    // }, 100))
+  },
   /**
    * 生成讨要红包
    */
@@ -103,6 +136,10 @@ Page({
                 jBegInfo:{begType:0,begInfo:''},
                 handType:1
               })
+              wx.hideTabBar({
+                animation: false
+              })
+              that.draw_share_pic();
             }
           })
           
@@ -110,6 +147,14 @@ Page({
       })
     }
   },
+
+  create_share_pic:function(){
+    const that = this;
+    that.setData({
+      handType:2
+    })
+  },
+
   load: function(e) {
     console.log("公众号组件", e)
   },
@@ -239,7 +284,7 @@ Page({
       handType: 0
     })
     wx.showTabBar({
-      animation: true //是否需要过渡动画
+      animation: false //是否需要过渡动画
     })
   },
   closeWarn: function(e) {
@@ -314,10 +359,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    const that = this;
-    that.setData({
-      show: false
-    })
+    // const that = this;
+    // that.setData({
+    //   show: false
+    // })
   },
 
   /**

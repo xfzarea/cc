@@ -1,3 +1,6 @@
+.main{
+  height: calc(100% - 180rpx);
+}
 .voices{
   width: 670rpx;
   margin-left: 40rpx;
@@ -29,4 +32,24 @@
   justify-content: space-around;
   font-size: 32rpx;
   color: #d85940;
+}
+.botton_view{
+  width: 750rpx;
+  height: 176rpx;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 199;
+}
+.bottom_view_image1{
+  width: 750rpx;
+  height: 112rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.bottom_view_image2{
+  width: 130rpx;
+  height: 130rpx;
 }

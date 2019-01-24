@@ -168,8 +168,9 @@ Page({
   },
   sayEnd: function () {
     const that = this;
+    let second = that.data.second;
     that.setData({
-      begin: false,
+      state: false,
     })
     setTimeout(function () { //延迟关闭录音
       console.log("关闭录音");

@@ -33,11 +33,12 @@ public class CompanyPay {
 			// 参数组 需要客户端传过来的数据有：商品信息 商品描述 商品金额 充值类型 充值账号
 			String appid = config.appid;// 应用ID
 			String mch_id = config.mch_id;// 商户号
+			String book_url = config.book_url;//证书路径
 			String nonce_str = RandCharsUtils.getRandomString(32);// 随机字符串，不长于32位，推荐随机数生成法
 			String partner_trade_no = RandCharsUtils.getRandomStringOrderNum();//商户订单号
 			String check_name = "NO_CHECK";//检查真实姓名不？这里写入不核查，NO_CHECK：不校验真实姓名 、FORCE_CHECK：强校验真实姓名
 			int amount = (int)(Double.parseDouble(money*100+""));//单位为分 收取2%的手续费
-			String desc = "包享说提现";//描述
+			String desc = "包开说提现";//描述
 			String spbill_create_ip = "192.168.0.1";//用户ip
 			/**
 			 * 封装参数，参数签名
@@ -63,7 +64,7 @@ public class CompanyPay {
 			//微信请求地址
 			String wxUrl = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 					//这里去请求，并返回字符串
-			String weixinPost = HttpXmlUtils.refundHand(wxUrl, xmlInfo).toString();
+			String weixinPost = HttpXmlUtils.refundHand(wxUrl, xmlInfo,book_url,mch_id).toString();
 			
 			Map mapreturn = ParseXMLUtils.jdomParseXml(weixinPost);
 			//返回参数return_codeSUCCESS/FAIL此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断

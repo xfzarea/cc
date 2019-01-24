@@ -397,3 +397,18 @@ button::after {
   font-size: 32rpx;
   color:#d85940;
 }
+.canvas_share{
+  width: 600rpx;
+  height: 842rpx;
+}
+.card_share_btn{
+  width: 291rpx;
+  height: 88rpx;
+  border-radius: 88rpx;
+  background-color: #d85940;
+  color: #fff;
+  font-size: 28rpx;
+  margin-top: 40rpx;
+  text-align: center;
+  line-height: 88rpx;
+}

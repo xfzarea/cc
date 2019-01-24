@@ -119,9 +119,10 @@ public class UserServiceImpl implements UserService{
 	 */
 	public synchronized Integer cash(int userId,double money,String openid){
 		//输出日志（包括用户id和提现时间）
-		log.info(userId+"提现时间"+System.currentTimeMillis());
+		
 		//<!-- 	查询（用户在语音记录表中的奖励金和），减去，（现金表中的提现记录和） -->
 		Map<String,Double>realMoney = dataDao.getRealMoney(userId);//风控之后真实存在的钱
+		log.info(userId+"提现时间"+System.currentTimeMillis()+"真实的钱="+realMoney);
 		int state = 0;
 		////根据用户id查询userId,nickName,avatarUrl,money,money_version 
 		Map<String,Object>admin = adminDao.getUserById(userId);

@@ -24,6 +24,7 @@ public class RefundService {
 			// 参数组 需要客户端传过来的数据有：商品信息 商品描述 商品金额 充值类型 充值账号
 			String appid = config.appid;// 应用ID
 			String mch_id = config.mch_id;// 商户号
+			String book_url = config.book_url;
 			String nonce_str = RandCharsUtils.getRandomString(32);// 随机字符串，不长于32位，推荐随机数生成法
 			String out_refund_no = RandCharsUtils.getRandomStringOrderNum();//退款单号
 			String out_trade_no = (String)job.get("out_trade_no");
@@ -55,7 +56,7 @@ public class RefundService {
 			String xmlInfo = HttpXmlUtils.xmlInfo(parameters);
 			String wxUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
 
-			String weixinPost = HttpXmlUtils.refundHand(wxUrl, xmlInfo).toString();
+			String weixinPost = HttpXmlUtils.refundHand(wxUrl, xmlInfo,book_url,mch_id).toString();
 			
 			Map mapreturn = ParseXMLUtils.jdomParseXml(weixinPost);
 			String return_code = mapreturn.get("return_code").toString();
