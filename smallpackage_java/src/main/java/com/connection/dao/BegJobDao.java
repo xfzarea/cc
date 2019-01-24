@@ -58,7 +58,7 @@ public interface BegJobDao {
 	
 	public List<Integer> getUserIdByJobId(int jobId);
 	
-	List<HashMap<String,Object>>getRecord( int jobId);
+	List<HashMap<String,Object>>getRecord( @Param("jobId")int jobId);
 	
 	HashMap<String,Object> getPaied(int userId, int jobId);
 	
