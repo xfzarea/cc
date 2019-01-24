@@ -18,7 +18,7 @@
 	
 <!-- 	获得我被讨得红包 -->
 	<select id="getMyBeggedPush" resultType="java.util.Map">
-		SELECT a.id,a.userId,a.award,a.context,
+		SELECT a.id,a.userId,a.award,a.context,a.job_type,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId
 			WHERE a.id = any(select jobId from beg_job_record c where c.userId=#{userId}) 
@@ -29,7 +29,7 @@
 	</select>
 	<!-- 	获得我讨得红包 -->
 	<select id="getMyBegPush" resultType="java.util.Map">
-		SELECT a.id,a.userId,a.award,a.context,
+		SELECT a.id,a.userId,a.award,a.context,a.job_type,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId 
 			WHERE a.userId = #{userId} 
