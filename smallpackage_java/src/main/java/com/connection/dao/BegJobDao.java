@@ -54,9 +54,9 @@ public interface BegJobDao {
 	
 	public int addLuckyNumber(Double number);
 	
-	public int getUserId(@Param("openId")String openId);
+	public List<Integer> getUserId(@Param("openid")String openid);
 	
-	public int getUserIdByJobId(int jobId);
+	public List<Integer> getUserIdByJobId(int jobId);
 	
 	List<HashMap<String,Object>>getRecord( int jobId);
 	

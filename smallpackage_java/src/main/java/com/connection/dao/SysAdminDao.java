@@ -28,7 +28,7 @@ public interface SysAdminDao {
 	Map<String,Integer>getUserIdById(int id);
 	void updateAdmin(Admin admin);
 	
-	int getcheckFunction(String name);
+	List<Integer> getcheckFunction(String name);
 	int updateState(String name,int state);
 	
 }

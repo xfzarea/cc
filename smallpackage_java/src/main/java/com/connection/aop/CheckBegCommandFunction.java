@@ -29,8 +29,9 @@ public class CheckBegCommandFunction {
 	@Before("@annotation(com.connection.aop.FruitAspectBC)")
 	public void watch() throws Throwable {
 		
-		int userBegCommand =sys.getcheckFunction("userBegCommand");
-	
+		List<Integer> list=sys.getcheckFunction("userBegCommand");
+		int userBegCommand =list.get(0);
+		System.out.println(userBegCommand);
 		HashMap<String,Integer> result = new HashMap<String,Integer>() ;
 		
 

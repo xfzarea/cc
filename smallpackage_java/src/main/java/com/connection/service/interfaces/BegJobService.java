@@ -3,6 +3,7 @@ package com.connection.service.interfaces;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public interface BegJobService {
@@ -16,7 +17,7 @@ public interface BegJobService {
 	
 	public String saveBegSharePic(InputStream input,int id);
 	
-	public int getUserId(String openId);
+	public List<Integer> getUserId(String openid);
 	//用户自定义上传
 	public String saveCommandImage(InputStream input,int id);
 	public String saveVedioCommand(InputStream input,int id) throws IOException ;

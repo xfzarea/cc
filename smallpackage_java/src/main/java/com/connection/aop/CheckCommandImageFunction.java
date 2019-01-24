@@ -29,8 +29,8 @@ public class CheckCommandImageFunction {
 	@Before("@annotation(com.connection.aop.FruitAspectI)")
 	public void watch() throws Throwable {
 		
-		int userCommandImage =sys.getcheckFunction("userCommandImage");
-	
+		List<Integer> list  =sys.getcheckFunction("userCommandImage");
+		int userCommandImage=list.get(0);
 		HashMap<String,Integer> result = new HashMap<String,Integer>() ;
 		
 		

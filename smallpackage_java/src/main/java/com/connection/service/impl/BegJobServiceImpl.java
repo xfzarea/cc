@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
@@ -95,7 +96,14 @@ public class BegJobServiceImpl implements BegJobService {
 		
 		if(cc==1) {
 			redis.deleteRecord(jobId);
-			int fauserId =begjobDao.getUserIdByJobId(jobId);
+			List<Integer> list=begjobDao.getUserIdByJobId(jobId);
+			
+			int fauserId =list.get(0);
+			if(fauserId==0) {
+				log.info("支付回掉，用户fauserId失敗");
+				return;
+				}
+	
 			Map<String,Object>admin = adminDao.getUserById(fauserId);
 			int num = adminDao.checkVersion(fauserId, (int)admin.get("money_version"));
 			if(num == 1){
@@ -156,9 +164,9 @@ public class BegJobServiceImpl implements BegJobService {
 	}
 
 	@Override
-	public int getUserId(String openId) {
+	public List<Integer> getUserId(String openid) {
 		// TODO Auto-generated method stub
-		return begjobDao.getUserId(openId);
+		return begjobDao.getUserId(openid);
 		
 		
 	

@@ -29,7 +29,8 @@ public class CheckCommandFunction {
 	@Before("@annotation(com.connection.aop.FruitAspectC)")
 	public void watch() throws Throwable {
 		
-		int userCommand =sys.getcheckFunction("userCommand");
+		List<Integer> list =sys.getcheckFunction("userCommand");
+		int userCommand  =list.get(0);
 	
 		HashMap<String,Integer> result = new HashMap<String,Integer>() ;
 	

@@ -28,8 +28,8 @@ public class CheckCommandVoiceFunction {
 	HttpServletResponse response;
 	@Before("@annotation(com.connection.aop.FruitAspectVO)")
 	public void watch() throws Throwable {
-		
-	int userCommandVoice =sys.getcheckFunction("userCommandVoice");
+		List<Integer> list =sys.getcheckFunction("userCommandVoice");
+	int userCommandVoice =list.get(0);
 	
 		HashMap<String,Integer> result = new HashMap<String,Integer>() ;
 	

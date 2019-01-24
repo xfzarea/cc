@@ -28,8 +28,8 @@ public class CheckCommandVedioFunction {
 	HttpServletResponse response;
 	@Before("@annotation(com.connection.aop.FruitAspectVE)")
 	public void watch() throws Throwable {
-		
-		int userCommandVedio  =sys.getcheckFunction("userCommandVedio");
+		List<Integer> list=sys.getcheckFunction("userCommandVedio");
+		int userCommandVedio  =list.get(0);
 	
 		HashMap<String,Integer> result = new HashMap<String,Integer>() ;
 	

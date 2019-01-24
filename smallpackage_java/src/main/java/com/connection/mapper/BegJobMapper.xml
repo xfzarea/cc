@@ -145,12 +145,12 @@
 	</insert>
 	
 	
-	<select id="getUserId">
-		select userId from admin where openId=#{openId}
+	<select id="getUserId" resultType="java.lang.Integer">
+		select userId from admin where openid=#{openid}
 	
 	</select>
 	
-	<select id="getUserIdByJobId" parameterType="int">
+	<select id="getUserIdByJobId" parameterType="int" resultType="java.lang.Integer">
 	select userId from beg_job where id=#{jobId}
 	
 	</select>

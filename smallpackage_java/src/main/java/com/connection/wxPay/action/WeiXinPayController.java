@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -578,7 +579,12 @@ public class WeiXinPayController {
 				if (endsign.equals(sign)) {
 					Map<String, Object> job =begJobDao.getJobById1(Integer.parseInt(attach));
 					if ((double) job.get("totalAward") > (double) job.get("award")) {// 在做一波处理
-						int userId =begJobService.getUserId(openid);
+						List<Integer> list=begJobService.getUserId(openid);
+						int userId =list.get(0);
+						if(userId==0) {
+							log.info("支付回掉，用户userId失敗");
+							return;
+							}
 						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach),userId,(double) job.get("award"));
 						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
 					}
