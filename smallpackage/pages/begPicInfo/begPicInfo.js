@@ -26,7 +26,26 @@ Page({
     })
     
     that.getLeftInfo();
-      
+    that.checkUserH("userCommandImage");
+  },
+
+  /**
+  * 是否开启自定义窗口
+  */
+  checkUserH: function (customName) {
+    const that = this;
+    wx.request({
+      url: urls.profit + '/CheckCustom',
+      data: {
+        customName: customName
+      },
+      success: res => {
+        console.log(res.data)
+        that.setData({
+          userH: res.data.obj.state
+        })
+      }
+    })
   },
   toBeg:function(e){
     const that = this;

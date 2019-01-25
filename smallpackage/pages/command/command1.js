@@ -13,7 +13,7 @@ Page({
     userInfo: wx.getStorageSync("userInfo"),
     myCommand: [],
     textCommand: false,
-
+    userH:0
   },
 
   /**
@@ -27,8 +27,27 @@ Page({
     })
     
     that.getLeftInfo();
+    that.checkUserH("userBegCommand");
     
-    
+  },
+
+  /**
+   * 是否开启自定义窗口
+   */
+  checkUserH: function (customName) {
+    const that = this;
+    wx.request({
+      url: urls.profit + '/CheckCustom',
+      data: {
+        customName: customName
+      },
+      success: res => {
+        console.log(res.data)
+        that.setData({
+          userH: res.data.obj.state
+        })
+      }
+    })
   },
   /**
    * 获得口令例子左边菜单

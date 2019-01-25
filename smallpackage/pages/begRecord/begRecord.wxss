@@ -92,7 +92,7 @@
   /* justify-content: space-between; */
   
 }
-.content image{
+.content  image{
   width: 68rpx;
   height: 68rpx;
   border-radius: 68rpx;
@@ -101,7 +101,7 @@
 .content_1{
   color: #D85940;
   width: 190rpx;
-  margin-right: 10rpx;
+  /* margin-right: 10rpx; */
   font-size: 28rpx;
   font-weight: bold;
   text-align: right;

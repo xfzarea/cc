@@ -1,6 +1,6 @@
 <view class='container'>
   <!-- <view wx:if="{{leftInfos[leftInfos.length-1].contextId == 100}}" class='top'> -->
-  <view class='top'>
+  <view class='top' wx:if="{{userH == 1}}">
     <!-- <view class='write' catchtap='toCustomCommand'>
       <image src='/images/13.png'></image>
       <view>向我们推荐你的口令</view>
@@ -14,7 +14,7 @@
   </view>
 
   <!-- <view class='article {{leftInfos[leftInfos.length-1].contextId == 100?"article_1":""}}'> -->
-  <view class='article article_1'>
+  <view class='article {{userH == 1?"article_1":""}}'>
     <scroll-view class='orders' scroll-y>
       <view wx:for="{{leftInfos}}" wx:for-item="leftInfo" wx:key="index" class='order {{changeId==leftInfo.id?"changeOrder":""}}' data-contextid='{{leftInfo.id}}' catchtap='changeOrderId'>{{leftInfo.context}}</view>
       
