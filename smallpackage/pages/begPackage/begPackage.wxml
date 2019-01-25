@@ -83,7 +83,7 @@
       <image class='card_box_ava_2' src='{{userInfo.avatarUrl}}'></image>
       <view style='font-size:32rpx;margin-top:30rpx;'>{{userInfo.nickName}}</view>
       <view style='font-size:32rpx;margin-top:40rpx;width:320rpx;text-align:center'>恭喜！你的好友给你发来一个红包</view>
-      <image src='/images/86.png' style='width:410rpx;height:98rpx;margin-top:160rpx;' catchtap='toThink'></image>
+      <image src='/images/86.png' style='width:410rpx;height:98rpx;margin-top:160rpx;' catchtap='toThink1'></image>
     </view>
     <image class='card_box_cancel_2' src='/images/74.png' catchtap='hide'></image>
   </view>

@@ -172,7 +172,7 @@ button::after {
 .list_6_type3 > view{
   color:#303030;
   font-size: 42rpx;
-  margin-left: 48rpx;
+  margin-left: 30rpx;
 }
 .list_6_type3 > image{
   width:50rpx;

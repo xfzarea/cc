@@ -76,13 +76,18 @@ public class WeiXinPayController {
 			if (totalAward < award || award < 0 || totalAward < 0) {
 				flag = false;
 			}
-			if (flag) {
-				if ("1".equals(getParams.get("job_type"))) {// 代表普通红包
-					double one_award = Double.parseDouble(getParams.get("one_award"));
-					if (one_award * count != award) {
-						flag = false;//？？
-					}
+			if ("1".equals(getParams.get("job_type"))) {// 代表普通红包
+				double one_award = Double.parseDouble(getParams.get("one_award"));
+				if (one_award * count != award) {
+					flag = false;//？？
 				}
+			}else{
+				if(count * 0.01 > award){
+					flag = false;
+				}
+			}
+			
+			if (flag) {
 				int jobId = jobService.addJob(getParams);//把job信息添加到数据库，返回的jobid
 				WeixinConfigUtils config = new WeixinConfigUtils();
 				// 参数组 需要客户端传过来的数据有：商品信息 商品描述 商品金额 充值类型 充值账号
@@ -384,7 +389,8 @@ public class WeiXinPayController {
 					result_code = mapreturn.get("result_code").toString();
 					if (!result_code.equals("FAIL")) {
 						prepay_id = mapreturn.get("prepay_id").toString();
-
+						
+						
 						// 二次签名
 						SortedMap<Object, Object> finalpackage = new TreeMap<Object, Object>();
 						// String timestamp = RandCharsUtils.timeStart();

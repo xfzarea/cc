@@ -133,6 +133,11 @@ Page({
     })
     // }, 100))
   },
+  toBegRecord:function(){
+    wx.navigateTo({
+      url: '/pages/begRecord/begRecord',
+    })
+  },
   /**
    * 保存到相册
    */

@@ -50,7 +50,7 @@
     <view style='margin:0 20rpx;color:#5c73a6;'>|</view>
   <!-- <button size='mini'  catchtap='toPlayRed'>玩转红包</button> -->
   
-  <button size='mini'  catchtap='toRecord'>玩转红包</button>
+  <button size='mini'  catchtap='toRecord'>发的记录</button>
   </view>
 
 </view>

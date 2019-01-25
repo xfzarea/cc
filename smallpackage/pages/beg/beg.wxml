@@ -44,7 +44,7 @@
     <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>
     <!-- <button size='mini' catchtap='toMarketing'>营销服务</button> -->
     <view style='margin:0 20rpx;color:#5c73a6;'>|</view>
-    <button size='mini' catchtap='toRecord'>红包记录</button>
+    <button size='mini' catchtap='toBegRecord'>讨的记录</button>
   </view>
   <!--开始-->
 

@@ -55,7 +55,7 @@
   margin-top: 18rpx;
 }
 .nickName{
-  font-size: 42rpx;
+  font-size: 36rpx;
   color:#fff;
   margin-top: 20rpx;
   font-weight: bold;
@@ -63,7 +63,7 @@
 .context{
   width: 660rpx;
   margin-top: 40rpx;
-  padding: 24rpx 20rpx;
+  padding: 34rpx 20rpx;
   border:1rpx solid #fff;
   border-radius: 20rpx;
   font-size: 36rpx;
@@ -262,10 +262,14 @@ page{
   position: relative;
   bottom: 25rpx;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 
 }
-.label > image{
+.label_box{
+  display: flex;
+  align-items: center;
+}
+.label_box> image{
   width: 28rpx;
   height: 28rpx;
   margin-left: 30rpx;
@@ -421,7 +425,7 @@ page{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 40rpx;
+  margin-top: 30rpx;
   height: 48rpx;
 }
 .bar{

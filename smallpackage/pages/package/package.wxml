@@ -1,7 +1,7 @@
 <wxs module="filters" src="../../utils/addmul.wxs"></wxs>
 <warrant wx:if="{{warrantShow}}" bind:getWarrant="getWarrant"></warrant>
 <warn wx:if="{{warn_show}}" getCode="{{getCode}}" show="{{show}}" mark="{{job.wxchat_mark}}" bind:closeWarn="closeWarn"></warn>
-<view class='container' style='background-color: #fff'>
+<view wx:if="{{job != ''}}" class='container' style='background-color: #fff'>
   <view class='icon' wx:if="{{job.state!=4}}" catchtap='checkWarnShow' data-code='1'>
     <image src='/images/47.png'></image>
   </view>
@@ -75,9 +75,13 @@
       </view>
       <!-- <image src='/images/16.png' class='top_image'></image> -->
       <view class='label'>
-        <image src='/images/71.png'></image>
-        <view class='info' style='margin-left:12rpx;'>共{{filters.toFix(job.award)}}元。已领取{{job.alreadyCount}}/{{job.totalCount}}个</view>
+        <view class='label_box'>
+          <image src='/images/71.png'></image>
+          <view class='info' style='margin-left:12rpx;'>共{{filters.toFix(job.award)}}元。已领取{{job.alreadyCount}}/{{job.totalCount}}个</view>
+        </view>
+        
         <!-- <button session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' class='but info' open-type='contact'>联系客服</button> -->
+        <view style="font-size:26rpx;color:#5CACEE;margin-right:30rpx;" catchtap='toWallet'>去提现</view>
       </view>
 
       <!-- 广告部分 -->

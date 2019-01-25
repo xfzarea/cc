@@ -217,6 +217,12 @@ Page({
       }
     })
   },
+  toThink1:function(){
+    const that = this;
+    that.setData({
+      handType:1
+    })
+  },
   saveFormId: function(formId) {
     const that = this;
     wx.request({

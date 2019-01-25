@@ -61,6 +61,9 @@ Page({
         warrantShow: true
       })
     } else {
+      wx.showLoading({
+        title: '客官请稍等~',
+      })
       that.setData({
         userInfo: wx.getStorageSync("userInfo")
       })
@@ -455,6 +458,7 @@ Page({
         userId: that.data.userInfo.userId
       },
       success: res => {
+        wx.hideLoading();
         var doSay = that.data.doSay;
         console.log("topackage数据：", res.data.obj)
         if (res.data.obj.voice != null) {

@@ -171,6 +171,10 @@ Page({
     }
     if (job_type == 1) {
       if (that.data.one_award == '' || that.data.one_award == 0.00) {
+        flag = false; 
+      }
+    }else{
+      if(that.data.count * 0.01 > that.data.award){
         flag = false;
       }
     }
