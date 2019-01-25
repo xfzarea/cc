@@ -60,7 +60,7 @@ public interface BegJobDao {
 	
 	List<HashMap<String,Object>>getRecord( @Param("jobId")int jobId);
 	
-	HashMap<String,Object> getPaied(int userId, int jobId);
+	List<HashMap<String,Object>> getPaied(int userId, int jobId);
 	
 	int updataBegRecordState(int jobId,int userId);
 }

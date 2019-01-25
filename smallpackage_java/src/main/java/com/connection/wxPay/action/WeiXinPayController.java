@@ -272,8 +272,8 @@ public class WeiXinPayController {
 			int jobId=Integer.parseInt(getParams.get("jobId"));
 			int userId=Integer.parseInt(getParams.get("userId"));
 			log.info("beg²ÎÊý£º"+getParams);
-			HashMap<String,Object> cc =begJobDao.getPaied(userId, jobId);
-			if(cc!=null) {
+			List<HashMap<String,Object>> cc =begJobDao.getPaied(userId, jobId);
+			if(!cc.isEmpty()) {
 				out.print("niwanguole");
 				return;
 			}
