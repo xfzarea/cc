@@ -403,7 +403,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 传播页获取二维码
+	 * 传播页获取二维码（增加了是去begpackage还是package的判断）
 	 */
 	@ResponseBody
 	@RequestMapping("/getCode")

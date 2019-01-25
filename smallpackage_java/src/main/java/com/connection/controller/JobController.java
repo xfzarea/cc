@@ -400,6 +400,7 @@ public class JobController {
 	@RequestMapping("/addLuckyNumber")
 	public Result  addLuckyNumber(@RequestParam("number")String number) {
 		Result result=null;
+		//吉利数字判断增加（考虑的又不全面了= =）
 		ArrayList<String> list =(ArrayList<String>) redis.getLuckyNumber();
 		if(list.contains(number)) {
 			result=Result.errorResult();
@@ -441,7 +442,7 @@ public class JobController {
 			Map<String,Object>returnParam = dataDao.getFormid(userId);//formid
 			Map<String, Object> job =begJobDao.getJobById1(id);//取该红包
 			String msg = Util.getMsg(returnParam, job, 5);
-			userService.sendMsg(msg);
+			userService.sendMsg(msg);//前端调用saveFormId保存，这里发出去
 			dataDao.updateState((Integer)returnParam.get("id"));
 			redis.deleteRecord(id);
 			result = Result.successResult();

@@ -89,14 +89,14 @@ public class Util {
 		     }
 		
 	/**
-	 * 微信服务消息发送消息
+	 * 微信服务消息发送消息（加了推送模板）
 	 */
 	public static String getMsg(Map<String,Object>returnParam,Map<String,Object>job,int type){
 		
 		Map<String,Object>params = new HashMap<String,Object>();
 		Map<String,Object>data = new HashMap<String,Object>();
 		
-		params.put("touser", returnParam.get("openid"));
+		params.put("touser", returnParam.get("openid"));//有openid的
 		
 		params.put("page", "pages/package/package?id="+job.get("id"));//第一种情况
 		params.put("form_id", returnParam.get("formid"));

@@ -113,12 +113,12 @@ public class BegJobServiceImpl implements BegJobService {
 				num=0;
 				
 				//消息通知 给讨红包的用户
-				Map<String, Object> job =begJobDao.getJobById1(jobId);//取该红包的userId
+				Map<String, Object> job =begJobDao.getJobById1(jobId);//取该红包的userId，发起的人
 				Map<String,Object>returnParam =  dataDao.getFormid((Integer)job.get("userId"));//formid
 				job.put("uid", userId);//添加付款人userId
 				String msg = Util.getMsg(returnParam, job, 4);
 				userService.sendMsg(msg);
-				dataDao.updateState((Integer)returnParam.get("id"));
+				dataDao.updateState((Integer)returnParam.get("id"));//修改为以推送状态，state，0未推送，1为已推送
 				
 			}else {
 				//失败
