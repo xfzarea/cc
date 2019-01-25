@@ -36,10 +36,11 @@
 		LEFT JOIN admin b ON a.userId = b.userId 
 		LEFT JOIN beg_job_record c ON a.id = c.jobId 
 			WHERE a.userId = #{userId}
-			GROUP BY a.id
+			
 			<if test="id!=0">
 				AND id &lt; #{id}
 			</if>
+			GROUP BY a.id
 			ORDER BY id DESC LIMIT 10
 	</select>
 	
@@ -160,7 +161,8 @@
 	</select>
 	<!-- 得到给讨付钱的人 -->
 	<select id="getRecord" parameterType="int" resultType="java.util.HashMap">
-	 SELECT a.userId,a.`nickName`,a.`avatarUrl`,c.state,DATE_FORMAT(c.createTime,"%Y-%m-%d %H:%i") AS createTime FROM admin a
+	 SELECT a.userId,a.`nickName`,a.`avatarUrl`,c.state,DATE_FORMAT(c.createTime,"%Y-%m-%d %H:%i") admin a
+	 
 	RIGHT JOIN beg_job_record c ON c.userId=a.`userId` WHERE
 	  jobId = #{jobId} AND state IN(0,1)
 	</select>
