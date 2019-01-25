@@ -87,4 +87,9 @@
  	<update id="updateState" >
  		UPDATE TF set state=#{1} WHERE name = #{0}  
  	</update>
+ 	
+ 	
+ 	<select id="getCustomState" resultType="java.util.Map" >
+ 	select state from TF where name=#{0} 
+ 	</select>
 </mapper>

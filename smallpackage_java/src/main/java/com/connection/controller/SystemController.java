@@ -405,4 +405,23 @@ public class SystemController {
 		}
 		return result;
 	}
+	
+	
+	//检测自定义功能的状态
+		@ResponseBody
+		@RequestMapping("/CheckCustom")
+		public Result sysCustom(String customName) {
+			Result result = null;
+			
+			HashMap<String,Object> map=sysAdminDao.getCustomState(customName);
+			if(map!=null) {
+				result = Result.successResult();
+				result.setObj(map);
+			}else {
+				result = Result.errorResult();
+				
+			}
+			return result;
+		}
+	
 }

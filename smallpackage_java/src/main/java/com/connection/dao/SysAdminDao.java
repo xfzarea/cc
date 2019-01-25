@@ -31,4 +31,6 @@ public interface SysAdminDao {
 	List<Integer> getcheckFunction(String name);
 	int updateState(String name,int state);
 	
+	HashMap<String,Object> getCustomState (String name);
+	
 }
