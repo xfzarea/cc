@@ -161,7 +161,7 @@
 	</select>
 	<!-- 得到给讨付钱的人 -->
 	<select id="getRecord" parameterType="int" resultType="java.util.HashMap">
-	 SELECT a.userId,a.`nickName`,a.`avatarUrl`,c.state,DATE_FORMAT(c.createTime,"%Y-%m-%d %H:%i")AS createTime admin a
+	 SELECT a.userId,a.`nickName`,a.`avatarUrl`,c.state,DATE_FORMAT(c.createTime,"%Y-%m-%d %H:%i")AS createTime from admin a
 	 
 	RIGHT JOIN beg_job_record c ON c.userId=a.`userId` WHERE
 	  jobId = #{jobId} AND state IN(0,1)
