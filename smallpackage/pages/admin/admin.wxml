@@ -7,7 +7,7 @@
   <view class='lists'>
     <view class='list' catchtap='toWallet'>
       <view class='list_icon'>
-        <image src='/images/9.png' style='width:34rpx;height:34rpx;'></image>
+        <image src='/images/91.png' style='width:34rpx;height:34rpx;'></image>
         <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>我的钱包</view>
       </view>
       <image src='/images/6.png' style='width:33rpx;height:33rpx'></image>
@@ -15,14 +15,14 @@
 
     <view class='list' catchtap='toRecord'>
       <view class='list_icon'>
-        <image src='/images/5.png' style='width:34rpx;height:34rpx'></image>
+        <image src='/images/89.png' style='width:34rpx;height:34rpx'></image>
         <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>发的红包</view>
       </view>
       <image src='/images/6.png' style='width:33rpx;height:33rpx'></image>
     </view>
     <view class='list' catchtap='toBegRecord'>
       <view class='list_icon'>
-        <image src='/images/5.png' style='width:34rpx;height:34rpx'></image>
+        <image src='/images/90.png' style='width:34rpx;height:34rpx'></image>
         <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>讨的红包</view>
       </view>
 
@@ -31,7 +31,7 @@
 
     <view class='list' catchtap='toMoreQuestion'>
       <view class='list_icon'>
-        <image src='/images/8.png' style='width:34rpx;height:34rpx'></image>
+        <image src='/images/88.png' style='width:34rpx;height:34rpx'></image>
         <view style='margin-left:10rpx;font-size:30rpx;color:#303030'>常见问题</view>
       </view>
 

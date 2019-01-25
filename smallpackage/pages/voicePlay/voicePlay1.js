@@ -13,7 +13,7 @@ Page({
     second:0,
     time:"00:00:00",
     timeOut:'',
-    
+    handType:0
   },
 
   /**
@@ -39,6 +39,14 @@ Page({
       innerAudioContext.pause();
     }
   },
+  hide:function(){
+    const that = this;
+    that.setData({
+      handType:0,
+      second:0,
+      voice:''
+    })
+  },
   toBeg:function(){
     const that = this;
     let src = that.data.voice;
@@ -48,6 +56,13 @@ Page({
     console.log(jBegInfo)
     wx.reLaunch({
       url: '/pages/beg/beg',
+    })
+  },
+  toVoicePlay:function(){
+    const that = this;
+    let url = that.data.voice;
+    wx.navigateTo({
+      url: `/pages/voicePlay/voicePlay?url=${url}`,
     })
   },
   /**
@@ -144,9 +159,8 @@ Page({
             that.setData({
               voice: res.data,
               state:false,
-              
+              handType:1
             })
-            that.toBeg();
           }
         })
       }

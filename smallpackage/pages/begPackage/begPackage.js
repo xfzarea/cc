@@ -38,7 +38,7 @@ Page({
     }
     console.log(jobId)
     // jobId = 100123;
-    // jobId = 100129;
+    // jobId = 100148;
     that.setData({
       jobId: jobId
     })
@@ -76,7 +76,12 @@ Page({
       that.toBegPackage(id)
     }
   },
-
+  preBegImage:function(){
+    const that = this;
+    wx.previewImage({
+      urls: [that.data.begPackage.context],
+    })
+  },
   hide: function() {
     const that = this;
     that.setData({
@@ -128,11 +133,10 @@ Page({
    */
   toPay: function() {
     const that = this;
-    that.data.payFlag = true;
     let jobId = that.data.jobId;
     let userId = that.data.userInfo.userId;
     let openid = that.data.userInfo.openid;
-
+    console.log(jobId,userId,openid)
     wx.request({
       url: urls.profit + '/payBegJob',
       data: {
@@ -142,23 +146,43 @@ Page({
       },
       success: res => {
         console.log(res)
-        wx.requestPayment({
-          'timeStamp': res.data.timestamp + '',
-          'nonceStr': res.data.noncestr,
-          'package': res.data.package,
-          'signType': 'MD5',
-          'paySign': res.data.sign,
-          'success': function(res) {
-            that.toBegPackage(that.data.jobId);
-          },
-          complete: function() {
-            that.data.payFlag = false;
-          }
-        })
+        if("niwanguole" == res.data){
+          wx.showToast({
+            title: '亲~只允许赏一次哟~',
+            icon:'none'
+          })
+        }else{
+          let formid = res.data.prepayid;
+          wx.requestPayment({
+            'timeStamp': res.data.timestamp + '',
+            'nonceStr': res.data.noncestr,
+            'package': res.data.package,
+            'signType': 'MD5',
+            'paySign': res.data.sign,
+            'success': function (res) {
+              that.toBegPackage(that.data.jobId);
+              that.saveFormId(formid);
+            },
+          })
+        }
       }
     })
 
 
+  },
+
+  saveFormId: function (formId) {
+    const that = this;
+    wx.request({
+      url: urls.profit + '/saveFormid',
+      data: {
+        formid: formId,
+        userId: that.data.userInfo.userId,
+      },
+      success: res => {
+
+      }
+    })
   },
   /**
    * 答谢

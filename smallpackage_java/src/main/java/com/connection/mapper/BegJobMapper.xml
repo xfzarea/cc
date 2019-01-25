@@ -46,7 +46,7 @@
 			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.headPic,
 			a.userName,a.skipAppid,a.skipUrl,a.shareUrl,a.wxchat_mark,a.pre_image,a.tweet,a.tweet_title,
 			a.job_type,b.nickName,b.avatarUrl FROM beg_job a
-		LEFT JOIN admin b ON a.userId = b.userId WHERE id = #{id}  AND a.totalAward &gt; a.award
+		LEFT JOIN admin b ON a.userId = b.userId WHERE id = #{id}  AND a.totalAward &gt;= a.award
 	</select>
 <!-- 	支付回调 判断 -->
 	<select id="getJobById1" resultType="java.util.Map" parameterType="int">
@@ -81,7 +81,7 @@
 		  a.transaction_id 
 		FROM
 		  beg_job a 
-		WHERE id = #{id} AND state IN (1,4) AND a.totalAward &gt; a.award
+		WHERE id = #{id} AND state IN (1,4) AND a.totalAward &gt;= a.award
 	</select>
 	
 	<update id="modifyCount">

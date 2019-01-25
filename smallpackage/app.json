@@ -53,8 +53,8 @@
       },
       {
         "pagePath": "pages/beg/beg",
-        "iconPath": "/images/fuli.png",
-        "selectedIconPath": "/images/fuliAfter.png",
+        "iconPath": "/images/beg.png",
+        "selectedIconPath": "/images/begAfter.png",
         "text": "讨个红包"
       },
       {

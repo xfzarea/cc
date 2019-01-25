@@ -412,3 +412,10 @@ button::after {
   text-align: center;
   line-height: 88rpx;
 }
+.card_box_cancel_2{
+  width: 52rpx;
+  height: 52rpx;
+  position: absolute;
+  right: -58rpx;
+  top: -58rpx;
+}

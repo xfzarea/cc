@@ -24,7 +24,7 @@
 
     <view class='list' style='margin-top:20rpx' catchtap='toChanges'>
       <view style='color:#838383;font-size:24rpx;'>设置有关内容向好友讨要红包</view>
-      <image src='/images/Group3.png' style='width:22rpx;height:25rpx;margin-left:10rpx;'></image>
+      <image src='/images/93.png' style='width:22rpx;height:25rpx;margin-left:10rpx;'></image>
     </view>
 
     <view class='list' style='margin-top:40rpx;'>
@@ -33,7 +33,7 @@
     </view>
 
     <view class='award_input' catchtap='submit_b'>
-      <view style='color:#D5D5D5;'>{{submit_award!=0?submit_award:"设置讨要金额"}}</view>
+      <view style='color:{{submit_award==0?"#D5D5D5":"#303030"}}'>{{submit_award!=0?filters.toFix(submit_award):"设置讨要金额"}}</view>
       <view style='color:#303030;font-weight:bold'>元</view>
     </view>
     
@@ -52,7 +52,7 @@
     <view class="modalDlg">
       <view class='list_10'>
         <view class='tan'>推荐金额</view>
-        <image src='/images/74.png' style='width:40rpx;height:40rpx; position:relative;right:57rpx' catchtap='go1'></image>
+        <image src='/images/87.png' style='width:40rpx;height:40rpx; position:relative;right:57rpx' catchtap='go1'></image>
       </view>
 
       <scroll-view class='default_award' scroll-x>
@@ -94,11 +94,13 @@
     </view>
   </view>
 
-  <view wx:if="{{handType==2}}" class='card' style='align-items:center' catchtap='hide'>
-    <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;' catchtap='noHide'>
+  <view wx:if="{{handType==2}}" class='card' style='align-items:center'>
+    <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;position:relative' catchtap='noHide'>
       <image src='{{share_pic_src}}' style='width:600rpx;height:842rpx;'></image>
       <view class="card_share_btn" catchtap='saveSharePic'>保存到相册</view>
+      <image class='card_box_cancel_2' src='/images/74.png' catchtap='hide'></image>
     </view>
+    
   </view>
 </view>
 <canvas canvas-id="share_pic" class='canvas_share'>

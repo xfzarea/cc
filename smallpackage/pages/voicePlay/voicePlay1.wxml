@@ -12,3 +12,13 @@
   </view>
   
 </view>
+<view wx:if="{{handType == 1}}" class='card'>
+  <view class='card_box'>
+    <image class='card_box_image' src='/images/92.png'></image>
+    <view style="color:#303030;font-size:36rpx;margin:40rpx 0 50rpx 0;font-weight:bold">恭喜！音频已经录制完成</view>
+    <view class='card_box_view' catchtap='toVoicePlay'>预览语音</view>
+    <view class='card_box_view' catchtap='toBeg'>使用语音</view>
+    <view class='card_box_view' catchtap='hide'>重置语音</view>
+    <view style='height:10rpx;'></view>
+  </view>
+</view>

@@ -5,7 +5,7 @@
     <image src='{{begPackage.avatarUrl}}' class='avatarUrl'></image>
     <view class='package_box'>
       <view wx:if="{{begPackage.job_type==0}}" class='package_box_view'>{{begPackage.context}}</view>
-      <image wx:elif="{{begPackage.job_type==2}}" class='package_box_image'  src='{{begPackage.context}}' mode="aspectFit"></image>
+      <image wx:elif="{{begPackage.job_type==2}}" class='package_box_image'  src='{{begPackage.context}}' mode="aspectFit" catchtap='preBegImage'></image>
       <view class='package_box_voice' wx:elif="{{begPackage.job_type==1}}">
         <image class='package_box_voice_pic1' src='/images/66.png' data-src='{{begPackage.context}}' catchtap='toVoicePlay'></image>
         <view style='color:#d85940;font-size:28rpx;margin-top:12rpx;font-weight:bold;'>点击播放</view>

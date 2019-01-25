@@ -1,5 +1,6 @@
 .main{
-  height: calc(100% - 88rpx);
+  /* height: calc(100% - 88rpx); */
+  height: 100%;
 }
 .voices{
   width: 670rpx;
@@ -35,7 +36,7 @@
 }
 .botton_view{
   width: 750rpx;
-  height: 88rpx;
+  
   position: fixed;
   bottom: 0;
   display: flex;

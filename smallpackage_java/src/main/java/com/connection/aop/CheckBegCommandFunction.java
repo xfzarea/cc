@@ -35,9 +35,6 @@ public class CheckBegCommandFunction {
 		HashMap<String,Integer> result = new HashMap<String,Integer>() ;
 		
 
-		
-		
-	
 		if(userBegCommand==0) {
 			result.put("userBegCommand", 0);
 		}

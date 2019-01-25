@@ -14,7 +14,7 @@
 
     <view class='tab' catchtap='toCommand'>
       <view class="sayIntro">好友说对语音即可获得红包
-        <image src='/images/Group3.png' style='width:22rpx;height:25rpx' ></image>
+        <image src='/images/93.png' style='width:22rpx;height:25rpx' ></image>
       </view>
     </view>
 

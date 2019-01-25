@@ -260,7 +260,7 @@ public class WeiXinPayController {
 	//返回预付单
 	@RequestMapping("/payBegJob")
 	public void weixinGeneratepayBegOrder(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam Map<String, String> getParams ) throws IOException {
+			@RequestParam Map<String,String> getParams ) throws IOException {
 		PrintWriter out = null;
 		out = response.getWriter();
 		request.setCharacterEncoding("utf-8");
@@ -268,10 +268,10 @@ public class WeiXinPayController {
 		JSONObject json = new JSONObject();
 		try {
 			//得到三个参数，总金额（包含服务费），红包总金额，总条数
-			
-			int jobId=Integer.parseInt(getParams.get("jobId"));
-			int userId=Integer.parseInt(getParams.get("userId"));
 			log.info("beg参数："+getParams);
+			int jobId=Integer.parseInt(getParams.get("jobId").trim());
+			int userId=Integer.parseInt(getParams.get("userId").trim());
+			
 			List<HashMap<String,Object>> cc =begJobDao.getPaied(userId, jobId);
 			if(!cc.isEmpty()) {
 				out.print("niwanguole");
@@ -424,7 +424,7 @@ public class WeiXinPayController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-
+			log.error(e);
 		}
 
 	}
@@ -495,7 +495,7 @@ public class WeiXinPayController {
 				String endsign = WXSignUtils.createSign("UTF-8", packageParams);
 				if (endsign.equals(sign)) {
 					Map<String, Object> job = jobDao.getJobById1(Integer.parseInt(attach));
-					if ((double) job.get("totalAward") > (double) job.get("award")) {// 在做一波处理
+					if ((double) job.get("totalAward") >= (double) job.get("award")) {// 在做一波处理
 						jobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach));
 						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
 					}
@@ -580,7 +580,7 @@ public class WeiXinPayController {
 				String endsign = WXSignUtils.createSign("UTF-8", packageParams);
 				if (endsign.equals(sign)) {
 					Map<String, Object> job =begJobDao.getJobById1(Integer.parseInt(attach));
-					if ((double) job.get("totalAward") > (double) job.get("award")) {// 在做一波处理
+					if ((double) job.get("totalAward") >= (double) job.get("award")) {// 在做一波处理
 						List<Integer> list=begJobService.getUserId(openid);
 						int userId =list.get(0);
 						if(userId==0) {

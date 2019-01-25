@@ -159,17 +159,13 @@ public class JobServiceImpl implements JobService {
 						double award = 0.00;
 						int job_type = (Integer) job.get("job_type");
 						double money = 0.00;
-						double money1 = 0.00;
 						if (job_type == 0) {//0是拼手气
 							money = (Double) job.get("award") - (Double) job.get("alreadyAward");
-							money1 = money - Double.parseDouble(String.format("%.2f", 0.29 * people));// 保证
-																												// 领取的红包
-																												// 在0.3元以上
-							if (money1 > 0) {
+							if (money > 0) {
 								//这是算法参数的构造器，new
-								w = new WeixinMoney(people, money1);
+								w = new WeixinMoney(people, money);
 								//使用算法，因为至少得出0.01，所以加上0.29肯定在0.3之上
-								award = WeixinMoney.getMoney(w) + 0.29;
+								award = WeixinMoney.getMoney(w);
 							} else {
 								return "error";
 							}

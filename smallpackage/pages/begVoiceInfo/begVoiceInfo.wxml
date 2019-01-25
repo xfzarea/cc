@@ -12,7 +12,7 @@
         <view style='margin-right:50rpx;' data-src='{{item.voiceCommandPath}}' data-context='{{item.context}}' catchtap='toBeg' data-second='{{item.voiceTime}}'>使用音频</view>
       </view>
     </view>
-    <view style='height:1rpx;'></view>
+    <view style='height:88rpx;'></view>
   </scroll-view>
 
   <view class='botton_view'>

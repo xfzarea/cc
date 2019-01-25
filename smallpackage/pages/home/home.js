@@ -108,6 +108,15 @@ Page({
     let job_type = that.data.job_type;
     let one_award = that.data.one_award;
     if (type1 == "award") {
+
+      if (data == 0 || data == "") {
+        that.data.award = data;
+        that.setData({
+          submit: false
+        })
+        return;
+      }
+
       if (/^\d+\.?\d{0,2}$/.test(data)) {
         if (job_type == 0) {
           that.setData({
@@ -149,37 +158,7 @@ Page({
         })
       }
     }
-    if (that.data.award > 200 || that.data.one_award > 200 || that.data.one_award * that.data.count > 200) {
-      wx.showModal({
-        title: '提示',
-        content: '单个红包金额最高200元，如需发大额红包，请联系客服，回复‘8’即可',
-        cancelText: '知道了',
-        cancelColor: '#59ce40',
-        confirmText: '更多服务',
-        success: function (res) {
-          if (res.confirm) {
-            that.setData({
-              award: 0.00,
-              charge: 0.00,
-              one_award: 0.00,
-              count: 0,
-              submit: false
-            })
-            wx.navigateTo({
-              url: '/pages/marketing/marketing',
-            })
-          } else {
-            that.setData({
-              award: 0.00,
-              charge: 0.00,
-              one_award: 0.00,
-              count: 0,
-              submit: false
-            })
-          }
-        }
-      })
-    }
+    
     that.checkSubmit();
   },
   //判断是否可以塞钱进红包
@@ -195,25 +174,9 @@ Page({
         flag = false;
       }
     }
-    if (flag) {
-      if (that.data.award / that.data.count < 1) {
-        wx.showModal({
-          title: '提醒',
-          content: '平均每个人获得的红包不低于1元',
-        })
-        that.setData({
-          submit: false
-        })
-      } else {
-        that.setData({
-          submit: true
-        })
-      }
-    } else {
-      that.setData({
-        submit: false
-      })
-    }
+    that.setData({
+      submit: flag  
+    })
   },
   /**
    * 唤醒支付以及生成红包
@@ -226,13 +189,7 @@ Page({
     let flag = true;
     if (totalAward < that.data.award) {
       flag = false;
-    }
-    if (that.data.award > 200) {
-      flag = false;
-    }
-    if (that.data.award / that.data.count < 1) {
-      flag = false;
-    }
+    } 
     var jobId;
     if (flag) {
       wx.request({
