@@ -32,12 +32,13 @@
           <view class='job_box_1' wx:if="{{job.job_type==0}}">文字红包</view>
           <view class='job_box_1' wx:elif="{{job.job_type==1}}">语音红包</view>
           <view class='job_box_1' wx:elif="{{job.job_type==2}}">图片红包</view>
-
           <view class='content_4'>{{job.createTime}}</view>
         </view>
-        
       </view>
-      <view class='content_1'>{{job.award==0?"":"￥"}}<text class='content_5'>{{job.award==0?"未完成":filters.toFix(job.award)}}</text></view>
+      <view class='content_1'>{{job.award==0?"":"￥"}}<text class='content_5'>{{job.award==0?"未完成":filters.toFix(job.award)}}</text>
+        <view wx:if="{{tabId == 0}}" style="color:#838383;font-size:20rpx;margin-top:4rpx;">{{job.peopleCount}}人付款</view>
+      </view>
+      
       <!-- <view class='content_2'>
         <form report-submit='true' >
           <button class='content_3' form-type='submit'>详情</button>

@@ -123,26 +123,29 @@
 </view>
 
 <!-- 领取到得 -->
-<view wx:if="{{code==2}}" class='card' catchtap='hide'>
-  <view class='card_box' catchtap='noHide'>
-    <image style="width:130rpx;height:140rpx;margin-top:90rpx;" src='/images/23.png'></image>
-    <view style='color:#D85940;font-size:32rpx;margin-top:50rpx;'>恭喜成功，喜获{{filters.toFix(voice.award)}}元红包</view>
-    <view style='color:#838383;font-size:28rpx;margin-top:4rpx;'>分享好友，一起来抢</view>
-    <view class='btns'>
-      <button open-type='share'>转发好友</button>
-      <button style='margin-left:30rpx;background-color:#838383;' catchtap='searchBook'>查看证书</button>
+<view wx:if="{{code==2}}" class='card'>
+  <view class='card_box'>
+    <image class='card_image' src='https://static.yaohoudy.com/static/23.png'></image>
+    <view class='card_box_view'>
+      <view style='color:#D85940;font-size:36rpx;font-weight:bold'>恭喜</view>
+      <view style='color:#D85940;font-size:36rpx;margin-top:20rpx;font-weight:bold'>成功抢到{{filters.toFix(voice.award)}}元红包</view>
+      <button class='btns' catchtap='toHome' style='margin-top:68rpx;'>给心爱的Ta发个红包</button>
+      <button class='btns' open-type='share' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;'>转发好友领红包</button>
+      
+      <image class='card_cancel_pic' catchtap='hide' src='/images/74.png'></image>
     </view>
   </view>
 </view>
 
-<view wx:if="{{code==1}}" class='card' catchtap='hide'>
-  <view class='card_box' catchtap='noHide'>
-    <image style="width:130rpx;height:140rpx;margin-top:70rpx;" src='/images/24.png'></image>
-    <view style='color:#D85940;font-size:32rpx;margin-top:55rpx;'>还差一点点，再接再厉</view>
-    <view style='color:#838383;font-size:28rpx;margin-top:4rpx;'>分享好友，一起来抢</view>
-    <view class='btns'>
-      <button open-type='share'>转发好友</button>
-      <button style='margin-left:30rpx;background-color:#838383;' catchtap='hide'>再来一次</button>
+<view wx:if="{{code==1}}" class='card'>
+  <view class='card_box'>
+    <image class='card_image' src='https://static.yaohoudy.com/static/23.png'></image>
+    <view class='card_box_view'>
+      <view style='color:#D85940;font-size:36rpx;font-weight:bold'>很遗憾</view>
+      <view style='color:#D85940;font-size:36rpx;margin-top:20rpx;font-weight:bold'>差一点就抢到了</view>
+      <button class='btns' catchtap='hide' style='margin-top:68rpx;'>加油再抢一次</button>
+      <button class='btns' open-type='share' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;'>转发好友领红包</button>
+      <image class='card_cancel_pic' catchtap='hide' src='/images/74.png'></image>
     </view>
   </view>
 </view>

@@ -107,8 +107,8 @@ public class JobServiceImpl implements JobService {
 		String result = "";
 		WeixinMoney w = null;
 		Map<String, Object> returnParam = null;
-		String appid = "5bda9a52";
-		String secret = "d2b3b2eec6cc60760c783472ef1b30f8";
+		String appid = "5c2f2717";
+		String secret = "b8472321c07517d13536c258d5c34285";
 		try {
 			//输出到MP3文件
 			byte[] bs = new byte[1024];

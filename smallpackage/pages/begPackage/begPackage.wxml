@@ -47,7 +47,11 @@
     </view>
 
     <view class='award_info' wx:for="{{begRecord}}" wx:key="index" wx:for-item="item">
-      <image class="award_info_ava" src='{{item.avatarUrl}}'></image>
+      <view class='award_info_u'>
+        <image class="award_info_ava" src='{{item.avatarUrl}}'></image>
+        <view class='award_info_nickName'>{{item.nickName}}</view>
+      </view>
+      
       <view class='award_info_x' wx:if="{{state}}">
 
         <form report-submit='true' bindsubmit="think">
@@ -55,7 +59,7 @@
           <button wx:elif="{{item.state == 1}}" class='award_info_x_b1' size='mini' form-type='submit' data-userid='{{item.userId}}' data-jobid='{{begPackage.id}}' data-state='{{item.state}}'>已答谢</button>
         </form>
         
-        <view>2018-12-09</view>
+        <view style='font-size: 24rpx;color: #c6c6c6;margin-top: 3rpx;'>{{item.createTime}}</view>
       </view>
       <view wx:elif="{{!state}}" class='award_info_1_view'>{{filters.toFix(begPackage.award)}}元</view>
     </view>
