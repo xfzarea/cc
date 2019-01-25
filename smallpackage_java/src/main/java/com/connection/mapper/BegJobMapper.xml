@@ -30,9 +30,13 @@
 	<!-- 	获得我讨得红包 -->
 	<select id="getMyBegPush" resultType="java.util.Map">
 		SELECT a.id,a.userId,a.award,a.context,a.job_type,
-			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl FROM beg_job a
+			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl,
+			IF(COUNT(c.jobId) IS NULL,0,COUNT(c.jobId))AS peopleCount
+			FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId 
-			WHERE a.userId = #{userId} 
+		LEFT JOIN beg_job_record c ON a.id = c.jobId 
+			WHERE a.userId = #{userId}
+			GROUP BY a.id
 			<if test="id!=0">
 				AND id &lt; #{id}
 			</if>
@@ -92,7 +96,7 @@
 	<select id="getBegCount" resultType="java.util.Map" parameterType = "int">
 		SELECT IF(a.totalCount IS NULL,0,a.totalCount) AS totalCount,IF(b.totalAward IS NULL,0,b.totalAward) AS totalAward FROM
 		(SELECT COUNT(1) AS totalCount FROM beg_job WHERE userId = #{0} ) a,
-		(SELECT SUM(award) AS totalAward FROM beg_job  WHERE userId = #{0} ) b
+		(SELECT IF(SUM(award) IS NULL,0,SUM(award)) totalAward FROM beg_job_record LEFT JOIN  beg_job bj ON jobId=id WHERE bj.userId = #{0}) b
 	</select>
 	
 	<select id="getBegRecordCount" resultType="java.util.Map" parameterType = "int">
