@@ -82,8 +82,7 @@
 		SELECT userId,award,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS insertTime,3 AS state FROM voice_record
 			WHERE state = 0 AND userId = #{userId}
 		ORDER BY insertTime DESC LIMIT #{startId},10
-		
-		
+	
 	</select>
 	
 	<select id="getHighRate" resultType="java.util.Map" parameterType="int">
