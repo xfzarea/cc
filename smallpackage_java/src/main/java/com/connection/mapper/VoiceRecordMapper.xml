@@ -81,8 +81,13 @@
 			UNION ALL
 		SELECT userId,award,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s")AS insertTime,3 AS state FROM voice_record
 			WHERE state = 0 AND userId = #{userId}
+		
+		UNION ALL
+		SELECT a.userId,b.award,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS insertTime,3 AS state FROM beg_job_record a
+			LEFT JOIN  beg_job b ON b.id=a.jobId 
+			WHERE a.userId = #{userId}
 		ORDER BY insertTime DESC LIMIT #{startId},10
-	
+		
 	</select>
 	
 	<select id="getHighRate" resultType="java.util.Map" parameterType="int">
