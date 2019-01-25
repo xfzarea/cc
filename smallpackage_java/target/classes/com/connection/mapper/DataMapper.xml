@@ -15,7 +15,7 @@
 	<select id="getFormid" resultType="java.util.Map" parameterType="int">
 		SELECT a.id,a.formid,a.userId,b.openid FROM user_formid a
 		LEFT JOIN admin b ON a.userId = b.userId
-		WHERE a.userId = #{userId} AND a.state = 0 AND TIMESTAMPDIFF(HOUR,insertTime,NOW()) &lt; 167 LIMIT 1
+		WHERE a.userId = #{userId} AND a.state = 0 AND TIMESTAMPDIFF(HOUR,insertTime,NOW()) &lt; 167 ORDER BY id DESC LIMIT 1
 	</select>
 	
 <!-- 	cash 提现记录表部分 -->

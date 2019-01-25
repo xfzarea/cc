@@ -4,5 +4,7 @@
   "backgroundTextStyle": "dark",
   "enablePullDownRefresh": false,
   "disableScroll": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "warrant": "/components/warrant/warrant"
+  }
 }

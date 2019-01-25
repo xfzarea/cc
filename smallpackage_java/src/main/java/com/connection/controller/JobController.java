@@ -24,7 +24,9 @@ import com.connection.dao.VoiceRecordDao;
 import com.connection.service.interfaces.BegJobService;
 import com.connection.service.interfaces.JobService;
 import com.connection.service.interfaces.RedisService;
+import com.connection.service.interfaces.UserService;
 import com.connection.tool.Result;
+import com.connection.tool.Util;
 
 @Controller
 public class JobController {
@@ -43,6 +45,8 @@ public class JobController {
 	private VoiceRecordDao voiceRecordDao;
 	@Autowired
 	private RedisService redis;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 获得我自己发布得红包（record）
@@ -430,7 +434,15 @@ public class JobController {
 		Result result=null;
 	
 		 int cc =begJobDao.updataBegRecordState(id,userId);
+		 
 		if(cc==1) {
+			
+			//消息通知 发送感谢信
+			Map<String,Object>returnParam = dataDao.getFormid(userId);//formid
+			Map<String, Object> job =begJobDao.getJobById1(id);//取该红包
+			String msg = Util.getMsg(returnParam, job, 5);
+			userService.sendMsg(msg);
+			dataDao.updateState((Integer)returnParam.get("id"));
 			redis.deleteRecord(id);
 			result = Result.successResult();
 		}else {

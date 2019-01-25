@@ -1,4 +1,5 @@
 <wxs module="filters" src="../../utils/addmul.wxs"></wxs>
+<warrant wx:if="{{warrantShow}}" bind:getWarrant="getWarrant"></warrant>
 <scroll-view class='container' scroll-y style='background-color:#fff;' wx:if="{{begPackage}}">
   <view class='package'>
     <image src='{{begPackage.avatarUrl}}' class='avatarUrl'></image>
@@ -45,33 +46,46 @@
       <view>打赏列表</view>
     </view>
 
-    <view class='award_info'>
-      <image class="award_info_ava" src='{{userInfo.avatarUrl}}'></image>
+    <view class='award_info' wx:for="{{begRecord}}" wx:key="index" wx:for-item="item">
+      <image class="award_info_ava" src='{{item.avatarUrl}}'></image>
       <view class='award_info_x' wx:if="{{state}}">
-        <button class='award_info_x_b' size='mini'>去答谢</button>
-        <view>2018-12-09</view>
-      </view>
-      <view wx:elif="{{!state}}" class='award_info_1_view'>6.66元</view>
-    </view>
 
-    <view class='award_info'>
-      <image class="award_info_ava" src='{{userInfo.avatarUrl}}'></image>
-      <view class='award_info_x' wx:if="{{state}}">
-        <button class='award_info_x_b1' size='mini'>已答谢</button>
+        <form report-submit='true' bindsubmit="think">
+          <button wx:if="{{item.state == 0}}" class='award_info_x_b' size='mini' form-type='submit' data-userid='{{item.userId}}' data-jobid='{{begPackage.id}}' data-state='{{item.state}}'>去答谢</button>
+          <button wx:elif="{{item.state == 1}}" class='award_info_x_b1' size='mini' form-type='submit' data-userid='{{item.userId}}' data-jobid='{{begPackage.id}}' data-state='{{item.state}}'>已答谢</button>
+        </form>
+        
         <view>2018-12-09</view>
       </view>
-      <view wx:elif="{{!state}}" class='award_info_1_view'>6.66元</view>
-    </view>
-
-    <view class='award_info'>
-      <image class="award_info_ava" src='{{userInfo.avatarUrl}}'></image>
-      <view class='award_info_x' wx:if="{{state}}">
-        <button class='award_info_x_b' size='mini'>去答谢</button>
-        <view>2018-12-09</view>
-      </view>
-      <view wx:elif="{{!state}}" class='award_info_1_view'>6.66元</view>
+      <view wx:elif="{{!state}}" class='award_info_1_view'>{{filters.toFix(begPackage.award)}}元</view>
     </view>
 
     <view style='height:1rpx;'></view>
   </view>
 </scroll-view>
+<view wx:if="{{handType==1||handType==3}}" class='card'>
+  <view class='card_box'>
+    <image class='card_box_bg' src="/images/84.png"></image>
+    <view class="card_box_c">
+      <view style='font-size:32rpx;'>感谢信</view>
+      <view style='font-size:30rpx;margin-top:20rpx;'>谢谢你的红包，么么哒，你的好友张小白敬上！</view>
+    </view>
+    <image class='card_box_ava' src='{{userInfo.avatarUrl}}'></image>
+    <image class='card_box_cancel' src='/images/74.png' catchtap='hide'></image>
+  </view>
+  <button wx:if="{{handType == 1}}" class="card_btn" catchtap='toThink'>马上答谢</button>
+</view>
+<!-- 支付消息通知 -->
+<view wx:if="{{handType==2}}" class='card'>
+  <view class='card_box_2'>
+    <image class='card_box_bg_2' src="/images/85.png"></image>
+    <view class="card_box_c_2">
+      <image class='card_box_ava_2' src='{{userInfo.avatarUrl}}'></image>
+      <view style='font-size:32rpx;margin-top:30rpx;'>{{userInfo.nickName}}</view>
+      <view style='font-size:32rpx;margin-top:40rpx;width:320rpx;text-align:center'>恭喜！你的好友给你发来一个红包</view>
+      <image src='/images/86.png' style='width:410rpx;height:98rpx;margin-top:160rpx;' catchtap='toThink'></image>
+    </view>
+    <image class='card_box_cancel_2' src='/images/74.png' catchtap='hide'></image>
+  </view>
+  
+</view>

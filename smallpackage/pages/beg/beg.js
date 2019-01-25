@@ -37,7 +37,7 @@ Page({
     // 查看是否授权
     if (!wx.getStorageSync("userInfo")) {
       wx.redirectTo({
-        url: '/pages/index/index?page=home'
+        url: '/pages/index/index?page=beg'
       })
     } else {
       that.setData({
@@ -60,7 +60,6 @@ Page({
         app.globalData.context = '';
       }
     }
-
   },
 
   /**
@@ -76,9 +75,48 @@ Page({
     })
     const ctx = wx.createCanvasContext('share_pic');
     ctx.drawImage("/images/83.jpg", 0, 0, 600 * rem, 842 * rem);
-    ctx.drawImage("/images/29.png", 155 * rem, 388 * rem, 290 * rem, 290 * rem);
+    let codeUrl = that.data.codeUrl;
+    if (codeUrl){
+      ctx.drawImage(codeUrl, 155 * rem, 388 * rem, 290 * rem, 290 * rem);
+    }
     ctx.draw();
     that.downImg();
+  },
+  getCode:function(id){
+    const that = this;
+    wx.request({
+      url: urls.profit +'/getCode',
+      data:{
+        jobId: id,
+        type:'beg'
+      },
+      success:res=>{
+        console.log(res)
+        let url = res.data.obj.codeUrl;
+        console.log("code:", url)
+        if (typeof url === 'string') {
+          wx.getImageInfo({ //  小程序获取图片信息API
+            src: url,
+            success: function (res) {
+              that.setData({
+                codeUrl: res.path
+              })
+            },
+            fail: function (res) {
+              console.log(res);
+              wx.getImageInfo({
+                src: url,
+                success: function (res) {
+                  that.setData({
+                    codeUrl: res.path
+                  })
+                }
+              })
+            }
+          })
+        }
+      }
+    })
   },
   downImg: function (id) {
     const that = this;
@@ -94,6 +132,27 @@ Page({
       }
     })
     // }, 100))
+  },
+  /**
+   * 保存到相册
+   */
+  saveSharePic:function(){
+    const that = this;
+    wx.saveImageToPhotosAlbum({
+      filePath: that.data.share_pic_src,
+      success: function (res) {
+        wx.showToast({
+          title: '保存图片完成',
+          success: function () {
+            setTimeout(function () {
+              that.setData({
+                handType: 0,
+              })
+            }, 1000)
+          }
+        })
+      }
+    })
   },
   /**
    * 生成讨要红包
@@ -139,7 +198,10 @@ Page({
               wx.hideTabBar({
                 animation: false
               })
-              that.draw_share_pic();
+              that.getCode(res.data.jobId);
+              setTimeout(function(){
+                that.draw_share_pic();
+              },1000)
             }
           })
           
@@ -313,18 +375,37 @@ Page({
   preventTouchMove: function() {
 
   },
-  go: function() {
-    this.setData({
-      showModal: false,
-      award: 0,
-      choose_award: 0.00,
-      num: -1,
-      submit: false
+
+  saveFormId: function (formId) {
+    const that = this;
+    wx.request({
+      url: urls.profit + '/saveFormid',
+      data: {
+        formid: formId,
+        userId: that.data.userInfo.userId,
+      },
+      success: res => {
+
+      }
     })
-    this.begSubmit();
-    wx.showTabBar({
-      animation: true //是否需要过渡动画
-    })
+  },
+  go: function(e) {
+    let submit = this.data.submit;
+    let formid = e.detail.formId;
+    this.saveFormId(formid);
+    if(submit){
+      this.setData({
+        showModal: false,
+        award: 0,
+        choose_award: 0.00,
+        num: -1,
+        submit: false
+      })
+      this.begSubmit();
+      wx.showTabBar({
+        animation: true //是否需要过渡动画
+      })
+    }
   },
   go1: function() {
     this.setData({
@@ -410,10 +491,12 @@ Page({
         },
         fail: function (res) {
           // 转发失败
-        }
+        },
+        
       }
     }
-    
+    that.setData({
+      handType: 0
+    }) 
   }
-
 })

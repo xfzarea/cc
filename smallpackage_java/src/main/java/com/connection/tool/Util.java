@@ -101,12 +101,10 @@ public class Util {
 		params.put("page", "pages/package/package?id="+job.get("id"));//第一种情况
 		params.put("form_id", returnParam.get("formid"));
 		
-		
 		Map<String,String>keyWord1 = new HashMap<String,String>();
 		Map<String,String>keyWord2 = new HashMap<String,String>();
 		if(type==1){
-			params.put("template_id", "0hOirGlO7QoQdx4-jSLnWPZN3tMNfFiW6b7jAkHWjvI");//过期模板
-			
+			params.put("template_id", "1vY2Qw3SPiJVKfHutJaKg_PYWeDpR1iLtg_pxk6tj54");//过期模板
 			keyWord1.put("value", job.get("createTime")+"");
 			keyWord1.put("color", "#FF4040");//第一个数据
 			data.put("keyword1", keyWord1);
@@ -122,12 +120,32 @@ public class Util {
 			keyWord2.put("value", "点击查看黄金红包领取详情");
 			keyWord2.put("color", "#FF4040");//第一个数据
 			data.put("keyword2", keyWord2);
-		}else{
+		}else if(type == 3){
 			params.put("template_id", "p8w_7Xqdz_WxZ1W0ShuBCVGnuH43aKrBbBicRgpSpxU");//订阅模板
 			keyWord1.put("value", job.get("createTime")+"");
 			keyWord1.put("color", "#FF4040");//第一个数据
 			data.put("keyword1", keyWord1);
 			keyWord2.put("value", "红包开抢");
+			keyWord2.put("color", "#FF4040");//第二个数据
+			data.put("keyword2", keyWord2);
+		}else if(type == 4){
+			params.put("page", "pages/begPackage/begPackage?id="+job.get("id")+"&handType=2&uid="+job.get("uid"));
+			params.put("template_id", "74orxzyn01bkIsz55-cOI0PZlH0wEU5C6mqDpRntnt8");//支付提醒
+			
+			keyWord1.put("value", "收到一个红包~~");
+			keyWord1.put("color", "#FF4040");//第一个数据
+			data.put("keyword1", keyWord1);
+			keyWord2.put("value", "点击查看");
+			keyWord2.put("color", "#FF4040");//第二个数据
+			data.put("keyword2", keyWord2);
+		}else if(type == 5){//感谢信
+			params.put("page", "pages/begPackage/begPackage?id="+job.get("id")+"&handType=3");
+			params.put("template_id", "HPtpNqEjA7RGuM9axyg4sN7KoQndamozyrkG0dLASjM");//感谢信
+			
+			keyWord1.put("value", "收到一封感谢信~~");
+			keyWord1.put("color", "#FF4040");//第一个数据
+			data.put("keyword1", keyWord1);
+			keyWord2.put("value", "点击查看");
 			keyWord2.put("color", "#FF4040");//第二个数据
 			data.put("keyword2", keyWord2);
 		}
@@ -141,6 +159,8 @@ public class Util {
 		keyWord2 = null;
 		return json;
 	}
+	
+	
 	
 	public static String getIpAddress(HttpServletRequest request) {
 		String ip = request.getHeader("x-forwarded-for");

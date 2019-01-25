@@ -1,5 +1,5 @@
 .main{
-  height: calc(100% - 180rpx);
+  height: calc(100% - 88rpx);
 }
 .voices{
   width: 670rpx;
@@ -35,7 +35,7 @@
 }
 .botton_view{
   width: 750rpx;
-  height: 176rpx;
+  height: 88rpx;
   position: fixed;
   bottom: 0;
   display: flex;
@@ -44,12 +44,14 @@
 }
 .bottom_view_image1{
   width: 750rpx;
-  height: 112rpx;
+  height: 88rpx;
   position: absolute;
   bottom: 0;
   left: 0;
 }
 .bottom_view_image2{
-  width: 130rpx;
-  height: 130rpx;
+  width: 90rpx;
+  height: 90rpx;
+  position: absolute;
+  bottom: 45rpx;
 }

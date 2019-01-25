@@ -69,7 +69,7 @@ public class RedisServiceImpl implements RedisService {
 	 */
 	@Cacheable(value="begJobRecord",key="'begJobRecord,jobId:'+#jobId")
 	public List<HashMap<String,Object>>getRecord(int jobId){
-		return begJobDao.getRecord( jobId);
+		return begJobDao.getRecord(jobId);
 	}
 	/**
 	 * Çå³ý¸¶ÌÖ°üÇ®¼ÇÂ¼»º´æ

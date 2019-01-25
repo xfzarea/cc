@@ -29,8 +29,11 @@
         <image src='{{job.headPic?job.headPic:job.avatarUrl}}'></image>
         <view class='job_box'>
           <!-- <view class='job_box_1'>{{job.context}}</view> -->
-          <view class='job_box_1'></view>
-          <!-- <view class='content_4'>{{job.createTime}}</view> -->
+          <view class='job_box_1' wx:if="{{job.job_type==0}}">文字红包</view>
+          <view class='job_box_1' wx:elif="{{job.job_type==1}}">语音红包</view>
+          <view class='job_box_1' wx:elif="{{job.job_type==2}}">图片红包</view>
+
+          <view class='content_4'>{{job.createTime}}</view>
         </view>
         
       </view>

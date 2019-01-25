@@ -22,7 +22,7 @@ Page({
    */
   toPage: function(page) {
 
-    if (page == "timer" || page == "admin" || page == "home") {
+    if (page == "timer" || page == "admin" || page == "home"||page=="beg") {
       wx.switchTab({
         url: '/pages/' + page + "/" + page,
       })

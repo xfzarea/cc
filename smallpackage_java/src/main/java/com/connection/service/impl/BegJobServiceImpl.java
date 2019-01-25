@@ -70,6 +70,8 @@ public class BegJobServiceImpl implements BegJobService {
 	private DataDao dataDao;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BegJobDao begJobDao;
 
 	@Transactional
 	public int addJob(Map<String, String> param) {
@@ -109,6 +111,15 @@ public class BegJobServiceImpl implements BegJobService {
 			if(num == 1){
 				adminDao.modifyMoney(award, fauserId);
 				num=0;
+				
+				//消息通知 给讨红包的用户
+				Map<String, Object> job =begJobDao.getJobById1(jobId);//取该红包的userId
+				Map<String,Object>returnParam =  dataDao.getFormid((Integer)job.get("userId"));//formid
+				job.put("uid", userId);//添加付款人userId
+				String msg = Util.getMsg(returnParam, job, 4);
+				userService.sendMsg(msg);
+				dataDao.updateState((Integer)returnParam.get("id"));
+				
 			}else {
 				//失败
 				log.info("给到用户钱出问题了");

@@ -36,7 +36,7 @@
       <view style='color:#D5D5D5;'>{{submit_award!=0?submit_award:"设置讨要金额"}}</view>
       <view style='color:#303030;font-weight:bold'>元</view>
     </view>
-
+    
     <image src='{{begSubmit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{begSubmit?"createJob":""}}'></image>
   </view>
 
@@ -72,7 +72,12 @@
       <input value="{{award==0?'':award}}" placeholder='输入自定义金额' class='default_award_input' placeholder-style='text-align:center;color:#f2afa2' maxlength='6' bindinput="input" type='digit' cursor-spacing="130" data-type='award'>
       </input>
       
-      <view class='list_13 {{submit?"submit_true":""}}'  catchtap='{{submit?"go":""}}'> 确认金额 </view>
+
+      <form report-submit='true' bindsubmit='go'>
+        <button  class='list_13 {{submit?"submit_true":""}}' form-type='submit' type='mini'>确认金额</button>
+      </form>
+      
+      <!-- <view class='list_13 {{submit?"submit_true":""}}'  catchtap='{{submit?"go":""}}'> 确认金额 </view> -->
 
     </view>
   </view>
@@ -92,7 +97,7 @@
   <view wx:if="{{handType==2}}" class='card' style='align-items:center' catchtap='hide'>
     <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;' catchtap='noHide'>
       <image src='{{share_pic_src}}' style='width:600rpx;height:842rpx;'></image>
-      <view class="card_share_btn">保存到朋友圈</view>
+      <view class="card_share_btn" catchtap='saveSharePic'>保存到相册</view>
     </view>
   </view>
 </view>

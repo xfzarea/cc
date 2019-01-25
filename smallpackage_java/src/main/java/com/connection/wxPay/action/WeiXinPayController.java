@@ -271,6 +271,7 @@ public class WeiXinPayController {
 			
 			int jobId=Integer.parseInt(getParams.get("jobId"));
 			int userId=Integer.parseInt(getParams.get("userId"));
+			log.info("beg参数："+getParams);
 			HashMap<String,Object> cc =begJobDao.getPaied(userId, jobId);
 			if(cc!=null) {
 				out.print("niwanguole");
@@ -290,6 +291,7 @@ public class WeiXinPayController {
 				out.print("nishengfenbudui");
 				return;
 			}
+			log.info("支付~~~~~  ="+flag);
 			if (flag) {
 				
 				WeixinConfigUtils config = new WeixinConfigUtils();
@@ -583,7 +585,7 @@ public class WeiXinPayController {
 						int userId =list.get(0);
 						if(userId==0) {
 							log.info("支付回掉，用户userId失敗");
-							return;
+								return;
 							}
 						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach),userId,(double) job.get("award"));
 						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了

@@ -407,7 +407,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getCode")
-	public Result getCode(@RequestParam("jobId")String jobId){
+	public Result getCode(@RequestParam("jobId")String jobId,@RequestParam(value="type",required=false)String type){
 		Result result = null;
 		Map<String,Object>responseParams = null;
 		Map<String,String>response = null;
@@ -418,9 +418,16 @@ public class UserController {
 			//就是一字符串（可以写页面参数），前端页面会根据id生产页面
 			responseParams.put("scene", jobId);
 			//必须是已经发布的小程序存在的页面（否则报错），例如 "pages/index/index" ,根路径前不要填加'/',不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面
-			responseParams.put("page", "pages/package/package");
-			//是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码	
-			responseParams.put("is_hyaline", true);
+			if("beg".equals(type)){//beg页面
+				responseParams.put("page", "pages/begPackage/begPackage");
+				//是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码	
+				
+			}else{
+				responseParams.put("page", "pages/package/package");
+				//是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码	
+				responseParams.put("is_hyaline", true);
+			}
+			
 			//转成json
 			String json = JSON.toJSONString(responseParams);
 			response = new HashMap<String,String>();

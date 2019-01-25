@@ -71,7 +71,7 @@ Page({
             if (tabId == 0) {
               id = jobs[jobs.length - 1].id;
             } else {
-              id = jobs[jobs.length - 1].key1;
+              id = jobs[jobs.length - 1].id;
             }
             that.setData({
               jobs: jobs,
