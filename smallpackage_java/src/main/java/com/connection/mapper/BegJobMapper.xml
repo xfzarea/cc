@@ -58,7 +58,7 @@
 		SELECT a.id,a.userId,a.totalAward,a.award,a.context,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS createTime,a.headPic,
 			a.userName,a.skipAppid,a.skipUrl,a.shareUrl FROM beg_job a
-		 WHERE id = #{id} 
+		 WHERE id = #{id}
 	</select>
 <!-- 	判断语音是否可讲 -->
 	<select id="getJobById2" resultType="java.util.Map" parameterType="int">

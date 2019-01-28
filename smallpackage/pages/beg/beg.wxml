@@ -37,7 +37,7 @@
       <view style='color:#303030;font-weight:bold'>元</view>
     </view>
     
-    <image src='{{begSubmit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{begSubmit?"createJob":""}}'></image>
+    <image src='{{begSubmit?"/images/95.png":"/images/94.png"}}' class='submit' catchtap='{{begSubmit?"createJob":""}}'></image>
   </view>
 
   <view class='records'>

@@ -532,3 +532,36 @@ page{
   position: relative;
   top: 120rpx;
 }
+.head_pic_say{
+  width: 124rpx;
+  height: 124rpx;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 120rpx;
+  position: absolute;
+  top: 18rpx;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.head_pic_1{
+  width: 44rpx;
+  height: 77rpx;
+}
+.robate_image{
+  width: 116rpx;
+  height: 116rpx;
+  position: absolute;
+  top: 4rpx;
+  left:4rpx;
+  animation: pic_x 4s linear infinite;
+}
+@keyframes pic_x {
+  from {
+    transform: rotateZ(0);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}

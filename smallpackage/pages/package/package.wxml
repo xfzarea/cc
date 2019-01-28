@@ -10,8 +10,15 @@
       <!-- <image wx:if="{{homeTrue}}" style='width:60rpx;height:60rpx;position:absolute;top:18rpx;left:40rpx;' src='/images/52.png' catchtap='toHome'></image> -->
       <!-- <view style='position:absolute;top:0;left:20rpx;color:#fff;font-size:28rpx;pading:10rpx 20rpx;border-radius:30rpx;' src='/images/52.png' catchtap='toHome'>首页</view> -->
       <image wx:if="{{job.state==3}}" class='mark' src='/images/35.png'></image>
-      <image wx:if="{{!begin}}" class='head_pic' src='{{job.state==4?job.headPic:job.avatarUrl}}'></image>
-      <image wx:if="{{begin}}" class='head_pic' src='/images/20.gif'></image>
+
+      <view style='position:relative;'>
+        <image class='head_pic' src='{{job.state==4?job.headPic:job.avatarUrl}}'></image>
+        <view wx:if="{{begin}}" class='head_pic_say'>
+          <image class='head_pic_1' src='/images/96.png'></image>
+          <image class='robate_image' src='/images/77.png'></image>
+        </view>
+      </view>
+      
 
       <view wx:if="{{!begin}}" class="nickName">
         <text style='color:#FFF;'>{{job.state==4?job.userName:job.nickName}}</text>

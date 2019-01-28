@@ -44,7 +44,8 @@ Page({
     that.setData({
       handType:0,
       second:0,
-      voice:''
+      voice:'',
+      time: "00:00:00",
     })
   },
   toBeg:function(){
