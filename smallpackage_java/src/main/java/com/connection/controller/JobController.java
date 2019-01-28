@@ -103,7 +103,7 @@ public class JobController {
 			resInfo = new HashMap<String, Object>();
 			
 			String cc = request.getParameter("header");
-			System.out.println(request+":"+cc);
+			
 			if(!"over".equals(cc)&&tabId == 0) {
 			
 						List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,id,10);
