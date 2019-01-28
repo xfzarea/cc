@@ -59,7 +59,7 @@ public class SqlJob {
 							dataDao.refund(userId, 0.00 - money, jobId);// cash表插入数据
 							adminDao.modifyMoney(money, userId);// 用户余额增加
 							
-							
+							job.put("refundAward", money);
 							returnParam = dataDao.getFormid(userId);
 							if (returnParam != null && returnParam.get("openid") != null) {
 								String msg = Util.getMsg(returnParam, job, 1);

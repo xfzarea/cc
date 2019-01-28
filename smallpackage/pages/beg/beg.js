@@ -82,6 +82,33 @@ Page({
     ctx.draw();
     that.downImg();
   },
+
+  shareImageToLoad:function(url){
+    console.log("code:", url)
+    const that = this;
+    if (typeof url === 'string') {
+      wx.getImageInfo({ //  小程序获取图片信息API
+        src: url,
+        success: function (res) {
+          that.setData({
+            codeUrl: res.path
+          })
+        },
+        fail: function (res) {
+          console.log(res);
+          wx.getImageInfo({
+            src: url,
+            success: function (res) {
+              that.setData({
+                codeUrl: res.path
+              })
+            }
+          })
+        }
+      })
+    }
+  },
+
   getCode: function (id) {
     const that = this;
     wx.request({
@@ -153,13 +180,13 @@ Page({
               that.setData({
                 handType: 0,
               })
-            }, 1000)
+              wx.showTabBar({
+                animation: false //是否需要过渡动画
+              })
+            }, 2000)
           }
         })
       }
-    })
-    wx.showTabBar({
-      animation: false //是否需要过渡动画
     })
   },
   /**
@@ -179,6 +206,9 @@ Page({
         job_type = 2;
       }
       let context = jBegInfo.begInfo;
+      wx.showLoading({
+        title: '红包生成中~',
+      })
       wx.request({
         url: urls.profit + '/createBegJob',
         data: {
@@ -189,7 +219,8 @@ Page({
           job_type: job_type
         },
         success: res => {
-          console.log(res.data)
+          wx.hideLoading();
+          console.log("红包,",res.data)
           that.setData({
             jobId: res.data.jobId,
             begSubmit: false,
@@ -200,10 +231,11 @@ Page({
           wx.hideTabBar({
             animation: false
           })
-          that.getCode(res.data.jobId);
+          // that.getCode(res.data.jobId);
+          that.shareImageToLoad(res.data.codeUrl);
           setTimeout(function () {
             that.draw_share_pic();
-          }, 1000)
+          }, 1500)
         }
       })
     }

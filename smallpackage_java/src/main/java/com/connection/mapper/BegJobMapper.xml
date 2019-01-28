@@ -21,7 +21,7 @@
 		SELECT a.id,a.userId,a.award,a.context,a.job_type,
 			DATE_FORMAT(a.createTime,"%Y-%m-%d")AS createTime,b.nickName,b.avatarUrl FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId
-			WHERE a.id = any(select jobId from beg_job_record c where c.userId=#{userId}) 
+			WHERE a.id = any(select jobId from beg_job_record c where c.userId=#{userId})
 			<if test="id!=0">
 				AND id &lt; #{id}
 			</if>
@@ -35,7 +35,7 @@
 			FROM beg_job a
 		LEFT JOIN admin b ON a.userId = b.userId 
 		LEFT JOIN beg_job_record c ON a.id = c.jobId 
-			WHERE a.userId = #{userId} 
+			WHERE a.userId = #{userId}
 			<if test="id!=0">
 				AND id &lt; #{id} 
 				</if>

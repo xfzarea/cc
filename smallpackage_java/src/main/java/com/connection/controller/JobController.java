@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -120,11 +121,15 @@ public class JobController {
 				}else {
 					List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,0,10-(list.size()));
 					list.addAll(list2);
+
 				
 					resInfo.put("jobs",list );	
 					Cookie cookie = new Cookie("go","go");
 					response.addCookie(cookie);
 				
+
+					resInfo.put("jobs",list );
+
 				}
 				
 			} else {
@@ -182,7 +187,6 @@ public class JobController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
-		
 			resInfo.put("job", redis.getBegJobById(id));
 			resInfo.put("begJobRecord", redis.getRecord(id));
 //			redis.deleteRecord(id);
@@ -467,7 +471,7 @@ public class JobController {
 			
 			//消息通知 发送感谢信
 			Map<String,Object>returnParam = dataDao.getFormid(userId);//formid
-			Map<String, Object> job =begJobDao.getJobById1(id);//取该红包
+			Map<String, Object> job =begJobDao.getBegJobById(id);//取该红包
 			String msg = Util.getMsg(returnParam, job, 5);
 			userService.sendMsg(msg);//前端调用saveFormId保存，这里发出去
 			dataDao.updateState((Integer)returnParam.get("id"));
