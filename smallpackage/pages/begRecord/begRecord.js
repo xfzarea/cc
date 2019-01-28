@@ -58,6 +58,9 @@ Page({
    
     const that = this;
     var header = that.data.header;
+    if (header== undefined) {
+      header = 'over'
+    }
     console.log(header)
     if (that.data.fresh) {
       that.data.fresh = false;
