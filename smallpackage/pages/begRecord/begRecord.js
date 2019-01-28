@@ -2,6 +2,7 @@
 const urls = require("../../utils/urls.js");
 Page({
 
+
   /**
    * 
    * 页面的初始数据
@@ -13,7 +14,8 @@ Page({
     fresh: true,
     tabId: 0,//用来区分是我发的还是我强的
     totalAward: 0.00,
-    totalCount: 0
+    totalCount: 0,
+    header:'over'
   },
 
   /**
@@ -53,15 +55,20 @@ Page({
    * 获得我讨得红包
    */
   getData: function (tabId) {
+   
     const that = this;
+    var header = that.data.header;
+    console.log(header)
     if (that.data.fresh) {
       that.data.fresh = false;
+      
       wx.request({
         url: urls.profit + '/getBegRecordData',
         data: {
           userId: that.data.userInfo.userId,
           id: that.data.id,
-          tabId: tabId
+          tabId: tabId,
+          header: header
         },
         success: res => {
           var jobs = that.data.jobs;
@@ -70,12 +77,14 @@ Page({
             var id;
             if (tabId == 0) {
               id = jobs[jobs.length - 1].id;
+             
             } else {
               id = jobs[jobs.length - 1].id;
             }
             that.setData({
               jobs: jobs,
-              id: id
+              id: id,
+              header: res.header["Set-Cookie"]
             })
           }
           that.data.fresh = true;
