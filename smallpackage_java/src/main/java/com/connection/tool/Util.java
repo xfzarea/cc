@@ -103,23 +103,34 @@ public class Util {
 		
 		Map<String,String>keyWord1 = new HashMap<String,String>();
 		Map<String,String>keyWord2 = new HashMap<String,String>();
+		Map<String,String>keyWord3 = new HashMap<String,String>();
+		
 		if(type==1){
-			params.put("template_id", "1vY2Qw3SPiJVKfHutJaKg_PYWeDpR1iLtg_pxk6tj54");//过期模板
-			keyWord1.put("value", job.get("createTime")+"");
-			keyWord1.put("color", "#FF4040");//第一个数据
-			data.put("keyword1", keyWord1);
-			keyWord2.put("value", "红包超过24小时未被领取");
-			keyWord2.put("color", "#FF4040");//第二个数据
-			data.put("keyword2", keyWord2);
-		}else if(type == 2){
-			params.put("template_id", "471EChHAUE3JHSlRqW6YUscknL0huk1luBsISCzgv6Q");//完成模板
-			keyWord1.put("value", job.get("totalCount")+"");
+			params.put("template_id", "TlDAB-fRWRyodj-OiKWaiQM1mYsZxxoLJAWrxmjAucI");//过期模板
+			keyWord1.put("value", "语音口令"+job.get("context"+"超过24小时未被领取完"));
 			keyWord1.put("color", "#FF4040");//第一个数据
 			data.put("keyword1", keyWord1);
 			
-			keyWord2.put("value", "点击查看黄金红包领取详情");
+			keyWord2.put("value", job.get("refundAward")+"元");
 			keyWord2.put("color", "#FF4040");//第一个数据
 			data.put("keyword2", keyWord2);
+			
+			keyWord3.put("value", "小程序包享说账号余额");
+			keyWord3.put("color", "#FF4040");//第二个数据
+			data.put("keyword3", keyWord3);
+		}else if(type == 2){
+			params.put("template_id", "EAWqNS9FQP3skjrFrVQSvCuICwUWi0nafCQPQBRmvCE");//完成模板
+			keyWord1.put("value", "语音口令");
+			keyWord1.put("color", "#FF4040");//第一个数据
+			data.put("keyword1", keyWord1);
+			
+			keyWord2.put("value", job.get("context")+"");
+			keyWord2.put("color", "#FF4040");//第二个数据
+			data.put("keyword2", keyWord2);
+			
+			keyWord3.put("value", "点击此处回听好友的语音");
+			keyWord3.put("color", "#FF4040");//第三个数据
+			data.put("keyword3", keyWord3);
 		}else if(type == 3){
 			params.put("template_id", "p8w_7Xqdz_WxZ1W0ShuBCVGnuH43aKrBbBicRgpSpxU");//订阅模板
 			keyWord1.put("value", job.get("createTime")+"");
@@ -130,22 +141,27 @@ public class Util {
 			data.put("keyword2", keyWord2);
 		}else if(type == 4){
 			params.put("page", "pages/begPackage/begPackage?id="+job.get("id")+"&handType=2&uid="+job.get("uid"));
-			params.put("template_id", "74orxzyn01bkIsz55-cOI0PZlH0wEU5C6mqDpRntnt8");//支付提醒
+			params.put("template_id", "tOmEuaDa6ttG-rNp7ItmavCof8oVioUJJ1bzkyBEPz0");//包开口支付提醒
 			
-			keyWord1.put("value", "收到一个红包~~");
+			keyWord1.put("value", job.get("award")+"元");
 			keyWord1.put("color", "#FF4040");//第一个数据
+			
 			data.put("keyword1", keyWord1);
-			keyWord2.put("value", "点击查看");
+			keyWord2.put("value", "点此此处查看红包详情");
 			keyWord2.put("color", "#FF4040");//第二个数据
 			data.put("keyword2", keyWord2);
+			
+			keyWord3.put("value", job.get("createTime")+"");
+			keyWord3.put("color", "#FF4040");//第三个数据
+			data.put("keyword3", keyWord3);
 		}else if(type == 5){//感谢信
 			params.put("page", "pages/begPackage/begPackage?id="+job.get("id")+"&handType=3");
-			params.put("template_id", "HPtpNqEjA7RGuM9axyg4sN7KoQndamozyrkG0dLASjM");//感谢信
+			params.put("template_id", "HPtpNqEjA7RGuM9axyg4sFFiB81_WQFm-WuVq_I8Kj4");//感谢信
 			
-			keyWord1.put("value", "收到一封感谢信~~");
+			keyWord1.put("value", "收到一封好友感谢信");
 			keyWord1.put("color", "#FF4040");//第一个数据
 			data.put("keyword1", keyWord1);
-			keyWord2.put("value", "点击查看");
+			keyWord2.put("value", job.get("nickName")+"");
 			keyWord2.put("color", "#FF4040");//第二个数据
 			data.put("keyword2", keyWord2);
 		}
@@ -157,6 +173,7 @@ public class Util {
 		data = null;
 		keyWord1 = null;
 		keyWord2 = null;
+		keyWord3 = null;
 		return json;
 	}
 	

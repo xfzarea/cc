@@ -16,13 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+
 import com.alibaba.fastjson.JSONObject;
 import com.connection.dao.AdminDao;
 import com.connection.dao.BegJobDao;
 import com.connection.dao.JobDao;
 import com.connection.service.interfaces.BegJobService;
 import com.connection.service.interfaces.JobService;
-import com.connection.service.interfaces.UserService;
 import com.connection.wxPay.entity.Unifiedorder;
 import com.connection.wxPay.util.HttpXmlUtils;
 import com.connection.wxPay.util.MyWXPayUtil;
@@ -30,6 +31,8 @@ import com.connection.wxPay.util.ParseXMLUtils;
 import com.connection.wxPay.util.RandCharsUtils;
 import com.connection.wxPay.util.WXSignUtils;
 import com.connection.wxPay.util.WeixinConfigUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 微信支付测试
@@ -50,7 +53,7 @@ public class WeiXinPayController {
 	private BegJobDao begJobDao;
 	@Autowired
 	private AdminDao adminDao;
-
+	
 
 	/**
 	 * 微信支付生成预付单 （统一下单）
@@ -68,7 +71,7 @@ public class WeiXinPayController {
 		response.setContentType("text/html;charset=utf-8");
 		JSONObject json = new JSONObject();
 		try {
-			//得到三个参数，总金额（包含服务费），红包总金额，总条数
+			// 得到三个参数，总金额（包含服务费），红包总金额，总条数
 			double totalAward = Double.parseDouble(getParams.get("totalAward"));
 			double award = Double.parseDouble(getParams.get("award"));
 			int count = Integer.parseInt(getParams.get("totalCount"));
@@ -79,16 +82,16 @@ public class WeiXinPayController {
 			if ("1".equals(getParams.get("job_type"))) {// 代表普通红包
 				double one_award = Double.parseDouble(getParams.get("one_award"));
 				if (one_award * count != award) {
-					flag = false;//？？
+					flag = false;// ？？
 				}
-			}else{
-				if(count * 0.01 > award){
+			} else {
+				if (count * 0.01 > award) {
 					flag = false;
 				}
 			}
-			
+
 			if (flag) {
-				int jobId = jobService.addJob(getParams);//把job信息添加到数据库，返回的jobid
+				int jobId = jobService.addJob(getParams);// 把job信息添加到数据库，返回的jobid
 				WeixinConfigUtils config = new WeixinConfigUtils();
 				// 参数组 需要客户端传过来的数据有：商品信息 商品描述 商品金额 充值类型 充值账号
 				String appid = config.appid;// 应用ID
@@ -193,9 +196,8 @@ public class WeiXinPayController {
 						finalpackage.put("package", "prepay_id=" + prepay_id);
 						finalpackage.put("signType", "MD5");
 						String signValue = WXSignUtils.createSign("UTF-8", finalpackage);
-						//二次签名结束
-						
-						
+						// 二次签名结束
+
 						json.put("appid", appid);
 						json.put("partnerid", mch_id);
 						json.put("package", "prepay_id=" + prepay_id);
@@ -204,7 +206,7 @@ public class WeiXinPayController {
 						json.put("sign", signValue);
 						json.put("prepayid", prepay_id);
 						json.put("jobId", jobId);
-						//返给前端信息，最主要预付单有了，让客户去付款
+						// 返给前端信息，最主要预付单有了，让客户去付款
 						out.print(json.toString());
 
 					} else {
@@ -223,6 +225,7 @@ public class WeiXinPayController {
 		}
 
 	}
+
 	@RequestMapping("/createBegJob")
 	public void weixinGenerateBegOrder(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam Map<String, String> getParams) throws IOException {
@@ -232,30 +235,36 @@ public class WeiXinPayController {
 		response.setContentType("text/html;charset=utf-8");
 		JSONObject json = new JSONObject();
 		try {
-			//得到三个参数，总金额（包含服务费），红包总金额，总条数
-			//double totalAward = Double.parseDouble(getParams.get("award"))*0.02+Double.parseDouble(getParams.get("award"));
+			RestTemplate restTemplate = new RestTemplate();
+			// 得到三个参数，总金额（包含服务费），红包总金额，总条数
+			// double totalAward =
+			// Double.parseDouble(getParams.get("award"))*0.02+Double.parseDouble(getParams.get("award"));
 			double totalAward = Double.parseDouble(getParams.get("award"));
-			getParams.put("totalAward",  totalAward+"");
+			getParams.put("totalAward", totalAward + "");
 			double award = Double.parseDouble(getParams.get("award"));
-		
+
 			boolean flag = true;
 			if (totalAward < award || award < 0 || totalAward < 0) {
 				flag = false;
 			}
 			if (flag) {
-				
-				int jobId = begJobService.addJob(getParams);//把job信息添加到数据库，返回的jobid
-				
-						json.put("jobId", jobId);
-						
-						out.print(json.toString());
 
-					
-				} else {
+				int jobId = begJobService.addJob(getParams);// 把job信息添加到数据库，返回的jobid
 
-					out.print("chuangjiancuowu");
-				}
-			
+				json.put("jobId", jobId);
+				
+				String url = "http://127.0.0.1:8080/smallpackage/getCode?type=beg&jobId="+jobId;
+				String result = restTemplate.postForObject(url, null, String.class);
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(result);
+				String codeUrl = root.path("obj").path("codeUrl").textValue();
+				json.put("codeUrl", codeUrl);
+				out.print(json.toString());
+
+			} else {
+
+				out.print("chuangjiancuowu");
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -263,43 +272,44 @@ public class WeiXinPayController {
 		}
 
 	}
-	//返回预付单
+
+	// 返回预付单
 	@RequestMapping("/payBegJob")
 	public void weixinGeneratepayBegOrder(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam Map<String,String> getParams ) throws IOException {
+			@RequestParam Map<String, String> getParams) throws IOException {
 		PrintWriter out = null;
 		out = response.getWriter();
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		JSONObject json = new JSONObject();
 		try {
-			//得到三个参数，总金额（包含服务费），红包总金额，总条数
-			log.info("beg参数："+getParams);
-			int jobId=Integer.parseInt(getParams.get("jobId").trim());
-			int userId=Integer.parseInt(getParams.get("userId").trim());
-			
-			List<HashMap<String,Object>> cc =begJobDao.getPaied(userId, jobId);
-			if(!cc.isEmpty()) {
+			// 得到三个参数，总金额（包含服务费），红包总金额，总条数
+			log.info("beg参数：" + getParams);
+			int jobId = Integer.parseInt(getParams.get("jobId").trim());
+			int userId = Integer.parseInt(getParams.get("userId").trim());
+
+			List<HashMap<String, Object>> cc = begJobDao.getPaied(userId, jobId);
+			if (!cc.isEmpty()) {
 				out.print("niwanguole");
 				return;
 			}
-			HashMap<String,Object> jobMsg =begJobDao.getBegJobById(jobId);
-			
-			double totalAward = Double.parseDouble(jobMsg.get("totalAward")+"");
-			double award = Double.parseDouble(jobMsg.get("award")+"");
+			HashMap<String, Object> jobMsg = begJobDao.getBegJobById(jobId);
+
+			double totalAward = Double.parseDouble(jobMsg.get("totalAward") + "");
+			double award = Double.parseDouble(jobMsg.get("award") + "");
 			boolean flag = true;
 			if (totalAward < award || award < 0 || totalAward < 0) {
 				flag = false;
 			}
-			String openId =adminDao.getOpenIdByUserId(userId);
-			
-			if(openId==null||!openId.equals(getParams.get("openid")+"")) {
+			String openId = adminDao.getOpenIdByUserId(userId);
+
+			if (openId == null || !openId.equals(getParams.get("openid") + "")) {
 				out.print("nishengfenbudui");
 				return;
 			}
-			log.info("支付~~~~~  ="+flag);
+			log.info("支付~~~~~  =" + flag);
 			if (flag) {
-				
+
 				WeixinConfigUtils config = new WeixinConfigUtils();
 				// 参数组 需要客户端传过来的数据有：商品信息 商品描述 商品金额 充值类型 充值账号
 				String appid = config.appid;// 应用ID
@@ -311,14 +321,14 @@ public class WeiXinPayController {
 				String out_trade_no = RandCharsUtils.getRandomStringOrderNum();// 商户订单号，商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@
 				// ，且在同一个商户号下唯一。详见商户订单号
 				// int total_fee =1;// 单位是分，即是0.01元
-				int total_fee = (int) Math.round(totalAward* 100); // 总金额，单位是分
+				int total_fee = (int) Math.round(totalAward * 100); // 总金额，单位是分
 				// int total_fee = 1; // 订单总金额，单位为分，详见支付金额
 				String spbill_create_ip = "127.0.0.1";// 终端ip
 														// 用户端实际ip
 				String time_start = RandCharsUtils.timeStart();// 交易起始时间
 				String time_expire = RandCharsUtils.timeExpire();// 交易结束时间
 				String notify_url = config.beg_notify_url;// 通知地址
-														// 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
+															// 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
 				String trade_type = "JSAPI";// 交易类型 支付类型(小程序)
 
 				// 参数：开始生成签名
@@ -390,8 +400,7 @@ public class WeiXinPayController {
 					result_code = mapreturn.get("result_code").toString();
 					if (!result_code.equals("FAIL")) {
 						prepay_id = mapreturn.get("prepay_id").toString();
-						
-						
+
 						// 二次签名
 						SortedMap<Object, Object> finalpackage = new TreeMap<Object, Object>();
 						// String timestamp = RandCharsUtils.timeStart();
@@ -405,9 +414,8 @@ public class WeiXinPayController {
 						finalpackage.put("package", "prepay_id=" + prepay_id);
 						finalpackage.put("signType", "MD5");
 						String signValue = WXSignUtils.createSign("UTF-8", finalpackage);
-						//二次签名结束
-						
-						
+						// 二次签名结束
+
 						json.put("appid", appid);
 						json.put("partnerid", mch_id);
 						json.put("package", "prepay_id=" + prepay_id);
@@ -416,7 +424,7 @@ public class WeiXinPayController {
 						json.put("sign", signValue);
 						json.put("prepayid", prepay_id);
 						json.put("jobId", jobId);
-						//返给前端信息，最主要预付单有了，让客户去付款
+						// 返给前端信息，最主要预付单有了，让客户去付款
 						out.print(json.toString());
 
 					} else {
@@ -508,7 +516,7 @@ public class WeiXinPayController {
 					}
 					job = null;
 				}
-				
+
 			} else {// 验证失败
 				response.getWriter().println("fail");
 				log.info("失敗");
@@ -586,20 +594,21 @@ public class WeiXinPayController {
 				packageParams.put("transaction_id", transaction_id);
 				String endsign = WXSignUtils.createSign("UTF-8", packageParams);
 				if (endsign.equals(sign)) {
-					Map<String, Object> job =begJobDao.getJobById1(Integer.parseInt(attach));
+					Map<String, Object> job = begJobDao.getJobById1(Integer.parseInt(attach));
 					if ((double) job.get("totalAward") >= (double) job.get("award")) {// 在做一波处理
-						List<Integer> list=begJobService.getUserId(openid);
-						int userId =list.get(0);
-						if(userId==0) {
+						List<Integer> list = begJobService.getUserId(openid);
+						int userId = list.get(0);
+						if (userId == 0) {
 							log.info("支付回掉，用户userId失敗");
-								return;
-							}
-						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach),userId,(double) job.get("award"));
+							return;
+						}
+						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach), userId,
+								(double) job.get("award"));
 						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
 					}
 					job = null;
 				}
-				
+
 			} else {// 验证失败
 				response.getWriter().println("fail");
 				log.info("失敗");
@@ -611,6 +620,7 @@ public class WeiXinPayController {
 			throw new RuntimeException(e);
 		}
 	}
+
 	/**
 	 * 微信退款 url回调
 	 * 
