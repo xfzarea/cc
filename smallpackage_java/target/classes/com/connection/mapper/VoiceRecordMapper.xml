@@ -85,7 +85,7 @@
 		UNION ALL
 		SELECT a.userId,b.award,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")AS insertTime,3 AS state FROM beg_job_record a
 			LEFT JOIN  beg_job b ON b.id=a.jobId 
-			WHERE a.userId = #{userId}
+			WHERE b.userId = #{userId}
 		ORDER BY insertTime DESC LIMIT #{startId},10
 		
 	</select>
