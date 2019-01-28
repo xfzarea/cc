@@ -233,7 +233,8 @@ public class WeiXinPayController {
 		JSONObject json = new JSONObject();
 		try {
 			//得到三个参数，总金额（包含服务费），红包总金额，总条数
-			double totalAward = Double.parseDouble(getParams.get("award"))*0.02+Double.parseDouble(getParams.get("award"));
+			//double totalAward = Double.parseDouble(getParams.get("award"))*0.02+Double.parseDouble(getParams.get("award"));
+			double totalAward = Double.parseDouble(getParams.get("award"));
 			getParams.put("totalAward",  totalAward+"");
 			double award = Double.parseDouble(getParams.get("award"));
 		

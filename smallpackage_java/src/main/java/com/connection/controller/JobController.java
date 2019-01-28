@@ -90,7 +90,7 @@ public class JobController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getBegRecordData")
-	public Result getBegCommand(@RequestParam("id") int id, @RequestParam("userId") int userId,
+	public Result getBegCommand(@RequestParam("id") int id , @RequestParam("userId") int userId,
 			@RequestParam("tabId") int tabId) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
@@ -99,7 +99,16 @@ public class JobController {
 			resInfo = new HashMap<String, Object>();
 			if (tabId == 0) {
 				//我讨的
-				resInfo.put("jobs", begJobDao.getMyBegPush(userId, id));
+				List<HashMap<String,Object>> list=begJobDao.getMyBegPush(userId, id);
+				if(list.size()==0) {
+					resInfo.put("jobs", begJobDao.getMyBegPush2(userId, id,10));	
+				}else if(list.size()==10) {
+				resInfo.put("jobs", list);
+				}else {
+					List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId, (int)list.get(list.size()-1).get("id"),10-(list.size()));
+					list.addAll(list2);
+					resInfo.put("jobs",list );	
+				}
 			} else {
 				//我被讨的
 				resInfo.put("jobs", begJobDao.getMyBeggedPush(userId, id));
