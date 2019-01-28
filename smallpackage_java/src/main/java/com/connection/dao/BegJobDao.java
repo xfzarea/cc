@@ -15,6 +15,7 @@ public interface BegJobDao {
 			@Param("out_trade_no")String out_trade_no,@Param("jobId")int id,@Param("userId")int userId);
 //	获得我被讨或讨的
 	List<HashMap<String,Object>>getMyBegPush(@Param("userId")int userId,@Param("id")int id);
+	List<HashMap<String,Object>>getMyBegPush2(@Param("userId")int userId,@Param("id")int id, int li);
 	List<HashMap<String,Object>>getMyBeggedPush(@Param("userId")int userId,@Param("id")int id);
 	
 	//通过job查询用户
