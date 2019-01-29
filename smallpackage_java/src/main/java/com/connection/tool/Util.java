@@ -111,7 +111,7 @@ public class Util {
 			keyWord1.put("color", "#FF4040");//第一个数据
 			data.put("keyword1", keyWord1);
 			
-			keyWord2.put("value", job.get("refundAward")+"元");
+			keyWord2.put("value", job.get("refundAward")+"元");//在sqljob类（处理过其类中定义）
 			keyWord2.put("color", "#FF4040");//第一个数据
 			data.put("keyword2", keyWord2);
 			

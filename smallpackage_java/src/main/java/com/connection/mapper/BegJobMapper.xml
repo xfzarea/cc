@@ -53,9 +53,9 @@
 		LEFT JOIN admin b ON a.userId = b.userId 
 		LEFT JOIN beg_job_record c ON a.id = c.jobId 
 			WHERE a.userId = #{userId} 
-			
+		<if test="id!=0">
 				AND id &lt; #{id} 
-			
+			</if>
 				GROUP BY a.id
 			having IF(COUNT(c.jobId) IS NULL,0,COUNT(c.jobId)) = 0
 				ORDER BY peopleCount DESC,id DESC LIMIT #{param3}

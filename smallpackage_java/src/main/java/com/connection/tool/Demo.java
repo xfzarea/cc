@@ -44,12 +44,16 @@ public class Demo {
 //		System.out.println(Double.parseDouble(String.format("%.2f", 0.29*2)));
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "https://www.yaohoudy.com/smallpackage/getCode?type=beg&jobId="+100197;
+		//restTemplate.posForObject(String url地址，Object  传递参数，Class 返回值映射对象)
 		String result = restTemplate.postForObject(url, null, String.class);
 		System.out.println(result);
 		
 	    try {
+	    	//	ObjectMapper用于java对象和json之间的互相转换
 	    	ObjectMapper mapper = new ObjectMapper();
+	    	//获得json对象
 			JsonNode root = mapper.readTree(result);
+			//获得obj中的codeUrl的文本值
 			String codeUrl = root.path("obj").path("codeUrl").textValue();
 			System.out.println(codeUrl);
 		} catch (IOException e) {

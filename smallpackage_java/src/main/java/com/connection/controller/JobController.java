@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.aliyun.oss.common.comm.ServiceClient.Request;
 import com.connection.dao.BegJobDao;
 import com.connection.dao.DataDao;
 import com.connection.dao.JobDao;
@@ -92,24 +95,43 @@ public class JobController {
 	@ResponseBody
 	@RequestMapping("/getBegRecordData")
 	public Result getBegCommand(@RequestParam("id") int id , @RequestParam("userId") int userId,
-			@RequestParam("tabId") int tabId) {
+			@RequestParam("tabId") int tabId ,HttpServletRequest request,HttpServletResponse response) {
 		Result result = null;
 		Map<String, Object> resInfo = null;
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
+			
+			String cc = request.getParameter("header");
+			
+			if(!"over".equals(cc)&&tabId == 0) {
+			
+						List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,id,10);
+						resInfo.put("jobs",list2 );	
+						result.setObj(resInfo);
+						Cookie cookie = new Cookie("go","go");
+						response.addCookie(cookie);
+						return result;
+		}
 			if (tabId == 0) {
 				//我讨的
 				List<HashMap<String,Object>> list=begJobDao.getMyBegPush(userId, id);
-				if(list.size()==0) {
-					resInfo.put("jobs", begJobDao.getMyBegPush2(userId, id,10));	
-				}else if(list.size()==10) {
+				if(list.size()==10) {
 				resInfo.put("jobs", list);
 				}else {
-					List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId, (int)list.get(list.size()-1).get("id"),10-(list.size()));
+					List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,0,10-(list.size()));
 					list.addAll(list2);
+
+				
+					resInfo.put("jobs",list );	
+					Cookie cookie = new Cookie("go","go");
+					response.addCookie(cookie);
+				
+
 					resInfo.put("jobs",list );
+
 				}
+				
 			} else {
 				//我被讨的
 				resInfo.put("jobs", begJobDao.getMyBeggedPush(userId, id));

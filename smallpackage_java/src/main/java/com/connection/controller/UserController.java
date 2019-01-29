@@ -594,6 +594,7 @@ public class UserController {
 			resInfo = new HashMap<String,Object>();
 			//查询口令，存到map，再存到result
 			//这里的id是数据库的levelContextId类似父类id，就是查父类的所有子类
+			//redis.deleteBegCommand(id);
 			resInfo.put("begCommand", redis.getBegCommand(id));
 			result.setObj(resInfo);
 		} catch (Exception e) {
