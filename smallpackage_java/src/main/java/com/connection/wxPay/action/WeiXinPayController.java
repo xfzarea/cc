@@ -252,7 +252,7 @@ public class WeiXinPayController {
 				int jobId = begJobService.addJob(getParams);// 把job信息添加到数据库，返回的jobid
 
 				json.put("jobId", jobId);
-				
+				//这一段是获取二维码，在这里一起发送给前端
 				String url = "http://127.0.0.1:8080/smallpackage/getCode?type=beg&jobId="+jobId;
 				String result = restTemplate.postForObject(url, null, String.class);
 				ObjectMapper mapper = new ObjectMapper();
