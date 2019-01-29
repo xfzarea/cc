@@ -1,3 +1,6 @@
+page{
+  overflow: hidden;
+}
 .avatarUrl {
   width: 120rpx;
   height: 120rpx;
@@ -400,6 +403,10 @@ button::after {
 .canvas_share{
   width: 600rpx;
   height: 842rpx;
+}
+.canvas_share_1{
+  width:420rpx;
+  height: 336rpx;
 }
 .card_share_btn{
   width: 291rpx;

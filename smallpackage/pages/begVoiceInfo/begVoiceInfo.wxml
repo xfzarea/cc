@@ -1,23 +1,27 @@
+<wxs module="filters" src="../../utils/addmul.wxs"></wxs>
 <view class='container '>
   <scroll-view class="main" scroll-y>
     <view style='height:40rpx;'></view>
+
     <view class='voices' wx:for="{{voices}}" wx:key="index" wx:for-item="item">
-      <view class='voices_v'>
-        <view>{{item.context}}</view>
-        <image src='/images/61.png'></image>
-      </view>
+      <view class='voices_v'>{{filters.contextCount(item.context)}}{{item.context}}</view>
       <view class='voices_btn'>
+        <image src='/images/98_1.png'></image>
+      </view>
+      <!-- <view class='voices_btn'>
         <view style='margin-left:50rpx;' catchtap='toVoicePlay' data-index='{{index}}'>预览音频</view>
         <view style='color:#DADADA;'>|</view>
         <view style='margin-right:50rpx;' data-src='{{item.voiceCommandPath}}' data-context='{{item.context}}' catchtap='toBeg' data-second='{{item.voiceTime}}'>使用音频</view>
-      </view>
+      </view> -->
     </view>
-    <view style='height:{{userH == 1?"88rpx":"1rpx"}}'></view>
+
+    <view style='height:{{userH == 1?"108rpx":"1rpx"}}'></view>
   </scroll-view>
+
 
   <view class='botton_view' wx:if="{{userH == 1}}">
     <!-- <image class='bottom_view_image1' src='/images/81.png'></image> -->
-    <view class='bottom_view_1'></view>
+    <!-- <view class='bottom_view_1'></view> -->
     <image class='bottom_view_image2' src='/images/82.png' catchtap='toVoicePlay1'></image>
   </view>
 </view>

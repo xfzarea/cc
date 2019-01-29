@@ -47,15 +47,22 @@ Page({
         warrantShow: true
       })
     } else {
+      that.setData({
+        userInfo:wx.getStorageSync("userInfo")
+      })
       wx.showLoading({
         title: '客官请稍等~',
       })
+      that.getImageInfo(wx.getStorageSync("userInfo").avatarUrl);
       that.toBegPackage(jobId);
       if (that.data.handType != 0) {
         that.setData({
           handType: that.data.handType
         })
-      }
+      };
+      setTimeout(function(){
+        that.draw_share_pic_1();
+      },1000)
     }
   },
 
@@ -73,7 +80,8 @@ Page({
       that.setData({
         id: id
       })
-      that.toBegPackage(id)
+      that.getImageInfo(wx.getStorageSync("userInfo").avatarUrl);
+      that.toBegPackage(id);
     }
   },
   preBegImage:function(){
@@ -114,6 +122,7 @@ Page({
       }
     })
   },
+
   toVoicePlay: function(e) {
     let src = e.currentTarget.dataset.src;
     wx.navigateTo({
@@ -162,13 +171,83 @@ Page({
             'success': function (res) {
               that.toBegPackage(that.data.jobId);
               that.saveFormId(formid);
+              that.setData({
+                handType: 4
+              })
             },
           })
         }
       }
     })
+  },
 
+  /**
+   * canvas画转发封面图
+   */
+  draw_share_pic_1: function () {
+    var that = this;
+    var rem;
+    wx.getSystemInfo({
+      success: function (res) {
+        rem = res.screenWidth / 750;
+      },
+    })
+    const ctx = wx.createCanvasContext('share_pic_1');
+    ctx.drawImage("/images/97.jpg", 0, 0, 420 * rem, 336 * rem);
+    let headPic = that.data.headPic;
+    if (headPic) {
+      that.circleImg(ctx, headPic, 168 * rem, 128 * rem, 45 * rem);
+      // ctx.drawImage(headPic, 168 * rem, 128 * rem, 90 * rem, 90 * rem);
+    }
+    ctx.draw();
+    that.downImg_1();
+  },
 
+  /**
+   * 画圆图
+   */
+  circleImg: function (ctx, img, x, y, r) {
+    ctx.save();
+    var d = 2 * r;
+    var cx = x + r;
+    var cy = y + r;
+    // ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+    ctx.clip();
+    ctx.stroke("#fff");
+    ctx.drawImage(img, x, y, d, d);
+  },
+  downImg_1: function (id) {
+    const that = this;
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      canvasId: 'share_pic_1',
+      success: function (res) {
+        console.log(res.tempFilePath);
+        that.setData({
+          share_pic_src_1: res.tempFilePath
+        })
+      }
+    })
+    // }, 100))
+  },
+
+  /**
+   * 头像缓存本地得方法
+   */
+  getImageInfo: function (url) { //  图片缓存本地的方法
+    const that = this;
+    if (typeof url === 'string') {
+      wx.getImageInfo({ //  小程序获取图片信息API
+        src: url,
+        success: function (res) {
+          that.setData({
+            headPic: res.path
+          })
+        }
+      })
+    }
   },
 
   saveFormId: function (formId) {
@@ -282,6 +361,19 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    console.log("分享")
+    const that = this;
+    let jobId = that.data.jobId;
+    return {
+      title: "【语音红包】发完红包讨红包，红包玩法欢乐多",
+      path: '/pages/begPackage/begPackage?id=' + jobId,
+      imageUrl: that.data.share_pic_src_1,
+      success: function (res) {
+        
+      },
+      fail: function (res) {
+        // 转发失败
+      },
+    }
   }
 })

@@ -6,37 +6,40 @@
   width: 670rpx;
   margin-left: 40rpx;
   border-radius: 20rpx;
-  margin-bottom: 40rpx;
+  margin-bottom: 74rpx;
+  border: 1rpx solid #d85940;
+  position: relative;
 }
 .voices_v{
-  width: 670rpx;
-  background-color: #4C4C4C;
-  padding-top: 26rpx;
-  border-radius: 20rpx 20rpx 0 0;
-}
-.voices_v > view{
-  color: #fff;
+  width: 610rpx;
+  height: 90rpx;
+  padding: 30rpx;
   font-size: 32rpx;
-  margin-left: 32rpx;
-}
-.voices_v > image{
-  width: 495rpx;
-  height: 37rpx;
-  margin:20rpx 0 40rpx 32rpx;
+  color:#4C4C4C;
+  font-weight: bold;
 }
 .voices_btn{
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 68rpx;
   display: flex;
-  height: 85rpx;
-  background-color: #fff;
-  border-radius: 0 0 20rpx 20rpx;
   align-items: center;
-  justify-content: space-around;
-  font-size: 32rpx;
-  color: #d85940;
+  justify-content: center;
+  border: 1rpx solid #d85940;
+  position: absolute;
+  right: 30rpx;
+  bottom: -35rpx;
+  background-color: #F1F1F1;
+
 }
+.voices_btn > image{
+  width: 29rpx;
+  height: 39rpx;
+}
+
+
 .botton_view{
   width: 750rpx;
-  
   position: fixed;
   bottom: 0;
   display: flex;
@@ -55,5 +58,5 @@
   width: 122rpx;
   height: 122rpx;
   position: absolute;
-  bottom: 20rpx;
+  bottom: 10rpx;
 }

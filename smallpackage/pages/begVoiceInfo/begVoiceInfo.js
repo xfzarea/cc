@@ -33,6 +33,7 @@ Page({
         console.log(res.data)
         that.setData({
           userH: res.data.obj.state
+          // userH: 1
         })
       }
     })

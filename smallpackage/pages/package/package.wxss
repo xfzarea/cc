@@ -361,8 +361,8 @@ page{
 }
 .card_4{
   width: 690rpx;
-  height: 240rpx;
-  /* height: 340rpx; */
+  /* height: 240rpx; */
+  height: 340rpx;
   background-color: #fff;
   border-radius: 10rpx;
 }

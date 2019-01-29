@@ -46,6 +46,7 @@ Page({
       })
       console.log(app.globalData.jBegInfo)
       app.globalData.jBegInfo = { begType: 0, begInfo: '' };
+      that.getImageInfo(that.data.userInfo.avatarUrl);
       //从自定义口令页面过来
       if (app.globalData.context != '') {
         that.setData({
@@ -58,6 +59,8 @@ Page({
         // jobContexts.splice(0, 0, app.globalData.context);
         // wx.setStorageSync("jobContexts", jobContexts)
         app.globalData.context = '';
+        
+
       }
     }
   },
@@ -82,7 +85,43 @@ Page({
     ctx.draw();
     that.downImg();
   },
+  
+  /**
+   * canvas画转发封面图
+   */
+  draw_share_pic_1: function () {
+    var that = this;
+    var rem;
+    wx.getSystemInfo({
+      success: function (res) {
+        rem = res.screenWidth / 750;
+      },
+    })
+    const ctx = wx.createCanvasContext('share_pic_1');
+    ctx.drawImage("/images/97.jpg", 0, 0, 420 * rem, 336 * rem);
+    let headPic = that.data.headPic;
+    if (headPic) {
+      that.circleImg(ctx,headPic,168*rem,128*rem,45*rem);
+      // ctx.drawImage(headPic, 168 * rem, 128 * rem, 90 * rem, 90 * rem);
+    }
+    ctx.draw();
+    that.downImg_1();
+  },
 
+  /**
+   * 画圆图
+   */
+  circleImg: function (ctx, img, x, y, r) {
+    ctx.save();
+    var d = 2 * r;
+    var cx = x + r;
+    var cy = y + r;
+    // ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+    ctx.clip();
+    ctx.stroke("#fff");
+    ctx.drawImage(img, x, y, d, d);
+  },
   shareImageToLoad:function(url){
     console.log("code:", url)
     const that = this;
@@ -103,6 +142,23 @@ Page({
                 codeUrl: res.path
               })
             }
+          })
+        }
+      })
+    }
+  },
+
+  /**
+   * 头像缓存本地得方法
+   */
+  getImageInfo: function (url) { //  图片缓存本地的方法
+    const that = this;
+    if (typeof url === 'string') {
+      wx.getImageInfo({ //  小程序获取图片信息API
+        src: url,
+        success: function (res) {
+          that.setData({
+            headPic: res.path
           })
         }
       })
@@ -155,6 +211,22 @@ Page({
         console.log(res.tempFilePath);
         that.setData({
           share_pic_src: res.tempFilePath
+        })
+      }
+    })
+    // }, 100))
+  },
+
+  downImg_1: function (id) {
+    const that = this;
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      canvasId: 'share_pic_1',
+      success: function (res) {
+        console.log(res.tempFilePath);
+        that.setData({
+          share_pic_src_1: res.tempFilePath
         })
       }
     })
@@ -233,6 +305,7 @@ Page({
           })
           // that.getCode(res.data.jobId);
           that.shareImageToLoad(res.data.codeUrl);
+          that.draw_share_pic_1();
           setTimeout(function () {
             that.draw_share_pic();
           }, 1500)
@@ -359,12 +432,7 @@ Page({
       animation: false //是否需要过渡动画
     })
   },
-  closeWarn: function (e) {
-    const that = this;
-    that.setData({
-      warn_show: false
-    })
-  },
+  
   toRecord: function () {
     wx.navigateTo({
       url: '/pages/record/record',
@@ -430,6 +498,12 @@ Page({
       animation: true //是否需要过渡动画
     })
   },
+  closeWarn: function (e) {
+    const that = this;
+    that.setData({
+      warn_show: false
+    })
+  },
   toPlayRed: function () {
     // wx.navigateTo({
     //   url: '/pages/playRed/playRed',
@@ -493,7 +567,9 @@ Page({
     let jobId = that.data.jobId;
     if (e.from == 'button') {//点击按钮来的 menu
       return {
+        title: "【语音红包】发完红包讨红包，红包玩法欢乐多",
         path: '/pages/begPackage/begPackage?id=' + jobId,
+        imageUrl: that.data.share_pic_src_1,
         success: function (res) {
           that.setData({
             handType: 0
@@ -502,7 +578,6 @@ Page({
         fail: function (res) {
           // 转发失败
         },
-
       }
     }
     that.setData({

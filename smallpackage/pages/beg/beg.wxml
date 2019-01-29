@@ -106,3 +106,7 @@
 <canvas canvas-id="share_pic" class='canvas_share'>
 
 </canvas>
+
+<canvas canvas-id="share_pic_1" class='canvas_share_1'>
+
+</canvas>

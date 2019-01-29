@@ -181,7 +181,7 @@
 <view wx:if="{{handType==1}}" class='card c' catchtap='hide'>
   <view class='card_4' catchtap='noHide'>
     <button style='margin-top:40rpx;' open-type='share'>发红包给好友</button>
-    <!-- <button style='margin-top:30rpx;color:#303030;background-color:#e5e5e5;' catchtap='createPic'>生成分享图</button> -->
+    <button style='margin-top:30rpx;color:#303030;background-color:#e5e5e5;' catchtap='createPic'>生成分享图</button>
     <view catchtap='hide'>取消操作></view>
   </view>
 </view>

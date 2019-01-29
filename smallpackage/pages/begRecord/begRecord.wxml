@@ -7,7 +7,7 @@
   <scroll-view class='article' scroll-y bindscrolltolower="freshJobs">
     <view style='height:30rpx;'></view>
     <view class='article_top'>
-      <view>红包金额</view>
+      <view>{{tabId==0?"好友付款金额":"我的付款金额"}}</view>
       <view>{{filters.toFix(totalAward)}} (元)</view>
     </view>
 

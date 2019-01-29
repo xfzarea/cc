@@ -93,3 +93,19 @@
   </view>
   
 </view>
+<!-- 支付完成跳卡片 -->
+<view class="card" wx:if="{{handType == 4}}">
+  <view class='card_box_4'>
+    <view style="color:#303030;font-size:36rpx;margin:60rpx 0 50rpx 0;font-weight:bold;text-align:center">
+      <view>恭喜！打赏好友成功</view>
+      <view>你也可以讨一个</view>
+    </view>
+    <view class='card_box_4_view' catchtap='toBeg'>我也讨个</view>
+    <view class='card_box_4_view' catchtap='hide' style='background-color:#fff;border:1rpx solid #d85940;color:#d85940;'>知道了</view>
+    
+    <view style='height:10rpx;'></view>
+  </view>
+</view>
+<canvas canvas-id="share_pic_1" class='canvas_share_1'>
+
+</canvas>

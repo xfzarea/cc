@@ -1,18 +1,28 @@
 var filters = {
-  toFix: function (value) {
-    if(value == ''){
+  toFix: function(value) {
+    if (value == '') {
       value = 0;
     }
-    if(typeof(value) == 'number'){
-      return value.toFixed(2)//此处2为保留两位小数
-    }else{
+    if (typeof(value) == 'number') {
+      return value.toFixed(2) //此处2为保留两位小数
+    } else {
       return value
     }
-    
-    
-    
+  },
+  contextCount: function(context) {
+    // if(context == ''){
+    //   return;
+    // }
+    let count = context.length;
+    console.log('123', context)
+    if (count < 35) {
+      return context
+    } else {
+      return context.substring(0, 34) + "···"
+    }
   }
 }
 module.exports = {
-  toFix: filters.toFix
+  toFix: filters.toFix,
+  contextCount: filters.contextCount
 }

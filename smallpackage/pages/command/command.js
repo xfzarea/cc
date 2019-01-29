@@ -93,9 +93,12 @@ Page({
         userId: that.data.userInfo.userId
       },
       success: res => {
-        that.setData({
-          rightInfos: res.data.obj.commands
-        })
+        console.log("我的",res.data)
+        if(res.data.obj != ''){
+          that.setData({
+            rightInfos: res.data.obj.commands
+          })
+        }
       }
     })
   },

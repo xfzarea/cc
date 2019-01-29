@@ -949,7 +949,7 @@ Page({
 
     const ctx = wx.createCanvasContext('canvas_2');
 
-    ctx.drawImage("/images/42.png", 0, 0, 603 * rem, 481 * rem);
+    ctx.drawImage("/images/42_1.jpg", 0, 0, 603 * rem, 481 * rem);
     ctx.drawImage(url, 262 * rem, 20 * rem, 80 * rem, 80 * rem);
     ctx.setTextAlign('center'); // 文字居中
     ctx.setFillStyle('#FFFFFF'); // 文字颜色：黑色
@@ -1023,8 +1023,8 @@ Page({
     return {
       title: "【语音红包】说对口令，领取红包",
       path: "/pages/package/package?id=" + id,
-      // imageUrl: that.data.job.shareUrl,
-      imageUrl:"/images/57.jpg",
+      imageUrl: that.data.job.shareUrl,
+      // imageUrl:"/images/57.jpg",
       success: function(res) {
         that.setData({
           code: 0
