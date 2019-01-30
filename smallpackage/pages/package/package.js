@@ -83,6 +83,11 @@ Page({
       url: '/pages/home/home',
     })
   },
+  toBeg:function(){
+    wx.switchTab({
+      url: '/pages/beg/beg',
+    })
+  },
   /**
    * 判断录音功能
    */
@@ -338,7 +343,7 @@ Page({
     ctx.drawImage("/images/41.png", 0, 0, 395 * rem, 533 * rem);
 
     ctx.setTextAlign('center'); // 文字居中
-    ctx.setFillStyle('#f6e0b7'); // 文字颜色：黑色
+    ctx.setFillStyle('#fbe0b2'); // 文字颜色：黑色
     ctx.setFontSize(16 * rem); // 文字字号：22px
     var nickName;
     if (that.data.job.state != 4) {
@@ -349,25 +354,27 @@ Page({
     if (nickName.length > 6) {
       nickName = nickName.substring(0, 6) + "...";
     }
-    ctx.fillText(nickName + "的语音红包", 395 * rem / 2, 120 * rem);
+    ctx.fillText(nickName + "的语音红包", 395 * rem / 2, 222 * rem);
 
-    ctx.setFontSize(28 * rem); // 文字字号：22px
+    ctx.setFontSize(24 * rem); // 文字字号：22px
     var context = that.data.job.context;
     if (context.length < 12) {
-      ctx.fillText(context, 395 * rem / 2, 174 * rem);
+      ctx.fillText(context, 395 * rem / 2, 280 * rem);
     } else if (context.length < 21) {
-      ctx.fillText(context.substring(0, 12), 395 * rem / 2, 174 * rem);
-      ctx.fillText(context.substring(12, 21), 395 * rem / 2, 210 * rem);
+      ctx.fillText(context.substring(0, 12), 395 * rem / 2, 280 * rem);
+      ctx.fillText(context.substring(12, 21), 395 * rem / 2, 310 * rem);
     } else {
-      ctx.fillText(context.substring(0, 12), 395 * rem / 2, 174 * rem);
-      ctx.fillText(context.substring(12, 21) + "...", 395 * rem / 2, 210 * rem);
+      ctx.fillText(context.substring(0, 12), 395 * rem / 2, 280 * rem);
+      ctx.fillText(context.substring(12, 21) + "...", 395 * rem / 2, 310 * rem);
     }
     var codeUrl = that.data.codeUrl;
     console.log(codeUrl);
     if (codeUrl) {
-      ctx.drawImage(codeUrl, 285 * rem / 2, 265 * rem, 110 * rem, 110 * rem);
+      // ctx.drawImage(codeUrl, 285 * rem / 2, 265 * rem, 110 * rem, 110 * rem);
+      ctx.drawImage(codeUrl, 137 * rem, 335 * rem, 120 * rem, 120 * rem);
     }
-    that.circleImg(ctx, that.data.headPic, 337 * rem / 2, 26 * rem, 58 * rem / 2);
+    // that.circleImg(ctx, that.data.headPic, 337 * rem / 2, 26 * rem, 58 * rem / 2);
+    that.circleImg(ctx, that.data.headPic, 154 * rem, 108 * rem, 43 * rem);
     ctx.draw();
   },
   /**
@@ -1021,7 +1028,7 @@ Page({
     console.log("sharePic1", that.data.sharePic)
 
     return {
-      title: "【语音红包】说对口令，领取红包",
+      title: "【语音红包】你的好友给你发了一个红包",
       path: "/pages/package/package?id=" + id,
       imageUrl: that.data.job.shareUrl,
       // imageUrl:"/images/57.jpg",

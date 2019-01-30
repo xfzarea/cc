@@ -10,6 +10,9 @@
   border: 1rpx solid #d85940;
   position: relative;
 }
+.voices_sel{
+  background-color: #d85940;
+}
 .voices_v{
   width: 610rpx;
   height: 90rpx;
@@ -18,6 +21,17 @@
   color:#4C4C4C;
   font-weight: bold;
 }
+.voices_v_sel{
+  font-size: 36rpx;
+  color:#fff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+}
+
 .voices_btn{
   width: 68rpx;
   height: 68rpx;
@@ -29,8 +43,11 @@
   position: absolute;
   right: 30rpx;
   bottom: -35rpx;
-  background-color: #F1F1F1;
-
+  background-color: #fffdf6;
+}
+.voices_btn_sel{
+  background-color: #d85940;
+  border: 2rpx solid #fffdf6;
 }
 .voices_btn > image{
   width: 29rpx;

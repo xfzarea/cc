@@ -9,7 +9,7 @@ Page({
   data: {
     leftInfos: [],
     rightInfos: [],
-    changeId: 1,
+    changeId: 0,
     userInfo: wx.getStorageSync("userInfo"),
     myCommand: [],
     textCommand:false,
@@ -29,7 +29,6 @@ Page({
         changeId: 1,
       })
       that.getLeftInfo();
-      that.getRightInfo(that.data.changeId);
       that.checkUserH("userCommand");
     },100)
   },
@@ -57,21 +56,23 @@ Page({
   getLeftInfo: function() {
     const that = this;
     wx.request({
-      url: urls.profit + '/getCommand',
+      url: urls.profitY + '/getCommand',
       data: {
         id: 0
       },
       success: res => {
         that.setData({
-          leftInfos: res.data.obj.command
+          leftInfos: res.data.obj.command,
+          changeId: res.data.obj.command[0].contextId
         })
+        that.getRightInfo(res.data.obj.command[0].contextId)
       }
     })
   },
   getRightInfo: function(id) {
     const that = this;
     wx.request({
-      url: urls.profit + '/getCommand',
+      url: urls.profitY + '/getCommand',
       data: {
         id: id
       },

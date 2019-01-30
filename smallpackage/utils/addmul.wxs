@@ -10,19 +10,36 @@ var filters = {
     }
   },
   contextCount: function(context) {
-    // if(context == ''){
-    //   return;
-    // }
-    let count = context.length;
-    console.log('123', context)
-    if (count < 35) {
+    var count = context.length;
+
+    if (count <= 35) {
       return context
     } else {
       return context.substring(0, 34) + "···"
+    }
+  },
+  contextCount1: function (context) {
+    var count = context.length;
+
+    if (count <= 30) {
+      return context
+    } else {
+      return context.substring(0, 30) + "···"
+    }
+  },
+  contextCount2: function (context) {
+    var count = context.length;
+
+    if (count <= 55) {
+      return context
+    } else {
+      return context.substring(0, 55) + "···"
     }
   }
 }
 module.exports = {
   toFix: filters.toFix,
-  contextCount: filters.contextCount
+  contextCount: filters.contextCount,
+  contextCount1: filters.contextCount1,
+  contextCount2: filters.contextCount2,
 }

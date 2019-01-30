@@ -77,11 +77,17 @@ Page({
       },
     })
     const ctx = wx.createCanvasContext('share_pic');
-    ctx.drawImage("/images/83.jpg", 0, 0, 600 * rem, 842 * rem);
+    ctx.drawImage("/images/83.png", 0, 0, 394 * rem, 533 * rem);
     let codeUrl = that.data.codeUrl;
     if (codeUrl) {
-      ctx.drawImage(codeUrl, 155 * rem, 388 * rem, 290 * rem, 290 * rem);
+      ctx.drawImage(codeUrl, 137 * rem, 335 * rem, 120 * rem, 120 * rem);
     }
+    let headPic = that.data.headPic;
+    if(headPic){
+      // ctx.drawImage(headPic, 156 * rem, 108 * rem, 86 * rem, 86 * rem);
+      that.circleImg(ctx, headPic, 154 * rem, 108 * rem, 43 * rem);
+    }
+    
     ctx.draw();
     that.downImg();
   },
@@ -270,6 +276,7 @@ Page({
     let begSubmit = that.data.begSubmit;
     let jBegInfo = that.data.jBegInfo;
     let job_type = 0;
+
     if (begSubmit && jBegInfo.begType != 0) {
       if (jBegInfo.begType == 3) {
         job_type = 1;
@@ -310,6 +317,11 @@ Page({
             that.draw_share_pic();
           }, 1500)
         }
+      })
+    }else{
+      wx.showToast({
+        title: '亲~请检查红包内容是否完整',
+        icon: 'none'
       })
     }
   },
@@ -567,7 +579,7 @@ Page({
     let jobId = that.data.jobId;
     if (e.from == 'button') {//点击按钮来的 menu
       return {
-        title: "【语音红包】发完红包讨红包，红包玩法欢乐多",
+        title: "【语音红包】你有一个红包消息提醒",
         path: '/pages/begPackage/begPackage?id=' + jobId,
         imageUrl: that.data.share_pic_src_1,
         success: function (res) {

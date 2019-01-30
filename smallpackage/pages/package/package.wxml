@@ -136,8 +136,9 @@
     <view class='card_box_view'>
       <view style='color:#D85940;font-size:36rpx;font-weight:bold'>恭喜</view>
       <view style='color:#D85940;font-size:36rpx;margin-top:20rpx;font-weight:bold'>成功抢到{{filters.toFix(voice.award)}}元红包</view>
-      <button class='btns' catchtap='toHome' style='margin-top:68rpx;'>给心爱的Ta发个红包</button>
+      <button class='btns' catchtap='toBeg' style='margin-top:68rpx;'>试试讨个红包</button>
       <button class='btns' open-type='share' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;'>转发好友领红包</button>
+      <!-- <button class='btns' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;' catchtap='toBeg'>试试讨个红包</button> -->
       
       <image class='card_cancel_pic' catchtap='hide' src='/images/74.png'></image>
     </view>
@@ -151,7 +152,8 @@
       <view style='color:#D85940;font-size:36rpx;font-weight:bold'>很遗憾</view>
       <view style='color:#D85940;font-size:36rpx;margin-top:20rpx;font-weight:bold'>差一点就抢到了</view>
       <button class='btns' catchtap='hide' style='margin-top:68rpx;'>加油再抢一次</button>
-      <button class='btns' open-type='share' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;'>转发好友领红包</button>
+      <!-- <button class='btns' open-type='share' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;'>转发好友领红包</button> -->
+      <button class='btns' style='background-color:#fff;color:#d85940;border:1rpx solid #d85940;margin-top:40rpx;' catchtap='toBeg'>试试讨个红包</button>
       <image class='card_cancel_pic' catchtap='hide' src='/images/74.png'></image>
     </view>
   </view>

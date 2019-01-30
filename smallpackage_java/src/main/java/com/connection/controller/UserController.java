@@ -189,7 +189,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/cashHand")
 	//参数都在前端获取，怎么获取的呢？是使用全局的wwx.getStorageSync("userInfo")。。。
-	public Result cashHand(@RequestParam("userId")int userId,@RequestParam("money")double money,String openid){
+	public Result cashHand(@RequestParam("userId")int userId,@RequestParam("money")double money,
+			@RequestParam("openid")String openid){
 		Result result = null;
 		Map<String,Object>response = null;
 		try {
@@ -421,7 +422,7 @@ public class UserController {
 			if("beg".equals(type)){//beg页面
 				responseParams.put("page", "pages/begPackage/begPackage");
 				//是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码	
-				
+				responseParams.put("is_hyaline", true);
 			}else{
 				responseParams.put("page", "pages/package/package");
 				//是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码	

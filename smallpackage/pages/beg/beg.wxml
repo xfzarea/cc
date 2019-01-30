@@ -11,7 +11,7 @@
 
     <view class='list_6 ' catchtap='toChanges'>
       <view wx:if="{{jBegInfo.begType==0}}">可设置文字/语音/图片</view>
-      <view wx:elif="{{jBegInfo.begType==1}}" style='color:#303030'>{{jBegInfo.begInfo}}</view>
+      <view wx:elif="{{jBegInfo.begType==1}}" style='color:#303030'>{{filters.contextCount1(jBegInfo.begInfo)}}</view>
       <!-- 图片 -->
       <image mode="aspectFit" class='list_6_image' wx:elif="{{jBegInfo.begType==2}}" src='{{jBegInfo.begInfo}}'></image>
       <!-- 语音 -->
@@ -37,7 +37,8 @@
       <view style='color:#303030;font-weight:bold'>元</view>
     </view>
     
-    <image src='{{begSubmit?"/images/95.png":"/images/94.png"}}' class='submit' catchtap='{{begSubmit?"createJob":""}}'></image>
+    <!-- <image src='{{begSubmit?"/images/95.png":"/images/94.png"}}' class='submit' catchtap='{{begSubmit?"createJob":""}}'></image> -->
+    <image src='/images/95.png' class='submit' catchtap='createJob'></image>
   </view>
 
   <view class='records'>
@@ -95,8 +96,8 @@
   </view>
 
   <view wx:if="{{handType==2}}" class='card' style='align-items:center'>
-    <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;position:relative' catchtap='noHide'>
-      <image src='{{share_pic_src}}' style='width:600rpx;height:842rpx;border-radius:12rpx'></image>
+    <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;position:relative;width:610rpx;background-color:#fff;padding:60rpx 0' catchtap='noHide'>
+      <image src='{{share_pic_src}}' style='width:394rpx;height:533rpx;border-radius:12rpx'></image>
       <view class="card_share_btn" catchtap='saveSharePic'>保存到相册</view>
       <image class='card_box_cancel_2' src='/images/74.png' catchtap='hide'></image>
     </view>

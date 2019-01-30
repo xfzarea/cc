@@ -8,13 +8,13 @@
       <view class='list_1'>设置语音：</view>
       <view class='list_2'>
         <view class='list_5'>{{context}}</view>
-        <image class='list_3' src='/images/Triangle.png'style='width:14.4rpx;height:20rpx'></image>
+        <image class='list_3' src='/images/Triangle.png'style='width:15rpx;height:20rpx'></image>
       </view>
     </view>
 
     <view class='tab' catchtap='toCommand'>
       <view class="sayIntro">好友说对语音即可获得红包
-        <image src='/images/93.png' style='width:22rpx;height:25rpx' ></image>
+        <image src='/images/93.png' style='width:22rpx;height:25rpx;margin-left:8rpx;' ></image>
       </view>
     </view>
 
@@ -41,7 +41,8 @@
       </view>
     </view>
     <view class='bottom' style='margin-right:-10rpx;margin-top:60rpx'>需支付¥{{filters.toFix(charge)}}手续费</view>
-    <image  src='{{submit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{submit?"createJob":""}}'></image>
+    <!-- <image  src='{{submit?"/images/55_2.png":"/images/56.png"}}' class='submit' catchtap='{{submit?"createJob":""}}'></image> -->
+    <image  src='/images/55_2.png' class='submit' catchtap='createJob'></image>
   </view>
   <view class='records'>
      <button size='mini' session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}' open-type="contact">联系客服</button>

@@ -105,17 +105,17 @@
   margin-left: 48rpx;
   /* box-shadow: 2rpx 0 8rpx 0 rgba(230,230,230,0.50), 0 4rpx 8rpx 0 rgba(227,227,227,0.50); */
   margin-bottom: 40rpx;
-  border-radius:0  16rpx 16rpx 16rpx;
-  color: #303030;
+  border-radius:16rpx;
+  color: #D85940;
   display: flex;
   padding: 15rpx 27rpx;
-  border: 2rpx solid #303030;
+  border: 2rpx solid #D85940;
 }
 .point{
   width: 8rpx;
   height: 8rpx;
   border-radius: 8rpx;
-  background-color: #303030;
+  background-color: #D85940;
   position: relative;
   top: 10rpx;
   font-weight: bold;

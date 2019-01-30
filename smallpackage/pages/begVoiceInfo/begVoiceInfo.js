@@ -1,5 +1,6 @@
 const urls = require("../../utils/urls.js");
 const app = getApp();
+const innerAudioContext = wx.createInnerAudioContext();
 Page({
 
   /**
@@ -7,7 +8,9 @@ Page({
    */
   data: {
     userInfo: wx.getStorageSync("userInfo"),
-    voices:[]
+    voices:[],
+    select_id:0,
+    isPlay:true
   },
 
   /**
@@ -63,7 +66,61 @@ Page({
       }
     })
   },
+  /**
+   * 播放语音
+   */
+  voicePlay:function(e){
+    const that = this;
+    let index = e.currentTarget.dataset.index;
+    let voices = that.data.voices;
+    let id = voices[index].id;
+    let src = voices[index].voiceCommandPath;
+    let select_id = that.data.select_id;
+    if(select_id != id){
+      that.setData({
+        select_id:id
+      })
+      that.voiceToPlay(src)
+    }
+  },
+  /**
+   * 语音暂停与否
+   */
+  doIsPlay:function(){
+    const that = this;
+    let isPlay = that.data.isPlay;
+    if(isPlay){
+      that.setData({
+        isPlay:false
+      })
+      innerAudioContext.pause();
+    }else{
+      that.setData({
+        isPlay:true
+      })
+      innerAudioContext.play();
+    }
 
+  },
+
+  /**
+   * 开始播放
+   */
+  voiceToPlay: function (src) {
+    const that = this;
+    innerAudioContext.autoplay = true;
+    innerAudioContext.loop = false;
+    innerAudioContext.src = src + "?id=" + Math.ceil(Math.random() * 100);
+
+    innerAudioContext.onEnded(res => {
+      const that = this;
+      console.log(123)
+      that.setData({
+        select_id: 0
+      })
+    })
+  },
+  
   toVoicePlay1:function(){
     wx.navigateTo({
       url: '/pages/voicePlay/voicePlay1',
@@ -105,7 +162,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    innerAudioContext.stop();
   },
 
   /**

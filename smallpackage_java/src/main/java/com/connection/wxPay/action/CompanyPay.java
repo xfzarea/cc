@@ -4,9 +4,11 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.connection.controller.JobController;
 import com.connection.dao.AdminDao;
 import com.connection.dao.DataDao;
 import com.connection.wxPay.util.HttpXmlUtils;
@@ -22,6 +24,7 @@ import com.connection.wxPay.util.WeixinConfigUtils;
  */
 @Service
 public class CompanyPay {
+	public static Logger log = Logger.getLogger(CompanyPay.class);
 	@Autowired
 	private AdminDao adminDao;
 	@Autowired
@@ -58,14 +61,12 @@ public class CompanyPay {
 			String sign = WXSignUtils.createSign("UTF-8", parameters);
 			// 生成签名结束,放到map里
 			parameters.put("sign", sign);
-			
 			// 构造xml参数
 			String xmlInfo = HttpXmlUtils.createPayXml(parameters);
 			//微信请求地址
 			String wxUrl = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 					//这里去请求，并返回字符串
 			String weixinPost = HttpXmlUtils.refundHand(wxUrl, xmlInfo,book_url,mch_id).toString();
-			
 			Map mapreturn = ParseXMLUtils.jdomParseXml(weixinPost);
 			//返回参数return_codeSUCCESS/FAIL此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
 			//return_msg这里没获取，返回信息，如非空，为错误原因 、签名失败 、参数格式校验错误
@@ -88,7 +89,7 @@ public class CompanyPay {
 				state = 3;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 			throw new RuntimeException();
 		}
 		return state;

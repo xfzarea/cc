@@ -1,13 +1,27 @@
 <wxs module="filters" src="../../utils/addmul.wxs"></wxs>
-<view class='container '>
+<view class='container' style='background-color:#fffdf6'>
   <scroll-view class="main" scroll-y>
     <view style='height:40rpx;'></view>
 
-    <view class='voices' wx:for="{{voices}}" wx:key="index" wx:for-item="item">
-      <view class='voices_v'>{{filters.contextCount(item.context)}}{{item.context}}</view>
-      <view class='voices_btn'>
-        <image src='/images/98_1.png'></image>
+    <view class='voices {{item.id == select_id?"voices_sel":""}}' wx:for="{{voices}}" wx:key="index" wx:for-item="item">
+      <view wx:if="{{item.id != select_id}}" data-index='{{index}}' catchtap='voicePlay'>
+        <view class='voices_v'>{{filters.contextCount(item.context)}}</view>
+        <view class='voices_btn'>
+          <image src='/images/98_1.png'></image>
+        </view>
       </view>
+
+      <view wx:elif="{{item.id == select_id}}">
+        <view class='voices_v voices_v_sel' data-context='{{item.context}}' data-src='{{item.voiceCommandPath}}' catchtap='toBeg' data-second='{{item.voiceTime}}'>
+          <image src='/images/99.png' style='width:20rpx;height:30rpx;transform: rotate(180deg);margin-right:20rpx'></image>
+          <view >立即使用</view>  
+          <image src='/images/99.png' style='width:20rpx;height:30rpx;margin-left:20rpx;'></image>
+        </view>
+        <view class='voices_btn voices_btn_sel'>
+          <image catchtap='doIsPlay' style="width:24rpx !important;height:30rpx !important;" src='{{isPlay?"/images/98_2.png":"/images/98_3.png"}}'></image>
+        </view>
+      </view>
+
       <!-- <view class='voices_btn'>
         <view style='margin-left:50rpx;' catchtap='toVoicePlay' data-index='{{index}}'>预览音频</view>
         <view style='color:#DADADA;'>|</view>

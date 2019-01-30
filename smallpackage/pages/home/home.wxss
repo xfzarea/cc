@@ -44,12 +44,14 @@
 .list_3{
   width: 38rpx;
   height: 38rpx;
-  border-radius: 38rpx;
+  /* border-radius: 38rpx; */
   margin-right: 20rpx;
 }
 .sayIntro{
   font-size: 24rpx;
   color: #838383;
+  display: flex;
+  align-items: center;
 }
 .colnum{
   display: flex;

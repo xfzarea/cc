@@ -187,6 +187,13 @@ Page({
    */
   createJob: function () {
     const that = this;
+    if(!that.data.submit){
+      wx.showToast({
+        title: '亲~请检查红包内容是否完整',
+        icon:'none'
+      })
+      return;
+    }
     var userId = that.data.userInfo.userId;
     var openid = that.data.userInfo.openid;
     var totalAward = (parseFloat(that.data.award) + parseFloat(that.data.charge)).toFixed(2);

@@ -365,7 +365,7 @@ Page({
     const that = this;
     let jobId = that.data.jobId;
     return {
-      title: "【语音红包】发完红包讨红包，红包玩法欢乐多",
+      title: "【语音红包】你有一个红包消息提醒",
       path: '/pages/begPackage/begPackage?id=' + jobId,
       imageUrl: that.data.share_pic_src_1,
       success: function (res) {

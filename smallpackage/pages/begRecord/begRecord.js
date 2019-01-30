@@ -88,6 +88,7 @@ Page({
               jobs: jobs,
               id: id,
               header: res.header["Set-Cookie"]
+              
             })
           }
           that.data.fresh = true;
