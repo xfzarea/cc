@@ -78,7 +78,8 @@ Page({
     let select_id = that.data.select_id;
     if(select_id != id){
       that.setData({
-        select_id:id
+        select_id:id,
+        isPlay:true
       })
       that.voiceToPlay(src)
     }
