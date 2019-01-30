@@ -131,6 +131,7 @@ public class JobController {
 					resInfo.put("jobs",list );
 
 				}
+				//resInfo.put("jobs", list);
 				
 			} else {
 				//ÎÒ±»ÌÖµÄ

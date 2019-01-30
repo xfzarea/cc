@@ -642,7 +642,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String,Object>();
-			
+			//redis.deleteVoiceCommand(id);
 			resInfo.put("voiceCommand", redis.getVoiceCommand(id));
 			
 			result.setObj(resInfo);
