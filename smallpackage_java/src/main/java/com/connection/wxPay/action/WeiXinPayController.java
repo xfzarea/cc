@@ -253,12 +253,12 @@ public class WeiXinPayController {
 
 				json.put("jobId", jobId);
 				//这一段是获取二维码，在这里一起发送给前端
-				String url = "http://127.0.0.1:8080/smallpackage/getCode?type=beg&jobId="+jobId;
-				String result = restTemplate.postForObject(url, null, String.class);
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.readTree(result);
-				String codeUrl = root.path("obj").path("codeUrl").textValue();
-				json.put("codeUrl", codeUrl);
+//				String url = "http://127.0.0.1:8080/smallpackage/getCode?type=beg&jobId="+jobId;
+//				String result = restTemplate.postForObject(url, null, String.class);
+//				ObjectMapper mapper = new ObjectMapper();
+//				JsonNode root = mapper.readTree(result);
+//				String codeUrl = root.path("obj").path("codeUrl").textValue();
+//				json.put("codeUrl", codeUrl);
 				out.print(json.toString());
 
 			} else {

@@ -1,10 +1,11 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/begPackage/begPackage",
     "pages/begVoiceInfo/begVoiceInfo",
     
     "pages/voicePlay/voicePlay1",
-    "pages/begPackage/begPackage",
+    
     "pages/package/package",
     
     "pages/begPicInfo/begPicInfo",

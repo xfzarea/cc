@@ -104,7 +104,7 @@ Page({
       },
     })
     const ctx = wx.createCanvasContext('share_pic_1');
-    ctx.drawImage("/images/97.jpg", 0, 0, 420 * rem, 336 * rem);
+    ctx.drawImage("/images/97.png", 0, 0, 420 * rem, 336 * rem);
     let headPic = that.data.headPic;
     if (headPic) {
       that.circleImg(ctx,headPic,168*rem,128*rem,45*rem);
@@ -305,17 +305,20 @@ Page({
             begSubmit: false,
             submit_award: 0.00,
             jBegInfo: { begType: 0, begInfo: '' },
-            handType: 1
+            // handType: 1
           })
-          wx.hideTabBar({
-            animation: false
-          })
+          // wx.hideTabBar({
+          //   animation: false
+          // })
           // that.getCode(res.data.jobId);
-          that.shareImageToLoad(res.data.codeUrl);
-          that.draw_share_pic_1();
-          setTimeout(function () {
-            that.draw_share_pic();
-          }, 1500)
+          // that.shareImageToLoad(res.data.codeUrl);
+          // that.draw_share_pic_1();
+          // setTimeout(function () {
+          //   that.draw_share_pic();
+          // }, 1500)
+          wx.navigateTo({
+            url: `/pages/begPackage/begPackage?handType=5&id=${res.data.jobId}`,
+          })
         }
       })
     }else{

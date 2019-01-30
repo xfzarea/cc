@@ -2,13 +2,22 @@
 <warrant wx:if="{{warrantShow}}" bind:getWarrant="getWarrant"></warrant>
 <scroll-view class='container' scroll-y style='background-color:#fff;' wx:if="{{begPackage}}">
   <view class='package'>
-    <image src='{{begPackage.avatarUrl}}' class='avatarUrl'></image>
+    
+
+    <view style='position:relative;'>
+        <image src='{{begPackage.avatarUrl}}' class='avatarUrl'></image>
+        <view wx:if="{{isPlay}}" class='head_pic_say'>
+          <image class='head_pic_1' src='/images/96.png'></image>
+          <image class='robate_image' src='/images/77.png'></image>
+        </view>
+      </view>
+
     <view class='package_box'>
       <view wx:if="{{begPackage.job_type==0}}" class='package_box_view'>{{filters.contextCount2(begPackage.context)}}</view>
-      <image wx:elif="{{begPackage.job_type==2}}" class='package_box_image'  src='{{begPackage.context}}' mode="aspectFit" catchtap='preBegImage'></image>
-      <view class='package_box_voice' wx:elif="{{begPackage.job_type==1}}">
-        <image class='package_box_voice_pic1' src='/images/66.png' data-src='{{begPackage.context}}' catchtap='toVoicePlay'></image>
-        <view style='color:#d85940;font-size:28rpx;margin-top:12rpx;font-weight:bold;'>点击播放</view>
+      <image wx:elif="{{begPackage.job_type==2}}" class='package_box_image' src='{{begPackage.context}}' mode="aspectFit" catchtap='preBegImage'></image>
+      <view class='package_box_voice' wx:elif="{{begPackage.job_type==1}}" catchtap='voicePlay'>
+        <image class='package_box_voice_pic1' src='{{isPlay?"/images/102.png":"/images/66.png"}}' data-src='{{begPackage.context}}'></image>
+        <view style='color:#d85940;font-size:28rpx;margin-top:12rpx;font-weight:bold;'>{{isPlay?"正在播放":"点击播放"}}</view>
         <image style='width:495rpx;height:37rpx;margin-top:36rpx;' src='/images/61.png'></image>
       </view>
     </view>
@@ -18,7 +27,28 @@
       <view>该好友向您讨要¥{{filters.toFix(begPackage.award)}}红包</view>
     </view>
 
-    <view wx:if="{{!state}}" class='package_btns'>
+    <image src="/images/100.png" style='width:150rpx;height:150rpx;margin-top:40rpx;' catchtap='toPay'></image>
+    
+    <view class="bars">
+      <view class='bar' catchtap='toWallet'>
+        <!-- <image src='/images/44.png'></image> -->
+        <view>余额提现</view>
+      </view>
+      <view class='bar' catchtap='toBeg' wx:if="{{state}}">
+          <view>再讨一个</view>
+        </view>
+      <image wx:if="{{!state}}" src='/images/101.png' class='sharePic' catchtap='toBeg'></image>
+      
+      <view class='bar' catchtap='changeHandType' wx:if="{{state}}">
+        <view>转发好友</view>
+      </view>
+
+      <view class='bar' catchtap='toHome' wx:if="{{!state}}">
+        <view>发个红包</view>
+      </view>
+    </view>
+
+    <!-- <view wx:if="{{!state}}" class='package_btns'>
       <button size='mini' catchtap='toPay'>
         <image src='/images/68.png'></image>
       </button>
@@ -27,14 +57,14 @@
       </button>
     </view>
     <!-- 我看自己发的 -->
-    <view wx:elif="{{state}}" class='package_btns'>
+    <!-- <view wx:elif="{{state}}" class='package_btns'>
       <button size='mini' open-type='share'>
         <image src='/images/76.png'></image>
       </button>
       <button size='mini' catchtap='toBeg'>
         <image src='/images/75.png'></image>
       </button>
-    </view>
+    </view> -->
 
     <image style='width:24rpx;height:30rpx;margin-top:40rpx' src='/images/70.png'></image>
   </view>
@@ -51,14 +81,14 @@
         <image class="award_info_ava" src='{{item.avatarUrl}}'></image>
         <view class='award_info_nickName'>{{item.nickName}}</view>
       </view>
-      
+
       <view class='award_info_x' wx:if="{{state}}">
 
         <form report-submit='true' bindsubmit="think">
           <button wx:if="{{item.state == 0}}" class='award_info_x_b' size='mini' form-type='submit' data-userid='{{item.userId}}' data-jobid='{{begPackage.id}}' data-state='{{item.state}}'>去答谢</button>
           <button wx:elif="{{item.state == 1}}" class='award_info_x_b1' size='mini' form-type='submit' data-userid='{{item.userId}}' data-jobid='{{begPackage.id}}' data-state='{{item.state}}'>已答谢</button>
         </form>
-        
+
         <view style='font-size: 24rpx;color: #c6c6c6;margin-top: 3rpx;'>{{item.createTime}}</view>
       </view>
       <view wx:elif="{{!state}}" class='award_info_1_view'>{{filters.toFix(begPackage.award)}}元</view>
@@ -74,7 +104,7 @@
       <view style='font-size:32rpx;'>感谢信</view>
       <view style='font-size:30rpx;margin-top:20rpx;'>谢谢你的红包，么么哒，你的好友张小白敬上！</view>
     </view>
-    <image class='card_box_ava' src='{{userInfo.avatarUrl}}'></image>
+    <image class='card_box_ava' src='{{handType==1?userInfo.avatarUrl:begPackage.avatarUrl}}'></image>
     <image class='card_box_cancel' src='/images/74.png' catchtap='hide'></image>
   </view>
   <button wx:if="{{handType == 1}}" class="card_btn" catchtap='toThink'>马上答谢</button>
@@ -91,8 +121,8 @@
     </view>
     <image class='card_box_cancel_2' src='/images/74.png' catchtap='hide'></image>
   </view>
-  
 </view>
+
 <!-- 支付完成跳卡片 -->
 <view class="card" wx:if="{{handType == 4}}">
   <view class='card_box_4'>
@@ -102,10 +132,33 @@
     </view>
     <view class='card_box_4_view' catchtap='toBeg'>我也讨个</view>
     <view class='card_box_4_view' catchtap='hide' style='background-color:#fff;border:1rpx solid #d85940;color:#d85940;'>知道了</view>
-    
+
     <view style='height:10rpx;'></view>
   </view>
 </view>
+
+<!-- 跳转页面跳卡片 -->
+<view wx:if="{{handType==5}}" class='card'>
+  <view class='card_4' catchtap='noHide'>
+    <image src='/images/73.png' style='width:137rpx;height:137rpx;margin-top:20rpx;margin-left:267rpx'></image>
+    <button style='margin-top:35rpx;' open-type='share'>发送好友或群聊</button>
+    <button style='margin-top:40rpx;background-color#D85940;' catchtap='create_share_pic'>生成分享图</button>
+  </view>
+  <view class='card_1'>
+    <image src='/images/74.png' style='width:80rpx;height:80rpx;' catchtap='hide'></image>
+  </view>
+</view>
+<!-- 生成分享图卡片 -->
+<view wx:if="{{handType==6}}" class='card' style='align-items:center'>
+  <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;position:relative;width:610rpx;background-color:#fff;padding:60rpx 0' catchtap='noHide'>
+    <image src='{{share_pic_src}}' style='width:394rpx;height:533rpx;border-radius:12rpx'></image>
+    <view class="card_share_btn" catchtap='saveSharePic'>保存到相册</view>
+    <image class='card_box_cancel_2' src='/images/74.png' catchtap='hide'></image>
+  </view>
+</view>
+<canvas canvas-id="share_pic" class='canvas_share'>
+
+</canvas>
 <canvas canvas-id="share_pic_1" class='canvas_share_1'>
 
 </canvas>

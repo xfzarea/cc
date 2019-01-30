@@ -95,7 +95,7 @@
     </view>
   </view>
 
-  <view wx:if="{{handType==2}}" class='card' style='align-items:center'>
+  <view wx:if="{{handType==4}}" class='card' style='align-items:center'>
     <view style='display:flex;flex-direction:column;align-items:center;border-radius:12rpx;position:relative;width:610rpx;background-color:#fff;padding:60rpx 0' catchtap='noHide'>
       <image src='{{share_pic_src}}' style='width:394rpx;height:533rpx;border-radius:12rpx'></image>
       <view class="card_share_btn" catchtap='saveSharePic'>保存到相册</view>
@@ -104,10 +104,10 @@
     
   </view>
 </view>
-<canvas canvas-id="share_pic" class='canvas_share'>
+<!-- <canvas canvas-id="share_pic" class='canvas_share'>
 
 </canvas>
 
 <canvas canvas-id="share_pic_1" class='canvas_share_1'>
 
-</canvas>
+</canvas> -->

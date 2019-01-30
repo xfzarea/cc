@@ -417,7 +417,7 @@ button::after {
   font-size: 28rpx;
   margin-top: 50rpx;
   text-align: center;
-  line-height: 78rpx;
+  line-height: 8rpx;
 }
 .card_box_cancel_2{
   width: 52rpx;

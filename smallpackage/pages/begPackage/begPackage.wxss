@@ -337,3 +337,139 @@ page{
   text-align: center;
   margin-bottom: 30rpx;
 }
+.card_share_btn{
+  width: 420rpx;
+  height: 78rpx;
+  border-radius: 78rpx;
+  background-color: #d85940;
+  color: #fff;
+  font-size: 28rpx;
+  margin-top: 50rpx;
+  text-align: center;
+  line-height: 78rpx;
+}
+.card_box_cancel_2{
+  width: 52rpx;
+  height: 52rpx;
+  position: absolute;
+  right: -58rpx;
+  top: -58rpx;
+}
+.card_4 {
+  width: 670rpx;
+  height: 470rpx;
+  position: absolute;
+  top: 280rpx;
+  /* height: 340rpx; */
+  background-color: #fff;
+  border-radius: 10rpx;
+}
+
+.card_4 button {
+  width: 590rpx;
+  height: 88rpx;
+  margin: 0;
+  padding: 0;
+  background-color: #d85940;
+  margin-left: 40rpx;
+  font-size: 32rpx;
+  color: #fff;
+  line-height: 84rpx;
+}
+
+.card_4 view {
+  text-align: center;
+  font-size: 32rpx;
+  color: #fff;
+  margin-top: 40rpx;
+}
+.card_1 {
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  top: 810rpx;
+  /* height: 340rpx; */
+  border-radius: 10rpx;
+}
+.canvas_share{
+  width: 394rpx;
+  height: 533rpx;
+}
+.bars{
+  width: 670rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 50rpx;
+  height: 48rpx;
+}
+.bar{
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  padding:10rpx 23rpx;
+  border:1rpx solid #F1DB9C;
+  border-radius:10rpx;
+}
+.bar > image{
+  width: 28rpx;
+  height: 30rpx;
+  
+}
+.bar>view{
+  color:#F1DB9C;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.sharePic{
+  padding:13rpx 23rpx;
+  border:1rpx solid #F1DB9C;
+  border-radius:10rpx;
+  width: 112rpx;
+  height: 34rpx;
+  animation: toBig 2.5s ease-in-out infinite ;
+}
+.fontToBig{
+  animation: fontToBig 2.5s ease-in-out infinite ;
+}
+@keyframes toBig{
+  0% {width: 112rpx;height: 34rpx;}
+  60% {width: 112rpx;height: 34rpx;}
+  70% {width: 125rpx;height: 38rpx;}
+  80% {width: 112rpx;height: 34rpx;}
+  90% {width: 125rpx;height: 38rpx;}
+  100% {width: 112rpx;height: 34rpx;}
+}
+.head_pic_say{
+  width: 95rpx;
+  height: 95rpx;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 120rpx;
+  position: absolute;
+  top: 20rpx;
+  left: 0rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.head_pic_1{
+  width: 38rpx;
+  height: 63rpx;
+}
+.robate_image{
+  width: 87rpx;
+  height: 87rpx;
+  position: absolute;
+  top: 4rpx;
+  left:4rpx;
+  animation: pic_x 4s linear infinite;
+}
+@keyframes pic_x {
+  from {
+    transform: rotateZ(0);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}

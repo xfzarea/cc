@@ -1,5 +1,6 @@
 // pages/begPackage/begPackage.js
 const urls = require("../../utils/urls.js");
+const innerAudioContext = wx.createInnerAudioContext();
 Page({
 
   /**
@@ -16,6 +17,7 @@ Page({
     handType: 0,
     thinkUserId: 0,
     warrantShow: false,
+    isPlay: false
   },
 
   /**
@@ -31,6 +33,7 @@ Page({
     let handType = options.handType;
     if (handType) {
       that.data.handType = handType;
+      console.log("handType:",handType)
       if (handType == 2) {
         let uid = options.uid;
         that.data.thinkUserId = uid;
@@ -42,6 +45,7 @@ Page({
     that.setData({
       jobId: jobId
     })
+    that.getCode(jobId);
     if (!wx.getStorageSync("userInfo")) {
       that.setData({
         warrantShow: true
@@ -56,6 +60,7 @@ Page({
       that.getImageInfo(wx.getStorageSync("userInfo").avatarUrl);
       that.toBegPackage(jobId);
       if (that.data.handType != 0) {
+        console.log("handType",that.data.handType)
         that.setData({
           handType: that.data.handType
         })
@@ -83,6 +88,27 @@ Page({
       that.getImageInfo(wx.getStorageSync("userInfo").avatarUrl);
       that.toBegPackage(id);
     }
+  },
+  toWallet:function(){
+    wx.navigateTo({
+      url: '/pages/wallet/wallet',
+    })
+  },
+  toBeg:function(){
+    wx.switchTab({
+      url: '/pages/beg/beg',
+    })
+  },
+  toHome:function(){
+    wx.switchTab({
+      url: '/pages/home/home',
+    })
+  },
+  changeHandType:function(){
+    const that = this;
+    that.setData({
+      handType:5
+    })
   },
   preBegImage:function(){
     const that = this;
@@ -119,6 +145,10 @@ Page({
           begRecord: res.data.obj.begJobRecord,
           state: state,
         })
+        that.voiceToPlay();
+        setTimeout(function () {
+          that.draw_share_pic();
+        }, 1500)
       }
     })
   },
@@ -142,6 +172,14 @@ Page({
    */
   toPay: function() {
     const that = this;
+    let state = that.data.state;
+    if(state){
+      wx.showToast({
+        title: '亲~不能打赏自己哦，去转发好友吧',
+        icon:"none"
+      })
+      return;
+    }
     let jobId = that.data.jobId;
     let userId = that.data.userInfo.userId;
     let openid = that.data.userInfo.openid;
@@ -193,12 +231,12 @@ Page({
       },
     })
     const ctx = wx.createCanvasContext('share_pic_1');
-    ctx.drawImage("/images/97.jpg", 0, 0, 420 * rem, 336 * rem);
-    let headPic = that.data.headPic;
-    if (headPic) {
-      that.circleImg(ctx, headPic, 168 * rem, 128 * rem, 45 * rem);
-      // ctx.drawImage(headPic, 168 * rem, 128 * rem, 90 * rem, 90 * rem);
-    }
+    ctx.drawImage("/images/97.png", 0, 0, 420 * rem, 336 * rem);
+    // let headPic = that.data.headPic;
+    // if (headPic) {
+    //   that.circleImg(ctx, headPic, 168 * rem, 128 * rem, 45 * rem);
+    //   // ctx.drawImage(headPic, 168 * rem, 128 * rem, 90 * rem, 90 * rem);
+    // }
     ctx.draw();
     that.downImg_1();
   },
@@ -302,6 +340,141 @@ Page({
       handType:1
     })
   },
+
+  create_share_pic: function () {
+    const that = this;
+    that.setData({
+      handType: 6
+    })
+  },
+
+  getCode: function (id) {
+    const that = this;
+    wx.request({
+      url: urls.profit + '/getCode',
+      data: {
+        jobId: id,
+        type: 'beg'
+      },
+      success: res => {
+        console.log(res)
+        let url = res.data.obj.codeUrl;
+        console.log("code:", url)
+        if (typeof url === 'string') {
+          wx.getImageInfo({ //  小程序获取图片信息API
+            src: url,
+            success: function (res) {
+              that.setData({
+                codeUrl: res.path
+              })
+            },
+            fail: function (res) {
+              console.log(res);
+              wx.getImageInfo({
+                src: url,
+                success: function (res) {
+                  that.setData({
+                    codeUrl: res.path
+                  })
+                }
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+
+  /**
+   * canvas画分享图
+   */
+  draw_share_pic: function () {
+    var that = this;
+    var rem;
+    wx.getSystemInfo({
+      success: function (res) {
+        rem = res.screenWidth / 750;
+      },
+    })
+    const ctx = wx.createCanvasContext('share_pic');
+    ctx.drawImage("/images/83.png", 0, 0, 394 * rem, 533 * rem);
+    let codeUrl = that.data.codeUrl;
+    if (codeUrl) {
+      ctx.drawImage(codeUrl, 137 * rem, 335 * rem, 120 * rem, 120 * rem);
+    }
+    let headPic = that.data.headPic;
+    if (headPic) {
+      // ctx.drawImage(headPic, 156 * rem, 108 * rem, 86 * rem, 86 * rem);
+      that.circleImg(ctx, headPic, 154 * rem, 108 * rem, 43 * rem);
+    }
+
+    ctx.draw();
+    that.downImg();
+  },
+  downImg: function (id) {
+    const that = this;
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      canvasId: 'share_pic',
+      success: function (res) {
+        console.log(res.tempFilePath);
+        that.setData({
+          share_pic_src: res.tempFilePath
+        })
+      }
+    })
+    // }, 100))
+  },
+  shareImageToLoad: function (url) {
+    console.log("code:", url)
+    const that = this;
+    if (typeof url === 'string') {
+      wx.getImageInfo({ //  小程序获取图片信息API
+        src: url,
+        success: function (res) {
+          that.setData({
+            codeUrl: res.path
+          })
+        },
+        fail: function (res) {
+          console.log(res);
+          wx.getImageInfo({
+            src: url,
+            success: function (res) {
+              that.setData({
+                codeUrl: res.path
+              })
+            }
+          })
+        }
+      })
+    }
+  },
+  /**
+   * 保存到相册
+   */
+  saveSharePic: function () {
+    const that = this;
+    wx.saveImageToPhotosAlbum({
+      filePath: that.data.share_pic_src,
+      success: function (res) {
+        wx.showToast({
+          title: '保存图片完成',
+          success: function () {
+            setTimeout(function () {
+              that.setData({
+                handType: 0,
+              })
+              wx.showTabBar({
+                animation: false //是否需要过渡动画
+              })
+            }, 2000)
+          }
+        })
+      }
+    })
+  },
   saveFormId: function(formId) {
     const that = this;
     wx.request({
@@ -314,6 +487,41 @@ Page({
 
       }
     })
+  },
+  /**
+   * 开始播放
+   */
+  voiceToPlay: function () {
+    const that = this;
+    let src = that.data.begPackage.context;
+    innerAudioContext.autoplay = false;
+    innerAudioContext.loop = false;
+    innerAudioContext.src = src + "?id=" + Math.ceil(Math.random() * 100);
+
+    innerAudioContext.onEnded(res => {
+      const that = this;
+      that.setData({
+        isPlay: false
+      })
+    })
+  },
+  /**
+   * 播放语音
+   */
+  voicePlay: function () {
+    const that = this;
+    let isPlay = that.data.isPlay;
+    if(isPlay){
+      innerAudioContext.pause();
+      that.setData({
+        isPlay: false
+      })
+    }else{
+      that.setData({
+        isPlay: true
+      })
+      innerAudioContext.play();
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -340,7 +548,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-
+    innerAudioContext.stop();
   },
 
   /**
@@ -367,7 +575,8 @@ Page({
     return {
       title: "【语音红包】你有一个红包消息提醒",
       path: '/pages/begPackage/begPackage?id=' + jobId,
-      imageUrl: that.data.share_pic_src_1,
+      // imageUrl: that.data.share_pic_src_1,
+      imageUrl:"/images/97.png",
       success: function (res) {
         
       },
