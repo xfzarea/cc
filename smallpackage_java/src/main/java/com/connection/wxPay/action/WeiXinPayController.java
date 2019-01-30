@@ -24,6 +24,7 @@ import com.connection.dao.BegJobDao;
 import com.connection.dao.JobDao;
 import com.connection.service.interfaces.BegJobService;
 import com.connection.service.interfaces.JobService;
+import com.connection.service.interfaces.RedisService;
 import com.connection.wxPay.entity.Unifiedorder;
 import com.connection.wxPay.util.HttpXmlUtils;
 import com.connection.wxPay.util.MyWXPayUtil;
@@ -53,6 +54,8 @@ public class WeiXinPayController {
 	private BegJobDao begJobDao;
 	@Autowired
 	private AdminDao adminDao;
+	@Autowired
+	private RedisService redis;
 	
 
 	/**
@@ -250,7 +253,7 @@ public class WeiXinPayController {
 			if (flag) {
 
 				int jobId = begJobService.addJob(getParams);// 把job信息添加到数据库，返回的jobid
-
+				redis.deleteMyBegPush(Integer.parseInt(getParams.get("userId")));
 				json.put("jobId", jobId);
 				//这一段是获取二维码，在这里一起发送给前端
 //				String url = "http://127.0.0.1:8080/smallpackage/getCode?type=beg&jobId="+jobId;
@@ -260,6 +263,7 @@ public class WeiXinPayController {
 //				String codeUrl = root.path("obj").path("codeUrl").textValue();
 //				json.put("codeUrl", codeUrl);
 				out.print(json.toString());
+				
 
 			} else {
 

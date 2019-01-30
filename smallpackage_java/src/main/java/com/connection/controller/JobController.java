@@ -102,36 +102,36 @@ public class JobController {
 			result = Result.successResult();
 			resInfo = new HashMap<String, Object>();
 			
-			String cc = request.getParameter("header");
-			
-			if(!"over".equals(cc)&&tabId == 0) {
-			
-						List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,id,10);
-						resInfo.put("jobs",list2 );	
-						result.setObj(resInfo);
-						Cookie cookie = new Cookie("go","go");
-						response.addCookie(cookie);
-						return result;
-		}
+//			String cc = request.getParameter("header");
+//			
+//			if(!"over".equals(cc)&&tabId == 0) {
+//			
+//						List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,id,10);
+//						resInfo.put("jobs",list2 );	
+//						result.setObj(resInfo);
+//						Cookie cookie = new Cookie("go","go");
+//						response.addCookie(cookie);
+//						return result;
+//		}
 			if (tabId == 0) {
 				//我讨的
-				List<HashMap<String,Object>> list=begJobDao.getMyBegPush(userId, id);
-				if(list.size()==10) {
+				List<HashMap<String,Object>> list=redis.getMyBegPush(userId, id);
+//				if(list.size()==10) {
+//				resInfo.put("jobs", list);
+//				}else {
+//					List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,0,10-(list.size()));
+//					list.addAll(list2);
+//
+//				
+//					resInfo.put("jobs",list );	
+//					Cookie cookie = new Cookie("go","go");
+//					response.addCookie(cookie);
+//				
+//
+//					resInfo.put("jobs",list );
+//
+//				}
 				resInfo.put("jobs", list);
-				}else {
-					List<HashMap<String,Object>> list2=begJobDao.getMyBegPush2(userId,0,10-(list.size()));
-					list.addAll(list2);
-
-				
-					resInfo.put("jobs",list );	
-					Cookie cookie = new Cookie("go","go");
-					response.addCookie(cookie);
-				
-
-					resInfo.put("jobs",list );
-
-				}
-				//resInfo.put("jobs", list);
 				
 			} else {
 				//我被讨的
