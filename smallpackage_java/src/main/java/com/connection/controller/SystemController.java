@@ -268,7 +268,6 @@ public class SystemController {
 					  int b = input.available();
 			            Bitstream bt = new Bitstream(input);
 			            Header h = bt.readFrame();
-			           
 			           int voiceTime = ((int) h.total_ms(b))/1000;//s
 		
 					
@@ -281,7 +280,7 @@ public class SystemController {
 			
 			result.setObj(resInfo);
 		} catch (Exception e) {
-//			e.printStackTrace();
+			//e.printStackTrace();
 			log.info("upload½Ó¿Ú´íÎó");
 		} finally {
 			resInfo = null;

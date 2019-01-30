@@ -480,10 +480,11 @@ public class BegJobServiceImpl implements BegJobService {
 			
 
 		} catch (Exception e) {
-//			e.printStackTrace();
+			//e.printStackTrace();
 			log.info("upload内部方法报错");
 		} finally {
 			os.close();
+			
 			input.close();
 			file = null;
 			job = null;

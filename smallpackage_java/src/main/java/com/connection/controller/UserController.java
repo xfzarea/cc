@@ -516,7 +516,7 @@ public class UserController {
 			result = Result.successResult();
 			response = new HashMap<String, Object>();
 			//<!-- 	根据用户id降序和state=1，查找user_command 的口令（单用户自己的） -->
-			System.out.println(dataDao.getUserCommand(userId));
+			
 			response.put("commands", dataDao.getUserCommand(userId));
 			result.setObj(response);
 		} catch (Exception e) {
@@ -643,7 +643,7 @@ public class UserController {
 		try {
 			result = Result.successResult();
 			resInfo = new HashMap<String,Object>();
-			
+			//redis.deleteVoiceCommand(id);
 			resInfo.put("voiceCommand", redis.getVoiceCommand(id));
 			
 			result.setObj(resInfo);
