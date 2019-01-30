@@ -220,5 +220,15 @@ public class RedisServiceImpl implements RedisService {
 	public void deleteBegCommand(int id){
 		
 	}
-	
+	@Override
+	@Cacheable(value="MyBegPush",key="'MyBegPush'+#userId")
+	public List<HashMap<String, Object>> getMyBegPush(int userId, int id) {
+		// TODO Auto-generated method stub
+		return begJobDao.getMyBegPush(userId, id);
+	}
+	@Override
+	@CacheEvict(value="MyBegPush",key="'MyBegPush'+#userId")
+	public void deleteMyBegPush(int userId){
+		
+	}
 }

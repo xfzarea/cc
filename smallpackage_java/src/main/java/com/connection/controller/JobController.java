@@ -115,7 +115,7 @@ public class JobController {
 //		}
 			if (tabId == 0) {
 				//Œ“Ã÷µƒ
-				List<HashMap<String,Object>> list=begJobDao.getMyBegPush(userId, id);
+				List<HashMap<String,Object>> list=redis.getMyBegPush(userId, id);
 //				if(list.size()==10) {
 //				resInfo.put("jobs", list);
 //				}else {
