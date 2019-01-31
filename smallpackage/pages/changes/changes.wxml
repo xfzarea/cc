@@ -1,3 +1,12 @@
+<view class='box' catchtap='toBegVoiceInfo'>
+  <image src='/images/60.png' class='box_image'></image>
+  <view class='box_view_1'>
+    <image style='width:50rpx;height:50rpx;' src='/images/voiceicon.png'></image>
+    <view style='color:#fff;margin-left:20rpx;font-size:48rpx;'>语音形式</view>
+  </view>
+  <view class='box_view_2'>副标题简洁说明</view>
+</view>
+
 <view class='box' catchtap='toCommand1'>
   <image src='/images/60.png' class='box_image'></image>
   <view class='box_view_1'>
@@ -16,14 +25,7 @@
   <view class='box_view_2'>副标题简洁说明</view>
 </view>
 
-<view class='box' catchtap='toBegVoiceInfo'>
-  <image src='/images/60.png' class='box_image'></image>
-  <view class='box_view_1'>
-    <image style='width:50rpx;height:50rpx;' src='/images/voiceicon.png'></image>
-    <view style='color:#fff;margin-left:20rpx;font-size:48rpx;'>语音形式</view>
-  </view>
-  <view class='box_view_2'>副标题简洁说明</view>
-</view>
+
 
 <!-- <view class='box' catchtap='toBegVidoInfo'>
   <image src='/images/60.png' class='box_image'></image>

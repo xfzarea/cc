@@ -23,7 +23,7 @@ Page({
     num: -1,
     showModal: false,
     handType: 0, //我用来区分卡片的
-    default_award: [5.20, 66.6, 8.88, 99.9, 10.00, 11.00],
+    default_award: [],
     jobId: 0,
     jBegInfo: {},
     begSubmit: false
@@ -47,6 +47,7 @@ Page({
       console.log(app.globalData.jBegInfo)
       app.globalData.jBegInfo = { begType: 0, begInfo: '' };
       that.getImageInfo(that.data.userInfo.avatarUrl);
+      that.getLuckyNumber();
       //从自定义口令页面过来
       if (app.globalData.context != '') {
         that.setData({
@@ -64,7 +65,18 @@ Page({
       }
     }
   },
-
+  getLuckyNumber:function(){
+    const that =this;
+    wx.request({
+      url: urls.profit +'/getLuckyNumber',
+      success:res=>{
+        console.log(res.data);
+        that.setData({
+          default_award:res.data.obj
+        })
+      }
+    })
+  },
   /**
    * canvas画分享图
    */

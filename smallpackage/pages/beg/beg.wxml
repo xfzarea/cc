@@ -60,7 +60,7 @@
         <view class='default_value_view'>
           <view wx:for="{{default_award}}" wx:key="index" wx:for-item="item">
             <view data-num='{{index}}' class='a {{num == index?"choose_a":""}}' catchtap='changeOil'>
-              {{filters.toFix(item)}}
+              <!-- {{filters.toFix(item)}} -->{{item}}
               <view wx:if="{{num == index}}" class='choose_cap'>选择</view>
             </view>
           </view>
@@ -73,7 +73,6 @@
       <input value="{{award==0?'':award}}" placeholder='输入自定义金额' class='default_award_input' placeholder-style='text-align:center;color:#f2afa2' maxlength='6' bindinput="input" type='digit' cursor-spacing="130" data-type='award'>
       </input>
       
-
       <form report-submit='true' bindsubmit='go'>
         <button  class='list_13 {{submit?"submit_true":""}}' form-type='submit' type='mini'>确认金额</button>
       </form>

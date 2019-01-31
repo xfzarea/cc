@@ -7,6 +7,8 @@
   z-index: 199;
   top:-66rpx;
   box-shadow: 0rpx 4rpx 20rpx #b9b9b9;
+  left:265rpx;
+
 }
 .list{
   width: 570rpx;
@@ -79,6 +81,8 @@
   height:172rpx;
   position: absolute;
   bottom: -105rpx;
+  left:134rpx;
+
 }
 .changeColor{
   background-color: #D85940;

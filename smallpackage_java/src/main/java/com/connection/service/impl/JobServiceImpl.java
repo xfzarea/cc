@@ -179,7 +179,7 @@ public class JobServiceImpl implements JobService {
 								if (people == 1 && (int) job.get("state") == 1) {
 									jobDao.updateState(2, id);//设置红包已完成
 									// 消息推送 红包已完成
-									returnParam = dataDao.getFormid(userId);	//查询 user_formid.id,user_formid.formid,user_formid.userId,admin.openid，
+									returnParam = dataDao.getFormid((Integer)job.get("userId"));	//查询 user_formid.id,user_formid.formid,user_formid.userId,admin.openid，
 																				//根据 userId 、state 、TIMESTAMPDIFF(HOUR,insertTime,NOW()) &lt; 167 LIMIT 1（插入到现在的时间小于167个小时）
 									if (returnParam != null) {
 										String msg = Util.getMsg(returnParam, job, 2);

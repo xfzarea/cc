@@ -956,7 +956,7 @@ Page({
 
     const ctx = wx.createCanvasContext('canvas_2');
 
-    ctx.drawImage("/images/42_1.jpg", 0, 0, 603 * rem, 481 * rem);
+    ctx.drawImage("/images/42_1.png", 0, 0, 603 * rem, 481 * rem);
     ctx.drawImage(url, 262 * rem, 20 * rem, 80 * rem, 80 * rem);
     ctx.setTextAlign('center'); // 文字居中
     ctx.setFillStyle('#FFFFFF'); // 文字颜色：黑色
@@ -965,13 +965,13 @@ Page({
     // ctx.font = 'bold ' + 42*rem+' arial';
     var context = job.context;
     if (context.length < 12) {
-      ctx.fillText(context, 603 * rem / 2, 202 * rem);
+      ctx.fillText(context, 603 * rem / 2, 246 * rem);
     } else if (context.length < 21) {
-      ctx.fillText(context.substring(0, 12), 603 * rem / 2, 202 * rem);
-      ctx.fillText(context.substring(12, 21), 603 * rem / 2, 250 * rem);
+      ctx.fillText(context.substring(0, 12), 603 * rem / 2, 222 * rem);
+      ctx.fillText(context.substring(12, 21), 603 * rem / 2, 270 * rem);
     } else {
-      ctx.fillText(context.substring(0, 12), 603 * rem / 2, 202 * rem);
-      ctx.fillText(context.substring(12, 21) + "...", 603 * rem / 2, 250 * rem);
+      ctx.fillText(context.substring(0, 12), 603 * rem / 2, 222 * rem);
+      ctx.fillText(context.substring(12, 21) + "...", 603 * rem / 2, 270 * rem);
     }
 
     ctx.draw();
