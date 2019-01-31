@@ -221,13 +221,13 @@ public class RedisServiceImpl implements RedisService {
 		
 	}
 	@Override
-	@Cacheable(value="MyBegPush",key="'MyBegPush'+#userId")
+	@Cacheable(value="MyBegPush",key="'MyBegPush'+#userId+#id")
 	public List<HashMap<String, Object>> getMyBegPush(int userId, int id) {
 		// TODO Auto-generated method stub
 		return begJobDao.getMyBegPush(userId, id);
 	}
 	@Override
-	@CacheEvict(value="MyBegPush",key="'MyBegPush'+#userId")
+	@CacheEvict(value="MyBegPush",key="'MyBegPush'+#userId+0")
 	public void deleteMyBegPush(int userId){
 		
 	}
