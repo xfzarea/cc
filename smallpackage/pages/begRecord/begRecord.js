@@ -15,7 +15,6 @@ Page({
     tabId: 0,//用来区分是我发的还是我强的
     totalAward: 0.00,
     totalCount: 0,
-    header:'over'
   },
 
   /**
@@ -57,11 +56,6 @@ Page({
   getData: function (tabId) {
    
     const that = this;
-    var header = that.data.header;
-    if (header== undefined) {
-      header = 'over'
-    }
-    console.log(header)
     if (that.data.fresh) {
       that.data.fresh = false;
       
@@ -71,10 +65,10 @@ Page({
           userId: that.data.userInfo.userId,
           id: that.data.id,
           tabId: tabId,
-          header: header
         },
         success: res => {
           var jobs = that.data.jobs;
+          console.log(res)
           if (res.data.obj.jobs.length != 0) {
             jobs = jobs.concat(res.data.obj.jobs);
             var id;
@@ -87,8 +81,6 @@ Page({
             that.setData({
               jobs: jobs,
               id: id,
-              header: res.header["Set-Cookie"]
-              
             })
           }
           that.data.fresh = true;
