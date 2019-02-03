@@ -380,6 +380,17 @@ Page({
     var type1 = e.currentTarget.dataset.type;
     let data = e.detail.value;
     let award = that.data.award;
+    if(data>200){
+      that.setData({
+        award: 0.00,
+        submit: false
+      })
+    
+      let award = that.data.award;
+     
+      console.log(award + "")
+      return;
+    }
     that.setData({
       num: -1,
     })

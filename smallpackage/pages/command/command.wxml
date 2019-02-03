@@ -10,14 +10,14 @@
       <image src='/images/13.png'></image>
       <view>向我们推荐你的口令</view>
     </view>
-    <view class='creator' catchtap='toCustomCommand'>创建口令</view>  
+    <view class='creator' catchtap='toCustomCommand'>口令</view>  
   </view>
 
   <!-- <view class='article {{leftInfos[leftInfos.length-1].contextId == 100?"article_1":""}}'> -->
   <view class='article {{userH == 1?"article_1":""}}'>
     <scroll-view class='orders' scroll-y>
       <view wx:for="{{leftInfos}}" wx:for-item="leftInfo" wx:key="index" class='order {{changeId==leftInfo.contextId?"changeOrder":""}}' data-contextid='{{leftInfo.contextId}}' catchtap='changeOrderId'>{{leftInfo.context}}</view>
-      <view wx:if="{{leftInfos.length>0}}" class='order_1 {{changeId==-1?"changeOrder":""}}' data-contextid="-1" catchtap='changeOrderId'>我的口令</view>
+      <view wx:if="{{leftInfos.length>0&&userH == 1}}" class='order_1 {{changeId==-1?"changeOrder":""}}' data-contextid="-1" catchtap='changeOrderId' >我的口令</view>
     </scroll-view>
     <view class='content'>
       <scroll-view class='rigthCommands' scroll-y>

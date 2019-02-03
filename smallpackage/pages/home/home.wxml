@@ -36,7 +36,7 @@
     <view class='list' style='margin-top:40rpx'>
       <view class='list_1'>红包数量：</view>
       <view class='list_2'>
-        <input type='number' cursor-spacing="130" placeholder='0' bindinput='input' data-type='count' maxlength='6' value="{{count==''?'':count}}"></input>
+        <input type='number' cursor-spacing="130" placeholder='0' bindinput='input2' data-type='count' maxlength='6' value="{{count==''?'':count}}"></input>
         <view style='margin-right:20rpx;'>个</view>
       </view>
     </view>

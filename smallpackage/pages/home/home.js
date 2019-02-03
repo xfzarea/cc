@@ -107,6 +107,44 @@ Page({
     let count = that.data.count;
     let job_type = that.data.job_type;
     let one_award = that.data.one_award;
+   
+    
+     
+    if (job_type == 0 && data>200) {
+        that.setData({
+          award: 0.00,
+          count: 0,
+          one_award: 0.00,
+          charge:0,
+          submit: false
+        })
+        var type1 = e.currentTarget.dataset.type;
+        var data = e.detail.value;
+        var award = that.data.award;
+        let count = that.data.count;
+        let job_type = that.data.job_type;
+        let one_award = that.data.one_award;
+        console.log(award+"")
+        return;
+      }
+    if (job_type == 1 && (data > 200) || data*count>200) {
+      that.setData({
+        award: 0.00,
+        count: 0,
+        one_award: 0.00,
+        charge: 0,
+        submit: false
+      })
+      var type1 = e.currentTarget.dataset.type;
+      var data = e.detail.value;
+      var award = that.data.award;
+      let count = that.data.count;
+      let job_type = that.data.job_type;
+      let one_award = that.data.one_award;
+      console.log(award + "")
+      return;
+        }
+    
     if (type1 == "award") {
 
       if (data == 0 || data == "") {
@@ -159,6 +197,92 @@ Page({
       }
     }
     
+    that.checkSubmit();
+  },
+
+  input2: function (e) {
+    const that = this;
+    var type1 = e.currentTarget.dataset.type;
+    var data = e.detail.value;
+    var award = that.data.award;
+    let count = that.data.count;
+    let job_type = that.data.job_type;
+    let one_award = that.data.one_award;
+
+
+console.log(data)
+    console.log(award)
+    
+    if (job_type == 1 && data * one_award > 200) {
+      that.setData({
+        award: 0.00,
+        count: 0,
+        one_award: 0.00,
+        charge: 0,
+        submit: false
+      })
+      var type1 = e.currentTarget.dataset.type;
+      var data = e.detail.value;
+      var award = that.data.award;
+      let count = that.data.count;
+      let job_type = that.data.job_type;
+      let one_award = that.data.one_award;
+      console.log(award + "")
+      return;
+    }
+
+    if (type1 == "award") {
+
+      if (data == 0 || data == "") {
+        that.data.award = data;
+        that.setData({
+          submit: false
+        })
+        return;
+      }
+
+      if (/^\d+\.?\d{0,2}$/.test(data)) {
+        if (job_type == 0) {
+          that.setData({
+            award: data,
+            charge: Math.round(data) * 2 / 100,
+          })
+        } else {
+          that.setData({
+            one_award: data,
+            award: (data * count).toFixed(2),
+            charge: Math.round(data * count) * 2 / 100,
+          })
+        }
+      } else {
+        if (job_type == 0) {
+          that.setData({
+            award: data.substring(0, data.length - 1),
+            charge: Math.round(data.substring(0, data.length - 1)) * 2 / 100,
+          })
+        } else {
+          that.setData({
+            one_award: data.substring(0, data.length - 1),
+            // award : data.substring(0, data.length - 1) * count,
+            // charge: Math.round(data.substring(0, data.length - 1)*count) * 2 / 100,
+          })
+        }
+      }
+    }
+    if (type1 == "count") {
+      if (job_type == 0) {
+        that.setData({
+          count: data
+        })
+      } else {
+        that.setData({
+          count: data,
+          award: one_award * data,
+          charge: Math.round(one_award * data) * 2 / 100
+        })
+      }
+    }
+
     that.checkSubmit();
   },
   //判断是否可以塞钱进红包

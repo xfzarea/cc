@@ -70,7 +70,7 @@
       <view class='list_10'>
         <view class='tan'>其他金额(不超过200)</view>
       </view>
-      <input value="{{award==0?'':award}}" placeholder='输入自定义金额' class='default_award_input' placeholder-style='text-align:center;color:#f2afa2' maxlength='6' bindinput="input" type='digit' cursor-spacing="130" data-type='award'>
+      <input value="{{award==0?'':(award<=200?award:0)}}" placeholder='输入自定义金额' class='default_award_input' placeholder-style='text-align:center;color:#f2afa2' maxlength='6' bindinput="input" type='digit' cursor-spacing="130" data-type='award'>
       </input>
       
       <form report-submit='true' bindsubmit='go'>

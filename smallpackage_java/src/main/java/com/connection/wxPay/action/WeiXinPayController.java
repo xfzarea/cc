@@ -605,10 +605,13 @@ public class WeiXinPayController {
 						if (userId == 0) {
 							log.info("支付回掉，用户userId失敗");
 							return;
-						}
+						}else {
+						
 						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach), userId,
 								(double) job.get("award"));
 						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
+						
+					}
 					}
 					job = null;
 				}
