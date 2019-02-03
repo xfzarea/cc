@@ -296,7 +296,7 @@ public class WeiXinPayController {
 			if (!cc.isEmpty()) {
 				out.print("niwanguole");
 				return;
-			}
+			}else {
 			HashMap<String, Object> jobMsg = begJobDao.getBegJobById(jobId);
 
 			double totalAward = Double.parseDouble(jobMsg.get("totalAward") + "");
@@ -440,7 +440,7 @@ public class WeiXinPayController {
 					out.print("qianmingcuowu");
 				}
 			}
-
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e);
@@ -606,10 +606,18 @@ public class WeiXinPayController {
 							log.info("支付回掉，用户userId失敗");
 							return;
 						}else {
+							List<HashMap<String, Object>> cc = begJobDao.getPaied(userId, Integer.parseInt(attach));
+							if(cc.isEmpty()) {
+								begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach), userId,
+										(double) job.get("award"));
+								response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
+							}else {
+								log.info("支付回掉，用户userId已在beg——job——record存在");
+								return;
+							}
+							
 						
-						begJobService.payOver(transaction_id, out_trade_no, Integer.parseInt(attach), userId,
-								(double) job.get("award"));
-						response.getWriter().write(setXml("SUCCESS", "OK")); // 告诉微信已经收到通知了
+						
 						
 					}
 					}
