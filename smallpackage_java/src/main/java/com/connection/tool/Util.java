@@ -107,7 +107,7 @@ public class Util {
 		
 		if(type==1){
 			params.put("template_id", "TlDAB-fRWRyodj-OiKWaiQM1mYsZxxoLJAWrxmjAucI");//过期模板
-			keyWord1.put("value", "语音口令"+job.get("context"+"超过24小时未被领取完"));
+			keyWord1.put("value", "语音口令"+job.get("context")+"，超过24小时未被领取完");
 			keyWord1.put("color", "#FF4040");//第一个数据
 			data.put("keyword1", keyWord1);
 			
